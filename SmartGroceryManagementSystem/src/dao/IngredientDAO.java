@@ -11,7 +11,139 @@ package dao;
 import model.Ingredient;
 import util.DBConnection;
 
-import 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class IngredientDAO {
+    public boolean insertIngredient(Ingredient ingredient){
+        String sql = "INSERT INTO Ingredients(productId, name, category, unit) VALUES (?, ?, ?, ?)";
+        
+        try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+
+        stmt.setInt(1, ingredient.getProductId());
+        stmt.setString(2, ingredient.getName());
+        stmt.setString(3, ingredient.getCategory());
+        stmt.setString(4, ingredient.getUnit());
+
+        stmt.executeUpdate();
+
+        return true;
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+        return false;
+    }
+    }
     
+    public Ingredient getIngredientById(int ingredientId){
+        String sql = "SELECT * FROM Ingredients WHERE ingredientId = ?";
+                
+        try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+
+        stmt.setInt(1, ingredientId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+
+            Ingredient ingredient = new Ingredient();
+
+            ingredient.setIngredientId(rs.getInt("ingredientId"));
+            ingredient.setProductId(rs.getInt("productId"));
+            ingredient.setName(rs.getString("name"));
+            ingredient.setCategory(rs.getString("category"));
+            ingredient.setUnit(rs.getString("unit"));
+
+            return ingredient;
+        }
+
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+
+        return null;
+    }
+    public List<Ingredient> getAllIngredients() {
+
+    List<Ingredient> ingredients = new ArrayList<>();
+
+    String sql = "SELECT * FROM Ingredients";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery()
+    ) {
+
+        while (rs.next()) {
+
+            Ingredient ingredient = new Ingredient();
+
+            ingredient.setIngredientId(rs.getInt("ingredientId"));
+            ingredient.setProductId(rs.getInt("productId"));
+            ingredient.setName(rs.getString("name"));
+            ingredient.setCategory(rs.getString("category"));
+            ingredient.setUnit(rs.getString("unit"));
+
+            ingredients.add(ingredient);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return ingredients;
+}
+    public boolean updateIngredient(Ingredient ingredient) {
+
+    String sql = "UPDATE Ingredients SET productId=?, name=?, category=?, unit=? WHERE ingredientId=?";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+
+        stmt.setInt(1, ingredient.getProductId());
+        stmt.setString(2, ingredient.getName());
+        stmt.setString(3, ingredient.getCategory());
+        stmt.setString(4, ingredient.getUnit());
+        stmt.setInt(5, ingredient.getIngredientId());
+
+        int rowsAffected = stmt.executeUpdate();
+
+        return rowsAffected > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+    public boolean deleteIngredient(int ingredientId) {
+
+    String sql = "DELETE FROM Ingredients WHERE ingredientId = ?";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+
+        stmt.setInt(1, ingredientId);
+
+        int rowsAffected = stmt.executeUpdate();
+
+        return rowsAffected > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }

@@ -82,6 +82,12 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return name + " (" + unit + ")";
+        return "Ingredient{" +
+               "ingredientId=" + ingredientId +
+               ", productId=" + productId +
+               ", name='" + name + '\'' +
+               ", catrgory='" + category + '\'' +
+               ", unit=" + unit +
+               '}';
     }
 }
