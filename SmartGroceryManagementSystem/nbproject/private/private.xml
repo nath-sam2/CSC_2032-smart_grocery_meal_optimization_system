@@ -11,10 +11,13 @@
             <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/smartgrocerymanagementsystem/TestConnection.java</file>
             <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/RecipeDAO.java</file>
             <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/IngredientDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/IngredientTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/RecipeTest.java</file>
             <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/NutritionFactsDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/NutritionFactsTest.java</file>
+            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/DietaryRestriction.java</file>
+            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/UserDietaryRestriction.java</file>
+            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/DietaryRestrictionDAO.java</file>
+            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/UserDietaryRestrictionsDAO.java</file>
+            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/DietaryRestrictionTest.java</file>
+            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/UserDietaryRestrictionTesst.java</file>
         </group>
     </open-files>
 </project-private>
