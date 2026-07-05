@@ -8,6 +8,19 @@ package test;
  *
  * @author perer
  */
+import dao.UserDietaryRestrictionsDAO;
+import model.UserDietaryRestriction;
+
 public class UserDietaryRestrictionTesst {
-    
+    public static void main(String[] args) {
+
+        UserDietaryRestrictionsDAO dao = new UserDietaryRestrictionsDAO();
+
+        if (dao.removeUserRestriction(1, 1)) {
+            System.out.println("User restriction removed successfully!");
+        } else {
+            System.out.println("Delete failed!");
+        }
+
+    }
 }

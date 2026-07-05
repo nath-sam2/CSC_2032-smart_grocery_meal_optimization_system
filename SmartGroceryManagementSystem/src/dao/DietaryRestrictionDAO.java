@@ -79,7 +79,7 @@ public class DietaryRestrictionDAO {
 
             DietaryRestriction restriction = new DietaryRestriction();
 
-            restriction.setRestrictionId(rs.getInt("restricrtionId"));
+            restriction.setRestrictionId(rs.getInt("restrictionId"));
             restriction.setRestrictionName(rs.getString("restrictionName"));
             restriction.setDescription(rs.getString("description"));
             
@@ -90,7 +90,7 @@ public class DietaryRestrictionDAO {
     } catch (SQLException e) {
         e.printStackTrace();
     }
-        return null;
+        return restrictions;
     }
     public boolean updateRestriction(DietaryRestriction restriction) {
 
