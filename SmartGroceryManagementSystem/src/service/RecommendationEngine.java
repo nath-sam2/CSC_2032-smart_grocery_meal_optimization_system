@@ -11,7 +11,7 @@ package service;
 import java.util.List;
 
 public class RecommendationEngine {
-    public List<Recipe> recommendRecipes(int userId){}
+    /*public List<Recipe> recommendRecipes(int userId){}
 
     public List<Recipe> filterByDietaryRestrictions(List<Recipe> recipes, int userId){}
 
@@ -19,5 +19,5 @@ public class RecommendationEngine {
 
     public int calculateHealthScore(Recipe recipe){}
 
-    public ShoppingList generateShoppingList(int userId){}
+    public ShoppingList generateShoppingList(int userId){}*/
 }
