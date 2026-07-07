@@ -19,7 +19,7 @@ public class ShoppingListTest {
 
         ShoppingList list = new ShoppingList();
 
-        list.setUserId(1);              // Existing user ID
+        list.setUserId(1);              
         list.setCreatedDate(LocalDate.now());
         list.setStatus("Pending");
 

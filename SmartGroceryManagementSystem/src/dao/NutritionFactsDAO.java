@@ -206,4 +206,53 @@ public class NutritionFactsDAO {
             return false;
         }
     }
+    
+    public NutritionFacts getNutritionFactsByRecipeId(int recipeId) {
+
+    String sql = "SELECT * FROM NutritionFacts WHERE recipeId = ?";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+
+        stmt.setInt(1, recipeId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+
+            NutritionFacts nutrition = new NutritionFacts();
+
+            nutrition.setNutritionId(rs.getInt("nutritionId"));
+            nutrition.setRecipeId(rs.getInt("recipeId"));
+            nutrition.setServingSize(rs.getString("servingSize"));
+            nutrition.setServingsPerContainer(rs.getInt("servingsPerContainer"));
+            nutrition.setCalories(rs.getDouble("calories"));
+            nutrition.setTotalFat(rs.getDouble("totalFat"));
+            nutrition.setSaturatedFat(rs.getDouble("saturatedFat"));
+            nutrition.setTransFat(rs.getDouble("transFat"));
+            nutrition.setCholesterol(rs.getDouble("cholesterol"));
+            nutrition.setSodium(rs.getDouble("sodium"));
+            nutrition.setTotalCarbohydrates(rs.getDouble("totalCarbohydrates"));
+            nutrition.setDietaryFiber(rs.getDouble("dietaryFiber"));
+            nutrition.setTotalSugar(rs.getDouble("totalSugar"));
+            nutrition.setAddedSugar(rs.getDouble("addedSugar"));
+            nutrition.setProtein(rs.getDouble("protein"));
+            nutrition.setVitaminA(rs.getDouble("vitaminA"));
+            nutrition.setVitaminC(rs.getDouble("vitaminC"));
+            nutrition.setVitaminD(rs.getDouble("vitaminD"));
+            nutrition.setCalcium(rs.getDouble("calcium"));
+            nutrition.setIron(rs.getDouble("iron"));
+            nutrition.setPotassium(rs.getDouble("potassium"));
+
+            return nutrition;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+    }
 }
