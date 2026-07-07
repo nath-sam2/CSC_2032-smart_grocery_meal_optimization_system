@@ -15,32 +15,43 @@ import util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.sql.Statement;
+import java.sql.ResultSet;
+
 public class MealPlannerDAO {
-    public boolean insertMealPlan(MealPlanner mealPlan){
-        String sql = "INSERT INTO MealPlans (userId, planName, startDate, endDate) VALUES (?, ?, ?, ?)";
-        
-        try (
+    public boolean insertMealPlan(MealPlanner mealPlan) {
+
+    String sql = "INSERT INTO mealplans(userId, planName, startDate, endDate) VALUES(?,?,?,?)";
+
+    try (
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)
+        PreparedStatement stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
     ) {
 
         stmt.setInt(1, mealPlan.getUserId());
         stmt.setString(2, mealPlan.getPlanName());
         stmt.setDate(3, Date.valueOf(mealPlan.getStartDate()));
         stmt.setDate(4, Date.valueOf(mealPlan.getEndDate()));
-        
+
         stmt.executeUpdate();
+
+        ResultSet rs = stmt.getGeneratedKeys();
+
+        if (rs.next()) {
+            mealPlan.setMealPlanId(rs.getInt(1));
+        }
 
         System.out.println("Meal Plan inserted successfully!");
         return true;
 
     } catch (SQLException e) {
-
         e.printStackTrace();
         System.out.println("Insert failed!");
-        return false;
     }
-    }
+
+    return false;
+}
     
     public boolean updateMealPlan(MealPlanner mealPlan){
         String sql = "UPDATE MealPlans SET userId=?, planName=?, startDate=?, endDate=? WHERE mealPlanId = ?";

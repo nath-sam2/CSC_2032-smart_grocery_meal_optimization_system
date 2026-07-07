@@ -14,28 +14,46 @@ import util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ShoppingListDAO {
     public boolean insertShoppingList(ShoppingList shoppingList) {
 
-        String sql = "INSERT INTO ShoppingLists(userId, createdDate, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO shoppinglists(userId, createdDate, status) VALUES (?, ?, ?)";
 
         try (
                 Connection conn = DBConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
+                PreparedStatement stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)
         ) {
 
             stmt.setInt(1, shoppingList.getUserId());
             stmt.setDate(2, Date.valueOf(shoppingList.getCreatedDate()));
             stmt.setString(3, shoppingList.getStatus());
 
-            return stmt.executeUpdate() > 0;
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                shoppingList.setShoppingListId(rs.getInt(1));
+            }
+
+            System.out.println("Shopping List inserted successfully!");
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            System.out.println("Insert failed!");
         }
+
+        return false;
     }
+
 
     public ShoppingList getShoppingListById(int shoppingListId) {
 
