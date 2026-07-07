@@ -31,16 +31,67 @@ public class MealPlannerDAO {
         
         stmt.executeUpdate();
 
+        System.out.println("Meal Plan inserted successfully!");
         return true;
 
     } catch (SQLException e) {
 
         e.printStackTrace();
+        System.out.println("Insert failed!");
         return false;
     }
     }
     
-    public MealPlanner getMealPlannerById(int mealPlanId){
+    public boolean updateMealPlan(MealPlanner mealPlan){
+        String sql = "UPDATE MealPlans SET userId=?, planName=?, startDate=?, endDate=? WHERE mealPlanId = ?";
+        
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, mealPlan.getUserId());
+            stmt.setString(2, mealPlan.getPlanName());
+            stmt.setDate(3, Date.valueOf(mealPlan.getStartDate()));
+            stmt.setDate(4, Date.valueOf(mealPlan.getEndDate()));
+            stmt.setInt(5, mealPlan.getMealPlanId());
+
+            stmt.executeUpdate();
+
+            System.out.println("Meal Plan updated successfully!");
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Update failed!");
+        }
+
+        return false;
+    }
+
+    public boolean deleteMealPlan(int mealPlanId){
+        String sql = "DELETE FROM MealPlans WHERE mealPlanId=?";
+
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, mealPlanId);
+
+            stmt.executeUpdate();
+
+            System.out.println("Meal Plan deleted successfully!");
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Delete failed!");
+        }
+        return false;
+    }
+
+    public MealPlanner getMealPlansById(int mealPlanId){
         String sql = "SELECT * FROM MealPlans WHERE mealPlanId = ?";
         
         try (
@@ -56,11 +107,11 @@ public class MealPlannerDAO {
 
             MealPlanner mealPlan = new MealPlanner();
 
-            mealPlan.setMealPlanId(rs.getInt(mealPlanId));
+            mealPlan.setMealPlanId(rs.getInt("mealPlanId"));
             mealPlan.setUserId(rs.getInt("userId"));
             mealPlan.setPlanName(rs.getString("planName"));
             mealPlan.setStartDate(rs.getDate("startDate").toLocalDate());
-            mealPlan.setEndDate(rs.getDate("EndDate").toLocalDate());
+            mealPlan.setEndDate(rs.getDate("endDate").toLocalDate());
             
 
             return mealPlan;
@@ -70,5 +121,43 @@ public class MealPlannerDAO {
         e.printStackTrace();
     }
             return null;
+    }
+    
+    public List<MealPlanner> getMealPlansByUser(int userId){
+        List<MealPlanner> mealPlans = new ArrayList<>();
+
+        String sql = "SELECT * FROM MealPlans WHERE userId=?";
+
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, userId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                MealPlanner mealPlan = new MealPlanner();
+
+                mealPlan.setMealPlanId(rs.getInt("mealPlanId"));
+                mealPlan.setUserId(rs.getInt("userId"));
+                mealPlan.setPlanName(rs.getString("planName"));
+                mealPlan.setStartDate(rs.getDate("startDate").toLocalDate());
+                mealPlan.setEndDate(rs.getDate("endDate").toLocalDate());
+
+                mealPlans.add(mealPlan);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mealPlans;
+    }
+
+    public List<MealPlanner> getWeeklyPlan(int userId){
+        return getMealPlansByUser(userId); 
     }
 }
