@@ -3,39 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/Recipe.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/NutritionFacts.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/RecipeIngredient.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/Ingredient.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/util/DBConnection.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/smartgrocerymanagementsystem/TestConnection.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/RecipeDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/IngredientDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/NutritionFactsDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/DietaryRestriction.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/UserDietaryRestriction.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/DietaryRestrictionDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/UserDietaryRestrictionsDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/DietaryRestrictionTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/UserDietaryRestrictionTesst.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/service/RecommendationEngine.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/ShoppingList.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/ShoppingListItem.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/ShoppingListDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/ShoppingListItemDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/ShoppingListTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/ShoppingListItemTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/NutritionFactsTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/service/NutriScoreService.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/RecommendationEngineTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/MealPlanner.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/MealPlanDetail.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/MealPlannerDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/MealPlanDetailDAO.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/MealPlannerTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/MealPlanDetaiTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/test/RecommendationWorkflowTest.java</file>
-            <file>file:/C:/Users/perer/OneDrive/Desktop/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/smartgrocerymanagementsystem/SmartGroceryManagementSystem.java</file>
+            <file>file:/C:/University%20Projects/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/Ingredient.java</file>
+            <file>file:/C:/University%20Projects/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/dao/RecipeDAO.java</file>
+            <file>file:/C:/University%20Projects/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/util/DBConnection.java</file>
+            <file>file:/C:/University%20Projects/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryManagementSystem/src/model/Recipe.java</file>
         </group>
     </open-files>
 </project-private>

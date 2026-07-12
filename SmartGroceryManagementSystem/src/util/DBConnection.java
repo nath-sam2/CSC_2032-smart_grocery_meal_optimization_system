@@ -25,18 +25,30 @@ public class DBConnection {
 
     // Method to establish connection
     public static Connection getConnection() {
-        Connection connection = null;
 
-        try {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database connected successfully!");
-        } catch (SQLException e) {
-            System.out.println("Connection failed!");
-            e.printStackTrace();
-        }
+    Connection connection = null;
 
-        return connection;
+    try {
+
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        connection = DriverManager.getConnection(
+                URL,
+                USER,
+                PASSWORD
+        );
+
+        System.out.println("Database connected successfully!");
+
+    } catch (Exception e) {
+
+        System.out.println("DATABASE CONNECTION FAILED");
+        e.printStackTrace();
+
     }
+
+    return connection;
+}
 
     // Method to close connection
     public static void closeConnection(Connection connection) {

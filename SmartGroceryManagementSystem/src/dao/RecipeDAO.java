@@ -79,16 +79,24 @@ public class RecipeDAO {
     return null;
 }
     public List<Recipe> getAllRecipes() {
+        
+        System.out.println("NEW RECIPE DAO RUNNING");
 
     List<Recipe> recipes = new ArrayList<>();
 
     String sql = "SELECT * FROM Recipes";
 
-    try (
-        Connection conn = DBConnection.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery()
-    ) {
+    Connection conn = DBConnection.getConnection();
+
+if(conn == null){
+    System.out.println("RecipeDAO: Connection is NULL");
+    return recipes;
+}
+
+try(
+    PreparedStatement stmt = conn.prepareStatement(sql);
+    ResultSet rs = stmt.executeQuery()
+) {
 
         while (rs.next()) {
 
