@@ -112,16 +112,20 @@ public class NutritionFacts {
     }
 
     public void setTotalCarbohydrates(double totalCarbohydrates) {
+    if(totalCarbohydrates >= 0){
         this.totalCarbohydrates = totalCarbohydrates;
     }
+}
 
     public double getTotalSugar() {
         return totalSugar;
     }
 
     public void setTotalSugar(double totalSugar) {
+    if(totalSugar >= 0){
         this.totalSugar = totalSugar;
     }
+}
 
     public double getAddedSugar() {
         return addedSugar;
@@ -203,40 +207,51 @@ public class NutritionFacts {
     }
 
     public void setProtein(double protein) {
+    if(protein >= 0){
         this.protein = protein;
     }
+}
 
     public double getTotalFat() {
         return totalFat;
     }
 
     public void setTotalFat(double totalFat) {
+    if(totalFat >= 0){
         this.totalFat = totalFat;
     }
+}
 
     public double getDietaryFiber() {
         return dietaryFiber;
     }
 
     public void setDietaryFiber(double dietaryFiber) {
+    if(dietaryFiber >= 0){
         this.dietaryFiber = dietaryFiber;
     }
+}
 
     public double getSodium() {
         return sodium;
     }
 
     public void setSodium(double sodium) {
+    if(sodium >= 0){
         this.sodium = sodium;
     }
+}
 
     public String getServingSize() {
         return servingSize;
     }
 
     public void setServingSize(String servingSize) {
+
+    if(servingSize != null && !servingSize.trim().isEmpty()){
         this.servingSize = servingSize;
     }
+}
 
     @Override
     public String toString() {
