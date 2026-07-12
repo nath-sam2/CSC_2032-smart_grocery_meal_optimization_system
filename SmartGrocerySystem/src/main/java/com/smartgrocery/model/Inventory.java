@@ -4,14 +4,14 @@ public class Inventory {
 
     private int inventoryId;
     private int productId;
-    private int stockQty;
+    private int quantity;
     private int reorderLevel;
 
     public Inventory(int inventoryId, int productId,
-                     int stockQty, int reorderLevel) {
+                     int quantity, int reorderLevel) {
         this.inventoryId  = inventoryId;
         this.productId    = productId;
-        this.stockQty     = stockQty;
+        this.quantity     = quantity;
         this.reorderLevel = reorderLevel;
     }
 
@@ -19,24 +19,24 @@ public class Inventory {
         { return inventoryId; }
     public int getProductId()    
         { return productId; }
-    public int getStockQty()     
-        { return stockQty; }
+    public int getQuantity()     
+        { return quantity; }
     public int getReorderLevel() 
         { return reorderLevel; }
 
-    public void setStockQty(int stockQty) {
-        this.stockQty = stockQty;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
     public void setReorderLevel(int reorderLevel) {
         this.reorderLevel = reorderLevel;
     }
 
     public void updateStock() {
-        System.out.println("Stock updated: " + stockQty);
+        System.out.println("Stock updated: " + quantity);
     }
 
     public boolean isLowStock() {
-        return stockQty <= reorderLevel;
+        return quantity <= reorderLevel;
     }
 
     public void getExpiryData() {
@@ -44,7 +44,7 @@ public class Inventory {
     }
 
     public void getInventoryStatus() {
-        System.out.println("Stock: " + stockQty +
+        System.out.println("Stock: " + quantity +
                          " | Reorder: " + reorderLevel +
                          " | Low: " + isLowStock());
     }
