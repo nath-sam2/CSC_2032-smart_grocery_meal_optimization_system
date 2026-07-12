@@ -5,9 +5,12 @@
 package controller;
 
 import dao.DietaryRestrictionDAO;
-import model.DietaryRestriction;
+import dao.UserDietaryRestrictionDAO;
 
-import jakarta.servlet.ServletException;
+import model.DietaryRestriction;
+import model.UserDietaryRestriction;
+
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -19,23 +22,15 @@ import java.util.List;
 public class DietaryRestrictionController extends HttpServlet {
 
 
-    private DietaryRestrictionDAO dao;
+    DietaryRestrictionDAO restrictionDAO = new DietaryRestrictionDAO();
 
-
-    @Override
-    public void init() throws ServletException {
-
-        dao = new DietaryRestrictionDAO();
-
-    }
+    UserDietaryRestrictionDAO userRestrictionDAO =
+            new UserDietaryRestrictionDAO();
 
 
 
-    // Display all restrictions and delete
-    @Override
-    protected void doGet(HttpServletRequest request,
-                        HttpServletResponse response)
-                        throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
 
         String action = request.getParameter("action");
@@ -47,37 +42,144 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
 
-        if(action.equals("delete")){
+        switch(action){
 
 
-            int restrictionId =
-            Integer.parseInt(request.getParameter("id"));
+            // Display all available restrictions
+            case "list":
 
 
-            dao.deleteRestriction(restrictionId);
+                List<DietaryRestriction> restrictions =
+                        restrictionDAO.getAllRestrictions();
 
 
-            response.sendRedirect(
-            "DietaryRestrictionController");
+                request.setAttribute(
+                        "restrictions",
+                        restrictions
+                );
 
 
-        } 
-        else {
+                request.getRequestDispatcher(
+                        "dietaryRestrictionList.jsp"
+                )
+                .forward(request,response);
 
 
-            List<DietaryRestriction> restrictions =
-            dao.getAllRestrictions();
-
-
-            request.setAttribute(
-            "restrictions",
-            restrictions);
+                break;
 
 
 
-            request.getRequestDispatcher(
-            "dietaryRestrictionList.jsp")
-            .forward(request, response);
+
+            // Add restriction page
+            case "add":
+
+
+                request.getRequestDispatcher(
+                        "addDietaryRestriction.jsp"
+                )
+                .forward(request,response);
+
+
+                break;
+
+
+
+
+
+            // Edit page
+            case "edit":
+
+
+                int editId =
+                Integer.parseInt(
+                        request.getParameter("id")
+                );
+
+
+                DietaryRestriction restriction =
+                        restrictionDAO.getRestrictionById(editId);
+
+
+
+                request.setAttribute(
+                        "restriction",
+                        restriction
+                );
+
+
+
+                request.getRequestDispatcher(
+                        "editDietaryRestriction.jsp"
+                )
+                .forward(request,response);
+
+
+
+                break;
+
+
+
+
+
+            // Delete restriction
+
+            case "delete":
+
+
+                int deleteId =
+                Integer.parseInt(
+                        request.getParameter("id")
+                );
+
+
+                restrictionDAO.deleteRestriction(deleteId);
+
+
+                response.sendRedirect(
+                        "DietaryRestrictionController"
+                );
+
+
+                break;
+
+
+
+
+            // View user's restrictions
+
+            case "userRestrictions":
+
+
+                HttpSession session =
+                        request.getSession();
+
+
+                int userId =
+                (int)session.getAttribute("userId");
+
+
+
+                List<DietaryRestriction> userRestrictions =
+                userRestrictionDAO.getRestrictionsByUserId(userId);
+
+
+
+                request.setAttribute(
+                        "userRestrictions",
+                        userRestrictions
+                );
+
+
+
+                request.getRequestDispatcher(
+                        "userRestrictionList.jsp"
+                )
+                .forward(request,response);
+
+
+
+                break;
+
 
         }
 
@@ -87,43 +189,134 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
 
-    // Add new restriction
-    @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-                          throws ServletException, IOException {
 
-
-        String restrictionName =
-        request.getParameter("restrictionName");
-
-
-        String description =
-        request.getParameter("description");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
 
 
-        DietaryRestriction restriction =
-        new DietaryRestriction();
+        String action =
+                request.getParameter("action");
 
 
 
-        restriction.setRestrictionName(
-        restrictionName);
+
+        if(action.equals("insert")){
+
+
+            DietaryRestriction restriction =
+                    new DietaryRestriction();
 
 
 
-        restriction.setDescription(
-        description);
+            restriction.setRestrictionName(
+                    request.getParameter("restrictionName")
+            );
+
+
+            restriction.setDescription(
+                    request.getParameter("description")
+            );
 
 
 
-        dao.insertRestriction(restriction);
+            restrictionDAO.insertRestriction(restriction);
 
 
 
-        response.sendRedirect(
-        "DietaryRestrictionController");
+            response.sendRedirect(
+                    "DietaryRestrictionController"
+            );
+
+
+        }
+
+
+
+
+
+
+        else if(action.equals("update")){
+
+
+            DietaryRestriction restriction =
+                    new DietaryRestriction();
+
+
+
+            restriction.setRestrictionId(
+                Integer.parseInt(
+                request.getParameter("restrictionId"))
+            );
+
+
+
+            restriction.setRestrictionName(
+                    request.getParameter("restrictionName")
+            );
+
+
+
+            restriction.setDescription(
+                    request.getParameter("description")
+            );
+
+
+
+            restrictionDAO.updateRestriction(restriction);
+
+
+
+            response.sendRedirect(
+                    "DietaryRestrictionController"
+            );
+
+        }
+
+
+
+
+
+        else if(action.equals("addUserRestriction")){
+
+
+            HttpSession session =
+                    request.getSession();
+
+
+
+            int userId =
+            (int)session.getAttribute("userId");
+
+
+
+            int restrictionId =
+            Integer.parseInt(
+            request.getParameter("restrictionId"));
+
+
+
+            UserDietaryRestriction udr =
+            new UserDietaryRestriction();
+
+
+
+            udr.setUserId(userId);
+
+            udr.setRestrictionId(restrictionId);
+
+
+
+            userRestrictionDAO.addUserRestriction(udr);
+
+
+
+            response.sendRedirect(
+            "DietaryRestrictionController?action=userRestrictions"
+            );
+
+        }
+
 
     }
 
