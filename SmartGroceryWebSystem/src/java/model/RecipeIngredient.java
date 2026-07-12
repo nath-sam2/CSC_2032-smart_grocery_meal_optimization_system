@@ -15,6 +15,7 @@ public class RecipeIngredient {
     private double quantity;
     private String unit;
     private boolean optional;
+    private String ingredientName;
 
     public RecipeIngredient() {}
 
@@ -34,6 +35,13 @@ public class RecipeIngredient {
         }
     }
 
+    public String getIngredientName() {
+    return ingredientName;
+}
+
+public void setIngredientName(String ingredientName) {
+    this.ingredientName = ingredientName;
+}
     public String getIngredientDetails() {
         return "Ingredient ID: " + ingredientId + ", Quantity: " + quantity + " " + unit;
     }

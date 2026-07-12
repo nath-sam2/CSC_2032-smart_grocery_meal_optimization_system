@@ -9,7 +9,7 @@ package test;
  * @author perer
  */
 import dao.DietaryRestrictionDAO;
-import dao.UserDietaryRestrictionsDAO;
+import dao.UserDietaryRestrictionDAO;
 import model.DietaryRestriction;
 
 import java.util.List;

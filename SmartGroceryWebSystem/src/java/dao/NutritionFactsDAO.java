@@ -10,7 +10,9 @@ package dao;
  */
 import model.NutritionFacts;
 import util.DBConnection;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -255,4 +257,144 @@ public class NutritionFactsDAO {
 
     return null;
     }
+    public NutritionFacts getNutritionByRecipeId(int recipeId) {
+
+    NutritionFacts nutrition = null;
+
+    String sql = "SELECT * FROM nutritionfacts WHERE recipeId = ?";
+
+
+    try {
+
+        Connection con = DBConnection.getConnection();
+
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, recipeId);
+
+
+        ResultSet rs = ps.executeQuery();
+
+
+        if(rs.next()) {
+
+            nutrition = new NutritionFacts();
+
+
+            nutrition.setNutritionId(
+                    rs.getInt("nutritionId")
+            );
+
+
+            nutrition.setRecipeId(
+                    rs.getInt("recipeId")
+            );
+
+
+            nutrition.setServingSize(
+                    rs.getString("servingSize")
+            );
+
+
+            nutrition.setServingsPerContainer(
+                    rs.getInt("servingsPerContainer")
+            );
+
+
+            nutrition.setCalories(
+                    rs.getDouble("calories")
+            );
+
+
+            nutrition.setTotalFat(
+                    rs.getDouble("totalFat")
+            );
+
+
+            nutrition.setSaturatedFat(
+                    rs.getDouble("saturatedFat")
+            );
+
+
+            nutrition.setTransFat(
+                    rs.getDouble("transFat")
+            );
+
+
+            nutrition.setCholesterol(
+                    rs.getDouble("cholesterol")
+            );
+
+
+            nutrition.setSodium(
+                    rs.getDouble("sodium")
+            );
+
+
+            nutrition.setTotalCarbohydrates(
+                    rs.getDouble("totalCarbohydrates")
+            );
+
+
+            nutrition.setDietaryFiber(
+                    rs.getDouble("dietaryFiber")
+            );
+
+
+            nutrition.setTotalSugar(
+                    rs.getDouble("totalSugar")
+            );
+
+
+            nutrition.setAddedSugar(
+                    rs.getDouble("addedSugar")
+            );
+
+
+            nutrition.setProtein(
+                    rs.getDouble("protein")
+            );
+
+
+            nutrition.setVitaminA(
+                    rs.getDouble("vitaminA")
+            );
+
+
+            nutrition.setVitaminC(
+                    rs.getDouble("vitaminC")
+            );
+
+
+            nutrition.setVitaminD(
+                    rs.getDouble("vitaminD")
+            );
+
+
+            nutrition.setCalcium(
+                    rs.getDouble("calcium")
+            );
+
+
+            nutrition.setIron(
+                    rs.getDouble("iron")
+            );
+
+
+            nutrition.setPotassium(
+                    rs.getDouble("potassium")
+            );
+
+        }
+
+
+    } catch(Exception e) {
+
+        e.printStackTrace();
+
+    }
+
+
+    return nutrition;
+}
 }

@@ -16,7 +16,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDietaryRestrictionsDAO {
+public class UserDietaryRestrictionDAO {
     public boolean addUserRestriction(UserDietaryRestriction userRestriction) {
 
     String sql = "INSERT INTO UserDietaryRestrictions(userId, restrictionId) VALUES (?, ?)";
@@ -92,5 +92,51 @@ public class UserDietaryRestrictionsDAO {
 
     return restrictions;
 }
-    
+    public List<UserDietaryRestriction> getAllUserRestrictions() {
+
+
+    List<UserDietaryRestriction> list = new ArrayList<>();
+
+
+    String sql =
+    "SELECT * FROM UserDietaryRestrictions";
+
+
+    try(
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery()
+    ){
+
+
+        while(rs.next()){
+
+
+            UserDietaryRestriction udr =
+            new UserDietaryRestriction();
+
+
+            udr.setUserId(
+            rs.getInt("userId"));
+
+
+            udr.setRestrictionId(
+            rs.getInt("restrictionId"));
+
+
+            list.add(udr);
+
+        }
+
+
+    }catch(SQLException e){
+
+        e.printStackTrace();
+
+    }
+
+
+    return list;
+
+}
 }

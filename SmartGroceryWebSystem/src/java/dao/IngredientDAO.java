@@ -9,8 +9,12 @@ package dao;
  * @author perer
  */
 import model.Ingredient;
-import util.DBConnection;
+import model.RecipeIngredient;
 
+import util.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,5 +149,72 @@ public class IngredientDAO {
         e.printStackTrace();
         return false;
     }
+}
+    public static List<RecipeIngredient> getIngredientsByRecipe(int recipeId) {
+
+    List<RecipeIngredient> ingredients = new ArrayList<>();
+
+    String sql =
+        "SELECT ri.recipeIngredientId, " +
+        "ri.recipeId, " +
+        "ri.ingredientId, " +
+        "ri.quantity, " +
+        "ri.unit, " +
+        "i.name AS ingredientName " +
+        "FROM recipeingredients ri " +
+        "JOIN ingredients i " +
+        "ON ri.ingredientId = i.ingredientId " +
+        "WHERE ri.recipeId = ?";
+
+
+    try (
+        Connection con = DBConnection.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql)
+    ) {
+
+        ps.setInt(1, recipeId);
+
+        ResultSet rs = ps.executeQuery();
+
+
+        while(rs.next()) {
+
+            RecipeIngredient ri = new RecipeIngredient();
+
+            ri.setRecipeIngredientId(
+                rs.getInt("recipeIngredientId")
+            );
+
+            ri.setRecipeId(
+                rs.getInt("recipeId")
+            );
+
+            ri.setIngredientId(
+                rs.getInt("ingredientId")
+            );
+
+            ri.setQuantity(
+                rs.getDouble("quantity")
+            );
+
+            ri.setUnit(
+                rs.getString("unit")
+            );
+
+            ri.setIngredientName(
+                rs.getString("ingredientName")
+            );
+
+
+            ingredients.add(ri);
+        }
+
+
+    } catch(SQLException e) {
+        e.printStackTrace();
+    }
+
+
+    return ingredients;
 }
 }

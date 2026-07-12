@@ -68,7 +68,11 @@ onclick="return confirm('Delete this recipe?');">
 Delete
 </a>
 
+|
 
+<a href="RecipeController?action=view&id=<%=r.getRecipeId()%>">
+    View Details
+</a>
 <hr>
 
 
