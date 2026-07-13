@@ -31,6 +31,17 @@ public class MealPlanDetailDAO {
             stmt.setString(3, detail.getMealType());
             stmt.setDate(4, Date.valueOf(detail.getMealDate()));
 
+            if(mealExists(
+        detail.getMealPlanId(),
+        detail.getMealType(),
+        detail.getMealDate()
+)){
+
+    System.out.println("Meal already exists for this date!");
+    return false;
+
+}
+
             int rows = stmt.executeUpdate();
 
             if (rows > 0) {
@@ -172,4 +183,36 @@ public class MealPlanDetailDAO {
         return details;
     }
 
+    public boolean mealExists(int mealPlanId, String mealType, LocalDate mealDate){
+
+    String sql =
+    "SELECT * FROM MealPlanDetails WHERE mealPlanId=? AND mealType=? AND mealDate=?";
+
+
+    try(
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ){
+
+        stmt.setInt(1, mealPlanId);
+        stmt.setString(2, mealType);
+        stmt.setDate(3, Date.valueOf(mealDate));
+
+
+        ResultSet rs = stmt.executeQuery();
+
+
+        return rs.next();
+
+
+    }catch(SQLException e){
+
+        e.printStackTrace();
+
+    }
+
+
+    return false;
+
+}
 }
