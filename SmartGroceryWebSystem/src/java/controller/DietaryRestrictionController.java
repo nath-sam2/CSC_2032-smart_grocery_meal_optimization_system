@@ -154,8 +154,8 @@ public class DietaryRestrictionController extends HttpServlet {
                         request.getSession();
 
 
-                int userId =
-                (int)session.getAttribute("userId");
+                int userId =1;
+                //(int)session.getAttribute("userId")//;
 
 
 
@@ -181,6 +181,31 @@ public class DietaryRestrictionController extends HttpServlet {
                 break;
 
 
+         // Add restriction to user page
+    case "addUser": {
+
+
+    List<DietaryRestriction> availableRestrictions =
+            restrictionDAO.getAllRestrictions();
+
+
+
+    request.setAttribute(
+            "restrictions",
+            availableRestrictions
+    );
+
+
+
+    request.getRequestDispatcher(
+            "addUserRestriction.jsp"
+    )
+    .forward(request,response);
+
+
+
+    break;
+}       
         }
 
     }
@@ -317,7 +342,34 @@ public class DietaryRestrictionController extends HttpServlet {
 
         }
 
+        else if(action.equals("deleteUserRestriction")){
 
+
+    HttpSession session =
+            request.getSession();
+
+
+    int userId =
+            (int)session.getAttribute("userId");
+
+
+    int restrictionId =
+            Integer.parseInt(
+                    request.getParameter("restrictionId")
+            );
+
+
+    userRestrictionDAO.removeUserRestriction(
+            userId,
+            restrictionId
+    );
+
+
+    response.sendRedirect(
+            "DietaryRestrictionController?action=userRestrictions"
+    );
+
+}
     }
 
 }

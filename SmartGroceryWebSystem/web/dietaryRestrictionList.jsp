@@ -10,36 +10,67 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
+<%@ page import="java.util.List" %>
+<%@ page import="model.DietaryRestriction" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <html>
 
 <head>
-    <title>Dietary Restrictions</title>
-    <style>
+
+<title>Dietary Restrictions</title>
+
+
+<style>
+
+body{
+    font-family: Arial;
+    margin:40px;
+}
+
 
 table {
+
     border-collapse: collapse;
-    width: 90%;
+    width:90%;
+
 }
 
 
 th, td {
-    border: 1px solid black;
-    padding: 10px;
-    text-align: left;
+
+    border:1px solid black;
+    padding:10px;
+
 }
 
 
-td:nth-child(3) {
-    max-width: 400px;
-    word-wrap: break-word;
+th {
+
+    background:#eeeeee;
+
 }
 
 
 a {
-    color: blue;
+
+    color:blue;
+    text-decoration:none;
+
+}
+
+
+.action a {
+
+    margin-right:10px;
+
 }
 
 </style>
+
+
 </head>
 
 
@@ -47,6 +78,7 @@ a {
 
 
 <h1>Dietary Restrictions</h1>
+
 
 
 <a href="addRestriction.jsp">
@@ -58,14 +90,17 @@ a {
 
 
 
-<table border="1" cellpadding="10">
+<table>
 
 
 <tr>
 
 <th>ID</th>
+
 <th>Restriction Name</th>
+
 <th>Description</th>
+
 <th>Action</th>
 
 </tr>
@@ -75,13 +110,15 @@ a {
 <%
 
 List<DietaryRestriction> restrictions =
-(List<DietaryRestriction>) request.getAttribute("restrictions");
+(List<DietaryRestriction>)request.getAttribute("restrictions");
+
 
 
 if(restrictions != null && !restrictions.isEmpty()){
 
 
-    for(DietaryRestriction restriction : restrictions){
+for(DietaryRestriction restriction : restrictions){
+
 
 %>
 
@@ -90,24 +127,38 @@ if(restrictions != null && !restrictions.isEmpty()){
 
 
 <td>
-<%= restriction.getRestrictionId() %>
+
+<%=restriction.getRestrictionId()%>
+
 </td>
 
 
 
 <td>
-<%= restriction.getRestrictionName() %>
+
+<%=restriction.getRestrictionName()%>
+
 </td>
 
 
 
 <td>
-<%= restriction.getDescription() %>
+
+<%=restriction.getDescription()%>
+
 </td>
 
 
 
-<td>
+<td class="action">
+
+
+<a href="DietaryRestrictionController?action=edit&id=<%=restriction.getRestrictionId()%>">
+
+Edit
+
+</a>
+
 
 
 <a href="DietaryRestrictionController?action=delete&id=<%=restriction.getRestrictionId()%>"
@@ -118,6 +169,7 @@ Delete
 </a>
 
 
+
 </td>
 
 
@@ -127,11 +179,11 @@ Delete
 
 <%
 
-    }
+}
 
 }
 
-else {
+else{
 
 %>
 
@@ -154,10 +206,12 @@ No Dietary Restrictions Found
 %>
 
 
+
 </table>
 
 
 
 </body>
+
 
 </html>

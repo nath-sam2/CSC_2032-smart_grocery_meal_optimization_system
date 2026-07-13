@@ -11,11 +11,15 @@ package service;
 import dao.MealPlannerDAO;
 import dao.MealPlanDetailDAO;
 import dao.DietaryRestrictionDAO;
+import dao.UserDietaryRestrictionDAO;
 import dao.NutritionFactsDAO;
+import dao.RecipeIngredientDAO;
 import dao.RecipeDAO;
 import dao.ShoppingListDAO;
 import dao.ShoppingListItemDAO;
 
+import model.DietaryRestriction;
+import model.UserDietaryRestriction;
 import model.Ingredient;
 import model.MealPlanner;
 import model.MealPlanDetail;
@@ -38,17 +42,48 @@ public class RecommendationEngine {
     private MealPlanDetailDAO mealPlanDetailDAO;
     private ShoppingListDAO shoppingListDAO;
     private ShoppingListItemDAO shoppingListItemDAO;
+    private RecipeIngredientDAO recipeIngredientDAO;
 
     public RecommendationEngine() {
         recipeDAO = new RecipeDAO();
         nutritionDAO = new NutritionFactsDAO();
         restrictionDAO = new DietaryRestrictionDAO();
         mealPlannerDAO = new MealPlannerDAO();
+        recipeIngredientDAO = new RecipeIngredientDAO();
         mealPlanDetailDAO = new MealPlanDetailDAO();
         shoppingListDAO = new ShoppingListDAO();
         shoppingListItemDAO = new ShoppingListItemDAO();
     }
     
+    private boolean containsIngredient(Recipe recipe, String keyword) {
+
+
+    List<Ingredient> ingredients =
+            recipeIngredientDAO.getIngredientsByRecipeId(
+                    recipe.getRecipeId()
+            );
+
+
+    for(Ingredient ingredient : ingredients){
+
+
+        String ingredientName =
+                ingredient.getName().toLowerCase();
+
+
+
+        if(ingredientName.contains(keyword.toLowerCase())){
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
     /**
      * Returns recommended recipes for a user.
      */
@@ -69,14 +104,151 @@ public class RecommendationEngine {
      * Filters recipes according to dietary restrictions.
      * (Temporary implementation until Member 1 integration.)
      */
-    public List<Recipe> filterByDietaryRestrictions(List<Recipe> recipes, int userId) {
+    public List<Recipe> filterByDietaryRestrictions(
+        List<Recipe> recipes,
+        int userId) {
 
-        // TODO:
-        // Use UserDietaryRestrictionDAO after full integration.
-        // Currently returns all recipes.
 
-        return recipes;
+    UserDietaryRestrictionDAO userRestrictionDAO =
+            new UserDietaryRestrictionDAO();
+
+
+    List<DietaryRestriction> userRestrictions =
+            userRestrictionDAO.getRestrictionsByUserId(userId);
+
+
+
+    List<Recipe> filteredRecipes =
+            new ArrayList<>();
+
+
+
+    for(Recipe recipe : recipes){
+
+
+        boolean allowed = true;
+
+
+
+        for(DietaryRestriction restriction : userRestrictions){
+
+
+            String type =
+                    restriction.getRestrictionName();
+
+
+
+            if(type.equalsIgnoreCase("Vegetarian")){
+
+
+                if(containsIngredient(recipe,"chicken") ||
+                   containsIngredient(recipe,"beef") ||
+                   containsIngredient(recipe,"pork") ||
+                   containsIngredient(recipe,"fish")){
+
+
+                    allowed = false;
+
+                }
+
+            }
+
+
+
+            else if(type.equalsIgnoreCase("Gluten-Free")){
+
+
+                if(containsIngredient(recipe,"wheat") ||
+                   containsIngredient(recipe,"flour") ||
+                   containsIngredient(recipe,"bread") ||
+                   containsIngredient(recipe,"pasta")){
+
+
+                    allowed = false;
+
+                }
+
+            }
+
+
+
+            else if(type.equalsIgnoreCase("Nut Allergy")){
+
+
+                if(containsIngredient(recipe,"nut") ||
+                   containsIngredient(recipe,"peanut") ||
+                   containsIngredient(recipe,"almond")){
+
+
+                    allowed = false;
+
+                }
+
+            }
+
+
+
+            else if(type.equalsIgnoreCase("Dairy-Free")){
+
+
+                if(containsIngredient(recipe,"milk") ||
+                   containsIngredient(recipe,"cheese") ||
+                   containsIngredient(recipe,"butter")){
+
+
+                    allowed = false;
+
+                }
+
+            }
+
+
+
+            else if(type.equalsIgnoreCase("Egg Allergy")){
+
+
+                if(containsIngredient(recipe,"egg")){
+
+
+                    allowed = false;
+
+                }
+
+            }
+
+
+
+            else if(type.equalsIgnoreCase("Seafood Allergy")){
+
+
+                if(containsIngredient(recipe,"fish") ||
+                   containsIngredient(recipe,"shrimp") ||
+                   containsIngredient(recipe,"seafood")){
+
+
+                    allowed = false;
+
+                }
+
+            }
+
+        }
+
+
+
+        if(allowed){
+
+            filteredRecipes.add(recipe);
+
+        }
+
     }
+
+
+
+    return filteredRecipes;
+
+}
 
      /**
      * Sort recipes from healthiest to least healthy.
