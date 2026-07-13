@@ -20,6 +20,7 @@ import model.MealPlanDetail;
 import model.NutritionFacts;
 import model.Recipe;
 import model.ShoppingList;
+import model.ShoppingListItem;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -614,57 +615,132 @@ public class RecommendationEngine {
     /*
         Shopping list integration
     */
-    public ShoppingList createShoppingListFromMealPlan(
-            int mealPlanId){
+    public ShoppingList generateShoppingListFromMealPlan(int mealPlanId) {
+
+
+    // Get meal plan
+    MealPlanner planner =
+            mealPlannerDAO.getMealPlansById(mealPlanId);
+
+
+    if(planner == null){
+
+        return null;
+
+    }
 
 
 
-        MealPlanner planner =
-        mealPlannerDAO
-        .getMealPlansById(mealPlanId);
+    // Create new shopping list
+
+    ShoppingList shoppingList =
+            new ShoppingList();
+
+
+    shoppingList.setUserId(
+            planner.getUserId()
+    );
+
+
+    shoppingList.setCreatedDate(
+            LocalDate.now()
+    );
+
+
+    shoppingList.setStatus(
+            "Pending"
+    );
 
 
 
-        if(planner==null){
+    // Save shopping list
 
-            return null;
+    shoppingListDAO.insertShoppingList(shoppingList);
+
+
+
+
+    // Get recipes from meal plan
+
+    List<MealPlanDetail> details =
+            mealPlanDetailDAO
+            .getMealDetailsByPlanId(mealPlanId);
+
+
+
+
+    // Collect ingredients
+
+    for(MealPlanDetail detail : details){
+
+
+
+        List<Ingredient> ingredients =
+                recipeIngredientDAO
+                .getIngredientsByRecipeId(
+                        detail.getRecipeId()
+                );
+
+
+
+        for(Ingredient ingredient : ingredients){
+
+
+
+            ShoppingListItem item =
+                    new ShoppingListItem();
+
+
+
+            item.setShoppingListId(
+                    shoppingList.getShoppingListId()
+            );
+
+
+
+            item.setIngredientId(
+                    ingredient.getIngredientId()
+            );
+
+
+
+            /*
+              Temporary quantity.
+              Inventory integration with Member 1
+              will calculate the real missing amount.
+            */
+
+            item.setQuantity(1);
+
+
+
+            item.setUnit(
+                    "unit"
+            );
+
+
+
+            item.setStatus(
+                    "Pending"
+            );
+
+
+
+            shoppingListItemDAO
+                    .insertShoppingListItem(item);
+
+
 
         }
 
 
-
-        ShoppingList list =
-                new ShoppingList();
-
-
-
-        list.setUserId(
-                planner.getUserId()
-        );
-
-
-
-        list.setCreatedDate(
-                LocalDate.now()
-        );
-
-
-
-        list.setStatus(
-                "Pending"
-        );
-
-
-
-        shoppingListDAO
-        .insertShoppingList(list);
-
-
-
-        return list;
-
     }
 
+
+
+    return shoppingList;
+
+}
 
 
 

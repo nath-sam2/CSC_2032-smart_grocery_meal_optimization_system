@@ -148,4 +148,56 @@ public class ShoppingListItemDAO {
             return false;
         }
     }
+    public List<ShoppingListItem> getItemsByShoppingListId(int shoppingListId) {
+
+    List<ShoppingListItem> items = new ArrayList<>();
+
+    String sql = "SELECT * FROM ShoppingListItems WHERE shoppingListId=?";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+
+        stmt.setInt(1, shoppingListId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+
+            ShoppingListItem item = new ShoppingListItem();
+
+            item.setShoppingListItemId(
+                rs.getInt("shoppingListItemId")
+            );
+
+            item.setShoppingListId(
+                rs.getInt("shoppingListId")
+            );
+
+            item.setIngredientId(
+                rs.getInt("ingredientId")
+            );
+
+            item.setQuantity(
+                rs.getDouble("quantity")
+            );
+
+            item.setUnit(
+                rs.getString("unit")
+            );
+
+            item.setStatus(
+                rs.getString("status")
+            );
+
+            items.add(item);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return items;
+}
 }

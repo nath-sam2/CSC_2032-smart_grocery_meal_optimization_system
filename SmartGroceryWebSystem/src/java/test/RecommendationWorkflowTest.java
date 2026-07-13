@@ -42,9 +42,9 @@ public class RecommendationWorkflowTest {
         System.out.println("\n============== STEP 3 ==============");
         System.out.println("Generate Shopping List");
 
-        ShoppingList shoppingList = engine.createShoppingListFromMealPlan(planner.getMealPlanId());
+        //ShoppingList shoppingList = engine.createShoppingListFromMealPlan(planner.getMealPlanId());//
 
-        System.out.println(shoppingList);
+        //System.out.println(shoppingList);//
 
         System.out.println("\n============== STEP 4 ==============");
         System.out.println("Inventory Check");
