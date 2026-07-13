@@ -4,13 +4,8 @@
  */
 package service;
 
-/**
- *
- * @author perer
- */
 import dao.MealPlannerDAO;
 import dao.MealPlanDetailDAO;
-import dao.DietaryRestrictionDAO;
 import dao.UserDietaryRestrictionDAO;
 import dao.NutritionFactsDAO;
 import dao.RecipeIngredientDAO;
@@ -19,375 +14,689 @@ import dao.ShoppingListDAO;
 import dao.ShoppingListItemDAO;
 
 import model.DietaryRestriction;
-import model.UserDietaryRestriction;
 import model.Ingredient;
 import model.MealPlanner;
 import model.MealPlanDetail;
 import model.NutritionFacts;
 import model.Recipe;
 import model.ShoppingList;
-import model.ShoppingListItem;
-import service.NutriScoreService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class RecommendationEngine {
+
+
     private RecipeDAO recipeDAO;
     private NutritionFactsDAO nutritionDAO;
-    private DietaryRestrictionDAO restrictionDAO;
     private MealPlannerDAO mealPlannerDAO;
     private MealPlanDetailDAO mealPlanDetailDAO;
     private ShoppingListDAO shoppingListDAO;
     private ShoppingListItemDAO shoppingListItemDAO;
     private RecipeIngredientDAO recipeIngredientDAO;
 
-    public RecommendationEngine() {
+
+
+    public RecommendationEngine(){
+
+
         recipeDAO = new RecipeDAO();
+
         nutritionDAO = new NutritionFactsDAO();
-        restrictionDAO = new DietaryRestrictionDAO();
-        mealPlannerDAO = new MealPlannerDAO();
+
         recipeIngredientDAO = new RecipeIngredientDAO();
+
+        mealPlannerDAO = new MealPlannerDAO();
+
         mealPlanDetailDAO = new MealPlanDetailDAO();
+
         shoppingListDAO = new ShoppingListDAO();
+
         shoppingListItemDAO = new ShoppingListItemDAO();
+
     }
-    
-    private boolean containsIngredient(Recipe recipe, String keyword) {
-
-
-    List<Ingredient> ingredients =
-            recipeIngredientDAO.getIngredientsByRecipeId(
-                    recipe.getRecipeId()
-            );
-
-
-    for(Ingredient ingredient : ingredients){
-
-
-        String ingredientName =
-                ingredient.getName().toLowerCase();
 
 
 
-        if(ingredientName.contains(keyword.toLowerCase())){
 
-            return true;
+    /*
+        Check if recipe contains an ingredient keyword
+    */
+    private boolean containsIngredient(
+            Recipe recipe,
+            String keyword){
+
+
+
+        List<Ingredient> ingredients =
+                recipeIngredientDAO
+                .getIngredientsByRecipeId(
+                        recipe.getRecipeId()
+                );
+
+
+
+        for(Ingredient ingredient : ingredients){
+
+
+            if(ingredient.getName()
+                    .toLowerCase()
+                    .contains(
+                    keyword.toLowerCase())){
+
+
+                return true;
+
+            }
 
         }
 
+
+        return false;
+
     }
 
 
-    return false;
 
-}
-    /**
-     * Returns recommended recipes for a user.
-     */
-    public List<Recipe> recommendRecipes(int userId) {
 
-        List<Recipe> recipes = recipeDAO.getAllRecipes();
 
-        recipes = filterByDietaryRestrictions(recipes, userId);
 
-        recipes = prioritizeByHealthScore(recipes);
+    /*
+        Main recommendation process
+    */
+    public List<Recipe> recommendRecipes(int userId){
 
-        recipes = prioritizeByExpiry(recipes);
+
+
+        // Get all recipes
+
+        List<Recipe> recipes =
+                recipeDAO.getAllRecipes();
+
+
+
+
+        // Remove recipes based on restrictions
+
+        recipes =
+                filterByDietaryRestrictions(
+                        recipes,
+                        userId
+                );
+
+
+
+
+        // Sort using NutriScore
+
+        recipes =
+                sortByNutriScore(
+                        recipes
+                );
+
+
+
+
+        // Future inventory integration
+
+        recipes =
+                prioritizeByExpiry(
+                        recipes
+                );
+
+
 
         return recipes;
+
     }
 
-    /**
-     * Filters recipes according to dietary restrictions.
-     * (Temporary implementation until Member 1 integration.)
-     */
+
+
+
+
+
+
+    /*
+        Filter recipes using user restrictions
+    */
     public List<Recipe> filterByDietaryRestrictions(
-        List<Recipe> recipes,
-        int userId) {
-
-
-    UserDietaryRestrictionDAO userRestrictionDAO =
-            new UserDietaryRestrictionDAO();
-
-
-    List<DietaryRestriction> userRestrictions =
-            userRestrictionDAO.getRestrictionsByUserId(userId);
+            List<Recipe> recipes,
+            int userId){
 
 
 
-    List<Recipe> filteredRecipes =
-            new ArrayList<>();
+        UserDietaryRestrictionDAO userDAO =
+                new UserDietaryRestrictionDAO();
 
 
 
-    for(Recipe recipe : recipes){
-
-
-        boolean allowed = true;
-
-
-
-        for(DietaryRestriction restriction : userRestrictions){
-
-
-            String type =
-                    restriction.getRestrictionName();
+        List<DietaryRestriction> restrictions =
+                userDAO.getRestrictionsByUserId(userId);
 
 
 
-            if(type.equalsIgnoreCase("Vegetarian")){
+        List<Recipe> result =
+                new ArrayList<>();
 
 
-                if(containsIngredient(recipe,"chicken") ||
-                   containsIngredient(recipe,"beef") ||
-                   containsIngredient(recipe,"pork") ||
-                   containsIngredient(recipe,"fish")){
 
 
-                    allowed = false;
+        for(Recipe recipe : recipes){
+
+
+            boolean allowed = true;
+
+
+
+            for(DietaryRestriction restriction : restrictions){
+
+
+
+                String type =
+                        restriction.getRestrictionName();
+
+
+
+
+                if(type.equalsIgnoreCase("Vegetarian")){
+
+
+                    if(containsIngredient(recipe,"chicken")
+                    || containsIngredient(recipe,"beef")
+                    || containsIngredient(recipe,"pork")
+                    || containsIngredient(recipe,"fish")){
+
+
+                        allowed=false;
+
+                    }
 
                 }
+
+
+
+
+                else if(type.equalsIgnoreCase("Gluten-Free")){
+
+
+                    if(containsIngredient(recipe,"wheat")
+                    || containsIngredient(recipe,"bread")
+                    || containsIngredient(recipe,"flour")
+                    || containsIngredient(recipe,"pasta")){
+
+
+                        allowed=false;
+
+                    }
+
+                }
+
+
+
+
+
+                else if(type.equalsIgnoreCase("Nut Allergy")){
+
+
+                    if(containsIngredient(recipe,"nut")
+                    || containsIngredient(recipe,"peanut")
+                    || containsIngredient(recipe,"almond")
+                    || containsIngredient(recipe,"cashew")){
+
+
+                        allowed=false;
+
+                    }
+
+                }
+
+
+
+
+
+                else if(type.equalsIgnoreCase("Dairy-Free")){
+
+
+                    if(containsIngredient(recipe,"milk")
+                    || containsIngredient(recipe,"cheese")
+                    || containsIngredient(recipe,"butter")){
+
+
+                        allowed=false;
+
+                    }
+
+                }
+
+
+
+
+
+                else if(type.equalsIgnoreCase("Egg Allergy")){
+
+
+                    if(containsIngredient(recipe,"egg")){
+
+
+                        allowed=false;
+
+                    }
+
+                }
+
+
+
+
+
+                else if(type.equalsIgnoreCase("Seafood Allergy")){
+
+
+                    if(containsIngredient(recipe,"fish")
+                    || containsIngredient(recipe,"shrimp")
+                    || containsIngredient(recipe,"seafood")){
+
+
+                        allowed=false;
+
+                    }
+
+                }
+
+
 
             }
 
 
 
-            else if(type.equalsIgnoreCase("Gluten-Free")){
+            if(allowed){
 
-
-                if(containsIngredient(recipe,"wheat") ||
-                   containsIngredient(recipe,"flour") ||
-                   containsIngredient(recipe,"bread") ||
-                   containsIngredient(recipe,"pasta")){
-
-
-                    allowed = false;
-
-                }
+                result.add(recipe);
 
             }
 
-
-
-            else if(type.equalsIgnoreCase("Nut Allergy")){
-
-
-                if(containsIngredient(recipe,"nut") ||
-                   containsIngredient(recipe,"peanut") ||
-                   containsIngredient(recipe,"almond")){
-
-
-                    allowed = false;
-
-                }
-
-            }
-
-
-
-            else if(type.equalsIgnoreCase("Dairy-Free")){
-
-
-                if(containsIngredient(recipe,"milk") ||
-                   containsIngredient(recipe,"cheese") ||
-                   containsIngredient(recipe,"butter")){
-
-
-                    allowed = false;
-
-                }
-
-            }
-
-
-
-            else if(type.equalsIgnoreCase("Egg Allergy")){
-
-
-                if(containsIngredient(recipe,"egg")){
-
-
-                    allowed = false;
-
-                }
-
-            }
-
-
-
-            else if(type.equalsIgnoreCase("Seafood Allergy")){
-
-
-                if(containsIngredient(recipe,"fish") ||
-                   containsIngredient(recipe,"shrimp") ||
-                   containsIngredient(recipe,"seafood")){
-
-
-                    allowed = false;
-
-                }
-
-            }
 
         }
 
 
 
-        if(allowed){
-
-            filteredRecipes.add(recipe);
-
-        }
+        return result;
 
     }
 
 
 
-    return filteredRecipes;
 
-}
 
-     /**
-     * Sort recipes from healthiest to least healthy.
-     */
-    public List<Recipe> prioritizeByHealthScore(List<Recipe> recipes) {
 
-        recipes.sort(new Comparator<Recipe>() {
+
+    /*
+        Sort recipes according to NutriScore
+    */
+    public List<Recipe> sortByNutriScore(
+            List<Recipe> recipes){
+
+
+
+        recipes.sort(
+                new Comparator<Recipe>(){
+
 
             @Override
-            public int compare(Recipe r1, Recipe r2) {
+            public int compare(
+                    Recipe r1,
+                    Recipe r2){
 
-                NutritionFacts n1 = nutritionDAO.getNutritionFactsByRecipeId(r1.getRecipeId());
 
-                NutritionFacts n2 = nutritionDAO.getNutritionFactsByRecipeId(r2.getRecipeId());
 
-                int score1 = 0;
-                int score2 = 0;
+                NutritionFacts n1 =
+                nutritionDAO
+                .getNutritionFactsByRecipeId(
+                        r1.getRecipeId()
+                );
 
-                if (n1 != null){
-                    score1 = NutriScoreService.calculateNutriScoreValue(n1);
+
+
+                NutritionFacts n2 =
+                nutritionDAO
+                .getNutritionFactsByRecipeId(
+                        r2.getRecipeId()
+                );
+
+
+
+                int score1 =
+                        Integer.MAX_VALUE;
+
+
+
+                int score2 =
+                        Integer.MAX_VALUE;
+
+
+
+                if(n1 != null){
+
+                    score1 =
+                    NutriScoreService
+                    .calculateNutriScoreValue(n1);
+
                 }
-                if (n2 != null){
-                    score2 = NutriScoreService.calculateNutriScoreValue(n2);
+
+
+
+                if(n2 != null){
+
+                    score2 =
+                    NutriScoreService
+                    .calculateNutriScoreValue(n2);
+
                 }
-                // Lower Nutri-Score value = healthier recipe
-                return Integer.compare(score1, score2);
+
+
+
+
+                return Integer.compare(
+                        score1,
+                        score2
+                );
+
+
             }
+
+
         });
 
-        return recipes;
-    }
 
-    /**
-     * Temporary expiry prioritization.
-     * Will be connected to Member 1 inventory module.
-     */
-    public List<Recipe> prioritizeByExpiry(List<Recipe> recipes) {
-
-        // TODO:
-        // Read inventory expiry dates from Member 1.
-        // Move recipes using expiring ingredients to the top.
 
         return recipes;
-    }
-
-    /**
-     * Temporary shopping list generation.
-     */
-    public void generateShoppingList(int userId) {
-
-        System.out.println("Shopping list generation will be implemented after inventory integration.");
 
     }
-    
-    public char getRecipeGrade(int recipeId) {
 
-        NutritionFacts nutrition = nutritionDAO.getNutritionFactsByRecipeId(recipeId);
 
-        return NutriScoreService.calculateNutriScore(nutrition, false);
+
+
+
+
+
+
+    /*
+        Inventory expiry integration point
+    */
+    public List<Recipe> prioritizeByExpiry(
+            List<Recipe> recipes){
+
+
+        /*
+            Future:
+            Connect Member 1 Inventory DAO
+
+            Find ingredients close to expiry
+
+            Move recipes using those ingredients
+            to the top
+
+        */
+
+
+        return recipes;
+
     }
-    
-    public MealPlanner generateWeeklyMealPlan(int userId){
 
-        List<Recipe> recipes = recommendRecipes(userId);
 
-        MealPlanner planner = new MealPlanner();
+
+
+
+
+
+    /*
+        Return NutriScore grade
+    */
+    public char getRecipeGrade(
+            int recipeId){
+
+
+
+        NutritionFacts nutrition =
+        nutritionDAO
+        .getNutritionFactsByRecipeId(
+                recipeId
+        );
+
+
+
+        return NutriScoreService
+                .calculateNutriScore(
+                        nutrition,
+                        false
+                );
+
+    }
+
+
+
+
+
+
+
+
+    /*
+        Generate weekly meal plan
+    */
+    public MealPlanner generateWeeklyMealPlan(
+            int userId){
+
+
+
+        List<Recipe> recipes =
+                recommendRecipes(userId);
+
+
+
+        MealPlanner planner =
+                new MealPlanner();
+
+
 
         planner.setUserId(userId);
-        planner.setPlanName("Weekly Healthy Meal Plan");
-        planner.setStartDate(LocalDate.now());
-        planner.setEndDate(LocalDate.now().plusDays(6));
+
+        planner.setPlanName(
+                "Weekly Healthy Meal Plan"
+        );
+
+
+        planner.setStartDate(
+                LocalDate.now()
+        );
+
+
+        planner.setEndDate(
+                LocalDate.now()
+                .plusDays(6)
+        );
+
+
 
         mealPlannerDAO.insertMealPlan(planner);
 
-        LocalDate day = LocalDate.now();
 
-        String[] meals = { "Breakfast", "Lunch", "Dinner"};
-        int recipeIndex = 0;
+
+        LocalDate date =
+                LocalDate.now();
+
+
+
+        String meals[] =
+        {
+            "Breakfast",
+            "Lunch",
+            "Dinner"
+        };
+
+
+
+        int index=0;
+
+
 
         for(int i=0;i<7;i++){
 
-            for(String meal : meals){
 
-                if(recipeIndex >= recipes.size())
-                    recipeIndex = 0;
+            for(String meal:meals){
 
-                MealPlanDetail detail = new MealPlanDetail();
 
-                detail.setMealPlanId(planner.getMealPlanId());
-                detail.setRecipeId(recipes.get(recipeIndex).getRecipeId());
-                detail.setMealDate(day.plusDays(i));
+
+                if(index >= recipes.size()){
+
+                    index=0;
+
+                }
+
+
+
+                MealPlanDetail detail =
+                        new MealPlanDetail();
+
+
+
+                detail.setMealPlanId(
+                        planner.getMealPlanId()
+                );
+
+
+
+                detail.setRecipeId(
+                        recipes.get(index)
+                        .getRecipeId()
+                );
+
+
+
+                detail.setMealDate(
+                        date.plusDays(i)
+                );
+
+
+
                 detail.setMealType(meal);
 
-                mealPlanDetailDAO.insertMealPlanDetail(detail);
+
+
+                mealPlanDetailDAO
+                .insertMealPlanDetail(detail);
+
+
 
                 planner.addRecipe(detail);
 
-                recipeIndex++;
+
+
+                index++;
+
             }
+
+
         }
-          return planner;
+
+
+
+        return planner;
 
     }
 
-    public ShoppingList createShoppingListFromMealPlan(int mealPlanId){
+
+
+
+
+
+    /*
+        Shopping list integration
+    */
+    public ShoppingList createShoppingListFromMealPlan(
+            int mealPlanId){
+
+
 
         MealPlanner planner =
-                mealPlannerDAO.getMealPlansById(mealPlanId);
+        mealPlannerDAO
+        .getMealPlansById(mealPlanId);
 
-        if(planner==null)
+
+
+        if(planner==null){
+
             return null;
 
-        ShoppingList list = new ShoppingList();
+        }
 
-        list.setUserId(planner.getUserId());
-        list.setCreatedDate(LocalDate.now());
-        list.setStatus("Pending");
 
-        shoppingListDAO.insertShoppingList(list);
+
+        ShoppingList list =
+                new ShoppingList();
+
+
+
+        list.setUserId(
+                planner.getUserId()
+        );
+
+
+
+        list.setCreatedDate(
+                LocalDate.now()
+        );
+
+
+
+        list.setStatus(
+                "Pending"
+        );
+
+
+
+        shoppingListDAO
+        .insertShoppingList(list);
+
+
 
         return list;
 
     }
 
-   public List<Ingredient> getMissingIngredients(int mealPlanId){
 
-        /*
-            Later:
-            Compare RecipeIngredient
-            with Inventory module.
-         */
+
+
+
+
+
+    public List<Ingredient> getMissingIngredients(
+            int mealPlanId){
+
+
+
+        // Inventory integration later
 
         return new ArrayList<>();
 
     }
 
-    public void compareInventory(int mealPlanId){
 
-        System.out.println("Inventory comparison will be integrated later.");
+
+
+
+
+    public void compareInventory(
+            int mealPlanId){
+
+
+        System.out.println(
+        "Inventory integration pending"
+        );
+
 
     }
+
+
 }
