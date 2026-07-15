@@ -775,4 +775,93 @@ public class RecommendationEngine {
     }
 
 
+    public List<Recipe> recommendWasteReducingRecipes(int userId) {
+
+    List<Recipe> recipes = recommendRecipes(userId);
+
+    recipes = prioritizeExpiringIngredients(recipes);
+
+    recipes = sortRecommendations(recipes);
+
+    return recipes;
+}
+    
+    public double calculateWasteReductionScore(Recipe recipe) {
+
+    double score = 0;
+
+    NutritionFacts nutrition =
+            nutritionDAO.getNutritionFactsByRecipeId(
+                    recipe.getRecipeId());
+
+    if (nutrition != null) {
+
+        char grade = NutriScoreService.calculateNutriScore(
+                nutrition, false);
+
+        switch (grade) {
+
+            case 'A':
+                score += 20;
+                break;
+
+            case 'B':
+                score += 15;
+                break;
+
+            case 'C':
+                score += 10;
+                break;
+
+            case 'D':
+                score += 5;
+                break;
+
+            default:
+                score += 0;
+        }
+    }
+
+    /*
+     * TODO:
+     * Inventory Integration (Member 1)
+     *
+     * Increase score if recipe uses ingredients
+     * that expire within the next few days.
+     */
+
+    return score;
+}
+    
+    public List<Recipe> prioritizeExpiringIngredients(List<Recipe> recipes) {
+
+    /*
+     * Member 1 Integration
+     *
+     * Future:
+     * Read inventory
+     * Find ingredients expiring soon
+     * Move matching recipes higher
+     */
+
+    return recipes;
+}
+    
+    public List<Recipe> sortRecommendations(List<Recipe> recipes) {
+
+    recipes.sort((r1, r2) ->
+
+            Double.compare(
+
+                    calculateWasteReductionScore(r2),
+
+                    calculateWasteReductionScore(r1)
+
+            )
+
+    );
+
+    return recipes;
+}
+    
 }
