@@ -4,6 +4,7 @@
  */
 package service;
 
+import dao.IngredientDAO;
 import dao.MealPlannerDAO;
 import dao.MealPlanDetailDAO;
 import dao.UserDietaryRestrictionDAO;
@@ -13,6 +14,7 @@ import dao.RecipeDAO;
 import dao.ShoppingListDAO;
 import dao.ShoppingListItemDAO;
 
+import model.RecipeIngredient;
 import model.DietaryRestriction;
 import model.Ingredient;
 import model.MealPlanner;
@@ -28,9 +30,11 @@ import java.util.Comparator;
 import java.util.List;
 
 
+
 public class RecommendationEngine {
 
 
+    private IngredientDAO ingredientDAO;
     private RecipeDAO recipeDAO;
     private NutritionFactsDAO nutritionDAO;
     private MealPlannerDAO mealPlannerDAO;
@@ -44,6 +48,8 @@ public class RecommendationEngine {
     public RecommendationEngine(){
 
 
+        ingredientDAO = new IngredientDAO();
+        
         recipeDAO = new RecipeDAO();
 
         nutritionDAO = new NutritionFactsDAO();
@@ -66,39 +72,29 @@ public class RecommendationEngine {
     /*
         Check if recipe contains an ingredient keyword
     */
-    private boolean containsIngredient(
-            Recipe recipe,
-            String keyword){
+    private boolean containsIngredient(Recipe recipe, String keyword) {
 
+    List<RecipeIngredient> ingredients =
+            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
 
+    for (RecipeIngredient ri : ingredients) {
 
-        List<Ingredient> ingredients =
-                recipeIngredientDAO
-                .getIngredientsByRecipeId(
-                        recipe.getRecipeId()
-                );
+        Ingredient ingredient =
+                ingredientDAO.getIngredientById(ri.getIngredientId());
 
+        if (ingredient != null) {
 
+            String ingredientName =
+                    ingredient.getName().toLowerCase();
 
-        for(Ingredient ingredient : ingredients){
-
-
-            if(ingredient.getName()
-                    .toLowerCase()
-                    .contains(
-                    keyword.toLowerCase())){
-
-
+            if (ingredientName.contains(keyword.toLowerCase())) {
                 return true;
-
             }
-
         }
-
-
-        return false;
-
     }
+
+    return false;
+}
 
 
 
@@ -178,6 +174,12 @@ public class RecommendationEngine {
                 userDAO.getRestrictionsByUserId(userId);
 
 
+        System.out.println("User ID = " + userId);
+System.out.println("Restriction Count = " + restrictions.size());
+
+for (DietaryRestriction restriction : restrictions) {
+    System.out.println("Restriction -> " + restriction.getRestrictionName());
+}
 
         List<Recipe> result =
                 new ArrayList<>();
@@ -202,13 +204,26 @@ public class RecommendationEngine {
 
 
 
-                if(type.equalsIgnoreCase("Vegetarian")){
+                if(type.toLowerCase().contains("vegetarian")){
 
 
                     if(containsIngredient(recipe,"chicken")
                     || containsIngredient(recipe,"beef")
                     || containsIngredient(recipe,"pork")
-                    || containsIngredient(recipe,"fish")){
+                    || containsIngredient(recipe,"fish")
+                    || containsIngredient(recipe,"meat")
+                    || containsIngredient(recipe,"shrimp")
+                    || containsIngredient(recipe,"eggs")
+                    || containsIngredient(recipe, "salmon")  
+                    || containsIngredient(recipe, "tuna")    
+                    || containsIngredient(recipe, "bacon")   
+                    || containsIngredient(recipe, "ham")     
+                    || containsIngredient(recipe, "turkey")  
+                    || containsIngredient(recipe, "mutton")  
+                    || containsIngredient(recipe, "prawn")
+                    || containsIngredient(recipe, "breast")
+                    || containsIngredient(recipe, "fillet")
+                    || containsIngredient(recipe, "thigs")        ){
 
 
                         allowed=false;
@@ -220,13 +235,17 @@ public class RecommendationEngine {
 
 
 
-                else if(type.equalsIgnoreCase("Gluten-Free")){
+                else if(type.toLowerCase().contains("gluten")){
 
 
                     if(containsIngredient(recipe,"wheat")
                     || containsIngredient(recipe,"bread")
                     || containsIngredient(recipe,"flour")
-                    || containsIngredient(recipe,"pasta")){
+                    || containsIngredient(recipe,"pasta")
+                    || containsIngredient(recipe,"bun")
+                    || containsIngredient(recipe,"crust")
+                    || containsIngredient(recipe,"tortilla")
+                    || containsIngredient(recipe,"dough")        ){
 
 
                         allowed=false;
@@ -239,7 +258,7 @@ public class RecommendationEngine {
 
 
 
-                else if(type.equalsIgnoreCase("Nut Allergy")){
+                else if(type.toLowerCase().contains("peanut")){
 
 
                     if(containsIngredient(recipe,"nut")
@@ -258,12 +277,14 @@ public class RecommendationEngine {
 
 
 
-                else if(type.equalsIgnoreCase("Dairy-Free")){
+                else if(type.toLowerCase().contains("lactose")){
 
 
                     if(containsIngredient(recipe,"milk")
                     || containsIngredient(recipe,"cheese")
-                    || containsIngredient(recipe,"butter")){
+                    || containsIngredient(recipe,"butter")
+                    || containsIngredient(recipe,"cream")
+                    || containsIngredient(recipe,"feta")        ){
 
 
                         allowed=false;
@@ -297,7 +318,14 @@ public class RecommendationEngine {
 
                     if(containsIngredient(recipe,"fish")
                     || containsIngredient(recipe,"shrimp")
-                    || containsIngredient(recipe,"seafood")){
+                    || containsIngredient(recipe,"seafood")
+                    || containsIngredient(recipe,"prawn")
+                    || containsIngredient(recipe,"crab")
+                    || containsIngredient(recipe, "salmon")  // FIXED: Catches Salmon Fillet
+                    || containsIngredient(recipe, "tuna")    // FIXED: Catches Tuna Chunks
+                    || containsIngredient(recipe, "lobster") // FIXED: Catches Lobster Tail
+                    || containsIngredient(recipe, "squid")   // FIXED: Catches Squid Rings
+                    || containsIngredient(recipe, "calamari")        ){
 
 
                         allowed=false;
@@ -312,11 +340,12 @@ public class RecommendationEngine {
 
 
 
-            if(allowed){
-
-                result.add(recipe);
-
-            }
+            if (allowed) {
+    System.out.println("ALLOWED : " + recipe.getName());
+    result.add(recipe);
+} else {
+    System.out.println("BLOCKED : " + recipe.getName());
+}
 
 
         }

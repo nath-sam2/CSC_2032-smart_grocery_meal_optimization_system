@@ -36,7 +36,6 @@ public class FoodWasteController extends HttpServlet {
 
         /*
          * Temporary until Member 1 login integration.
-         * If no session exists, use a test user.
          */
         int userId = 1;
 

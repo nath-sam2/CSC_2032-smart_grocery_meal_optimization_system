@@ -4,53 +4,69 @@
  */
 package test;
 
-/**
- *
- * @author perer
- */
-import dao.NutritionFactsDAO;
-import model.NutritionFacts;
 import model.Recipe;
-import service.NutriScoreService;
 import service.RecommendationEngine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendationEngineTest {
+
     public static void main(String[] args) {
 
         RecommendationEngine engine = new RecommendationEngine();
-        NutritionFactsDAO nutritionDAO = new NutritionFactsDAO();
 
-        List<Recipe> recipes = engine.recommendRecipes(1);
+        // Populate recipes matching active database rows (IDs 17 to 23)
+        List<Recipe> recipes = new ArrayList<>();
 
-        System.out.println("========== RECOMMENDED RECIPES ==========\n");
+        Recipe r1 = new Recipe();
+        r1.setRecipeId(17);
+        r1.setName("Avocado Toast with Egg");
 
-        for (Recipe recipe : recipes) {
+        Recipe r2 = new Recipe();
+        r2.setRecipeId(18);
+        r2.setName("Pancakes with Maple Syrup");
 
-            NutritionFacts nutrition =
-                    nutritionDAO.getNutritionFactsByRecipeId(recipe.getRecipeId());
+        Recipe r3 = new Recipe();
+        r3.setRecipeId(19);
+        r3.setName("Dhal Curry");
 
-            System.out.println("Recipe ID   : " + recipe.getRecipeId());
-            System.out.println("Recipe Name : " + recipe.getName());
+        Recipe r4 = new Recipe();
+        r4.setRecipeId(20);
+        r4.setName("Greek Salad");
 
-            if (nutrition != null) {
+        Recipe r5 = new Recipe();
+        r5.setRecipeId(21);
+        r5.setName("Beef Burgers with Fries");
 
-                int score = NutriScoreService.calculateNutriScoreValue(nutrition);
-                char grade = NutriScoreService.calculateNutriScore(nutrition, false);
+        Recipe r6 = new Recipe();
+        r6.setRecipeId(22);
+        r6.setName("Shrimp Pad Thai");
 
-                System.out.println("NutriScore  : " + grade);
-                System.out.println("Score       : " + score);
-                System.out.println("Calories    : " + nutrition.getCalories());
-                System.out.println("Protein     : " + nutrition.getProtein());
-                System.out.println("Sugar       : " + nutrition.getTotalSugar());
-                System.out.println("Sodium      : " + nutrition.getSodium());
-            } else {
+        Recipe r7 = new Recipe();
+        r7.setRecipeId(23);
+        r7.setName("Vegetable Pasta");
 
-                System.out.println("No nutrition facts found.");
-            }
+        recipes.add(r1);
+        recipes.add(r2);
+        recipes.add(r3);
+        recipes.add(r4);
+        recipes.add(r5);
+        recipes.add(r6);
+        recipes.add(r7);
 
-            System.out.println("----------------------------------------");
+        // Test user 5 (Gluten Intolerance)
+        int userId = 6;
+
+        List<Recipe> filtered = engine.filterByDietaryRestrictions(
+                recipes,
+                userId
+        );
+
+        System.out.println("Filtered Recipes (Gluten-Free Options):");
+
+        for(Recipe recipe : filtered){
+            System.out.println(recipe.getName());
         }
     }
 }

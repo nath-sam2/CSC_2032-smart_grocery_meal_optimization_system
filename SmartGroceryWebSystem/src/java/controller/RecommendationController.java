@@ -54,7 +54,7 @@ public class RecommendationController extends HttpServlet {
 
         if(userId == null){
 
-            userId = 1;
+            userId = 6;
 
         }
 
