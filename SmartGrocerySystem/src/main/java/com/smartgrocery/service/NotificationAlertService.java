@@ -13,7 +13,7 @@ public class NotificationAlertService
     private NotificationDAO notifDAO   = new NotificationDAO();
     private InventoryDAO    invDAO     = new InventoryDAO();
 
-    // Check low stock and send alerts
+  
     public void sendLowStockAlert(int productId, String productName) 
     {
         Inventory inv = invDAO.getInventoryByProduct(productId);
@@ -26,35 +26,28 @@ public class NotificationAlertService
         }
     }
 
-    // Check expiry and send alerts
-    public void sendExpiryAlert(int productId, String productName,
-                                String expiryDate) {
+    public void sendExpiryAlert(int productId, String productName,String expiryDate) {
         String msg = productName + " is expiring soon! " +
                     "Expiry: " + expiryDate;
         notifDAO.insertNotification(productId, msg, "EXPIRY");
         System.out.println("EXPIRY ALERT sent: " + msg);
     }
 
-    // Get all notifications
     public List<NotificationService> getAllNotifications() 
     {
         return notifDAO.getAllNotifications();
     }
 
-    // Get unread notifications
     public List<NotificationService> getUnreadNotifications()
     {
         return notifDAO.getUnreadNotifications();
     }
 
-    // Mark notification as read
     public boolean markAsRead(int notifId) {
         return notifDAO.markAsRead(notifId);
     }
 
-    // Auto check all inventory for low stock
-    public void checkAllLowStock(List<Inventory> inventoryList,
-                                  List<com.smartgrocery.model.Product> products) 
+    public void checkAllLowStock(List<Inventory> inventoryList,List<Product> products)
     {
         for (Inventory inv : inventoryList) {
             if (inv.isLowStock()) {
@@ -75,13 +68,12 @@ public class NotificationAlertService
         }
     }
 
-    // Expose inventory data for Member 2
     public List<Product> getAvailableProducts() 
     {
         return invDAO.getExpiringItems(365);
     }
 
-    public List<Product> getExpiringProducts(int days) 
+    public List<Product> getExpiringProducts(int days)
     {
         return invDAO.getExpiringItems(days);
     }
