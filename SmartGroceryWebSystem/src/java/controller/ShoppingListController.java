@@ -164,7 +164,7 @@ public class ShoppingListController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "shoppingList.jsp"
+                        "/shopping/shoppingList.jsp"
                 ).forward(request,response);
 
 
