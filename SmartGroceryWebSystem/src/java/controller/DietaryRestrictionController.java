@@ -60,7 +60,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "dietaryRestrictionList.jsp"
+                        "/recommendation/dietaryRestrictionList.jsp"
                 )
                 .forward(request,response);
 
@@ -75,7 +75,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "addDietaryRestriction.jsp"
+                        "/recommendation/addDietaryRestriction.jsp"
                 )
                 .forward(request,response);
 
@@ -109,7 +109,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "editDietaryRestriction.jsp"
+                        "/recommendation/editDietaryRestriction.jsp"
                 )
                 .forward(request,response);
 
@@ -136,7 +136,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 response.sendRedirect(
-                        "DietaryRestrictionController"
+                        "/recommendation/DietaryRestrictionController"
                 );
 
 
@@ -172,7 +172,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "userRestrictionList.jsp"
+                        "/recommendation/userRestrictionList.jsp"
                 )
                 .forward(request,response);
 
@@ -198,7 +198,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
     request.getRequestDispatcher(
-            "addUserRestriction.jsp"
+            "/recommendation/addUserRestriction.jsp"
     )
     .forward(request,response);
 

@@ -84,7 +84,7 @@ public class MealPlannerController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "mealPlanList.jsp"
+                        "/mealplanner/mealPlanList.jsp"
                 )
                 .forward(request,response);
 
@@ -99,7 +99,7 @@ public class MealPlannerController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "createMealPlan.jsp"
+                        "/mealplanner/createMealPlan.jsp"
                 )
                 .forward(request,response);
 
@@ -143,7 +143,7 @@ public class MealPlannerController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "mealPlanView.jsp"
+                        "/mealplanner/mealPlanView.jsp"
                 )
                 .forward(request,response);
 
@@ -185,7 +185,7 @@ public class MealPlannerController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "addMeal.jsp"
+                        "/mealplanner/addMeal.jsp"
                 )
                 .forward(request,response);
 

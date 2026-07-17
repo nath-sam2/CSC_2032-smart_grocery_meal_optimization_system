@@ -103,7 +103,7 @@ public class UserDietaryRestrictionController extends HttpServlet {
 
 
             request.getRequestDispatcher(
-            "userDietaryRestrictionList.jsp")
+            "/recommendation/userDietaryRestrictionList.jsp")
             .forward(request,response);
 
         }

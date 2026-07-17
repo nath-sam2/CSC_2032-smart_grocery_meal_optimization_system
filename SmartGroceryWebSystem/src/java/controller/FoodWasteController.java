@@ -59,7 +59,7 @@ public class FoodWasteController extends HttpServlet {
 
                 request.setAttribute("recipes", recipes);
 
-                request.getRequestDispatcher("foodWasteReduction.jsp")
+                request.getRequestDispatcher("/recommendation/foodWasteReduction.jsp")
                         .forward(request, response);
 
                 break;

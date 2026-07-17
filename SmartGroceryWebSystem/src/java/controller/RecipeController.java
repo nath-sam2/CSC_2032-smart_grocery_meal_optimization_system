@@ -99,7 +99,7 @@ public class RecipeController extends HttpServlet {
 
 
             RequestDispatcher rd =
-                    request.getRequestDispatcher("recipeDetails.jsp");
+                    request.getRequestDispatcher("/recipes/recipeDetails.jsp");
 
 
             rd.forward(request, response);
@@ -160,7 +160,7 @@ public class RecipeController extends HttpServlet {
 
                 RequestDispatcher editPage =
                         request.getRequestDispatcher(
-                                "editRecipe.jsp"
+                                "/recipes/editRecipe.jsp"
                         );
 
 
@@ -191,7 +191,7 @@ public class RecipeController extends HttpServlet {
 
                 RequestDispatcher rd =
                         request.getRequestDispatcher(
-                                "recipeList.jsp"
+                                "/recipes/recipeList.jsp"
                         );
 
 

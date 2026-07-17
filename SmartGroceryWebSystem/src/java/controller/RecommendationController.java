@@ -75,7 +75,7 @@ public class RecommendationController extends HttpServlet {
 
 
         request.getRequestDispatcher(
-                "recommendation.jsp"
+                "/recommendation/recommendation.jsp"
         )
         .forward(request,response);
 

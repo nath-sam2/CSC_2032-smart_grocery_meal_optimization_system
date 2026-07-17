@@ -75,7 +75,7 @@ public class ShoppingListController extends HttpServlet {
 
                 if(userId == null){
 
-                    response.sendRedirect("shoppingList.jsp");
+                    response.sendRedirect("/shopping/shoppingList.jsp");
                     return;
 
                 }
@@ -96,7 +96,7 @@ public class ShoppingListController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "shoppingList.jsp"
+                        "/shopping/shoppingList.jsp"
                 ).forward(request,response);
 
 
