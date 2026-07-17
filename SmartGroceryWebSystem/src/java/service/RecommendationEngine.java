@@ -4,6 +4,7 @@
  */
 package service;
 
+import dao.InventoryDAO;
 import dao.IngredientDAO;
 import dao.MealPlannerDAO;
 import dao.MealPlanDetailDAO;
@@ -14,6 +15,7 @@ import dao.RecipeDAO;
 import dao.ShoppingListDAO;
 import dao.ShoppingListItemDAO;
 
+import model.Inventory;
 import model.RecipeIngredient;
 import model.DietaryRestriction;
 import model.Ingredient;
@@ -23,7 +25,10 @@ import model.NutritionFacts;
 import model.Recipe;
 import model.ShoppingList;
 import model.ShoppingListItem;
+import model.Product;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -42,7 +47,7 @@ public class RecommendationEngine {
     private ShoppingListDAO shoppingListDAO;
     private ShoppingListItemDAO shoppingListItemDAO;
     private RecipeIngredientDAO recipeIngredientDAO;
-
+    private InventoryDAO inventoryDAO;
 
 
     public RecommendationEngine(){
@@ -63,6 +68,8 @@ public class RecommendationEngine {
         shoppingListDAO = new ShoppingListDAO();
 
         shoppingListItemDAO = new ShoppingListItemDAO();
+        
+        inventoryDAO = new InventoryDAO();
 
     }
 
@@ -851,29 +858,99 @@ for (DietaryRestriction restriction : restrictions) {
         }
     }
 
-    /*
-     * TODO:
-     * Inventory Integration (Member 1)
-     *
-     * Increase score if recipe uses ingredients
-     * that expire within the next few days.
-     */
+    List<Product> expiringProducts =
+        inventoryDAO.getExpiringItems(3);
+
+for (Product product : expiringProducts) {
+
+    if (containsProduct(recipe, product.getProductId())) {
+
+        score += 25;
+
+    }
+
+}
 
     return score;
 }
     
     public List<Recipe> prioritizeExpiringIngredients(List<Recipe> recipes) {
 
-    /*
-     * Member 1 Integration
-     *
-     * Future:
-     * Read inventory
-     * Find ingredients expiring soon
-     * Move matching recipes higher
-     */
+    List<Product> expiringProducts =
+            inventoryDAO.getExpiringItems(3);
+
+    if (expiringProducts.isEmpty()) {
+        return recipes;
+    }
+
+    Set<Integer> expiringProductIds = new HashSet<>();
+
+    for (Product product : expiringProducts) {
+        expiringProductIds.add(product.getProductId());
+    }
+
+    recipes.sort((r1, r2) -> {
+
+        int score1 = countExpiringIngredients(r1, expiringProductIds);
+        int score2 = countExpiringIngredients(r2, expiringProductIds);
+
+        return Integer.compare(score2, score1);
+
+    });
 
     return recipes;
+}
+    
+    private int countExpiringIngredients(
+        Recipe recipe,
+        Set<Integer> expiringProductIds) {
+
+    int count = 0;
+
+    List<RecipeIngredient> ingredients =
+            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+
+    for (RecipeIngredient ri : ingredients) {
+
+        Ingredient ingredient =
+                ingredientDAO.getIngredientById(
+                        ri.getIngredientId());
+
+        if (ingredient != null &&
+                expiringProductIds.contains(
+                        ingredient.getProductId())) {
+
+            count++;
+        }
+
+    }
+
+    return count;
+}
+    
+    private boolean containsProduct(
+        Recipe recipe,
+        int productId) {
+
+    List<RecipeIngredient> ingredients =
+            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+
+    for (RecipeIngredient ri : ingredients) {
+
+        Ingredient ingredient =
+                ingredientDAO.getIngredientById(
+                        ri.getIngredientId());
+
+        if (ingredient != null &&
+                ingredient.getProductId() == productId) {
+
+            return true;
+
+        }
+
+    }
+
+    return false;
 }
     
     public List<Recipe> sortRecommendations(List<Recipe> recipes) {
