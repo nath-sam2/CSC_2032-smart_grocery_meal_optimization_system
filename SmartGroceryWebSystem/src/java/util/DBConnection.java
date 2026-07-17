@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
     // Database URL
-    private static final String URL = "jdbc:mysql://localhost:3306/smart_grocery_system_fina";
+    private static final String URL = "jdbc:mysql://localhost:3306/smart_grocery_system_final";
 
     // Database username
     private static final String USER = "root";
