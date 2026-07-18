@@ -3,7 +3,7 @@
     Created on : Jul 13, 2026, 5:33:56?PM
     Author     : perer
 --%>
-
+<%@ include file="/nav.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.ShoppingList" %>
 <%@ page import="model.ShoppingListItem" %>

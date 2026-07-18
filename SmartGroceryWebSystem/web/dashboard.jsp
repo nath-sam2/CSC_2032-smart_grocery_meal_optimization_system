@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.smartgrocery.model.User"%>
+<%@page import="model.User"%>
 <!DOCTYPE html>
 <html>
 <head>

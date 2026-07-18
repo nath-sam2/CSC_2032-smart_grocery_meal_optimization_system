@@ -3,68 +3,65 @@
     Created on : Jul 12, 2026, 9:48:28?AM
     Author     : perer
 --%>
+<%@ include file="/nav.jsp" %>
 
-<html>
+<div class="page-container">
 
-<head>
-<title>Add Recipe</title>
-</head>
+    <h2>Add Recipe</h2>
 
-<body>
+    <div class="card">
+        <form action="RecipeController" method="post">
 
+            <input type="hidden" name="action" value="insert">
 
-<h1>Add Recipe</h1>
+            <p>
+                <label>Name</label><br>
+                <input type="text" name="name" required style="width:100%; padding:8px;">
+            </p>
 
+            <p>
+                <label>Description</label><br>
+                <textarea name="description" rows="3" style="width:100%; padding:8px;"></textarea>
+            </p>
 
-<form action="RecipeController" method="post">
+            <p>
+                <label>Meal Type</label><br>
+                <select name="mealType" style="width:100%; padding:8px;">
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                </select>
+            </p>
 
+            <p>
+                <label>Cuisine</label><br>
+                <input type="text" name="cuisine" style="width:100%; padding:8px;">
+            </p>
 
-<input type="hidden" name="action" value="insert">
+            <p>
+                <label>Cooking Time (minutes)</label><br>
+                <input type="number" name="cookingTime" required style="width:100%; padding:8px;">
+            </p>
 
+            <p>
+                <label>Difficulty</label><br>
+                <select name="difficulty" style="width:100%; padding:8px;">
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+            </p>
 
-Name:
-<input type="text" name="name">
-<br>
+            <p>
+                <label>Servings</label><br>
+                <input type="number" name="servings" required style="width:100%; padding:8px;">
+            </p>
 
+            <br>
+            <button type="submit" class="btn btn-primary">Save Recipe</button>
+            <a href="RecipeController" class="btn btn-secondary">Cancel</a>
 
-Description:
-<textarea name="description"></textarea>
-<br>
+        </form>
+    </div>
 
-
-Meal Type:
-<input type="text" name="mealType">
-<br>
-
-
-Cuisine:
-<input type="text" name="cuisine">
-<br>
-
-
-Cooking Time:
-<input type="number" name="cookingTime">
-<br>
-
-
-Difficulty:
-<input type="text" name="difficulty">
-<br>
-
-
-Servings:
-<input type="number" name="servings">
-<br>
-
-
-<button type="submit">
-Save Recipe
-</button>
-
-
-</form>
-
-
-</body>
-
-</html>
+</div>

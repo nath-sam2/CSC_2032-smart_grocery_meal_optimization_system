@@ -1,4 +1,4 @@
-package com.smartgrocery.controller;
+package controller;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
