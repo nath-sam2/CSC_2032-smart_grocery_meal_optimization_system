@@ -1,24 +1,11 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Smart Grocery</title>
-    <style>
-        body { font-family: Arial; text-align: center;
-               background: #f0fdf4; }
-        h1   { color: #16a34a; margin-top: 100px; }
-        .btn { background: #16a34a; color: white;
-               padding: 12px 24px; border: none;
-               border-radius: 8px; font-size: 16px;
-               cursor: pointer; margin: 8px;
-               text-decoration: none; }
-        .btn:hover { background: #15803d; }
-    </style>
-</head>
-<body>
-    <h1>🛒 Smart Grocery Management System</h1>
-    <p>Manage Smart, Eat Smart</p>
-    <a href="login.jsp" class="btn">Login</a>
-    <a href="register.jsp" class="btn">Register</a>
-</body>
-</html>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

@@ -3,7 +3,7 @@
     Created on : Jul 13, 2026, 5:33:08 PM
     Author     : perer
 --%>
-
+<%@ include file="/nav.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 

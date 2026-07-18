@@ -171,6 +171,16 @@ public class RecipeController extends HttpServlet {
                 return;
 
 
+                case "create":
+
+    RequestDispatcher createPage =
+            request.getRequestDispatcher(
+                    "/recipes/addRecipe.jsp"
+            );
+
+    createPage.forward(request,response);
+
+    return;
 
 
             default:

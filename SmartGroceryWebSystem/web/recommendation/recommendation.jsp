@@ -3,7 +3,7 @@
     Created on : Jul 13, 2026, 9:29:22?AM
     Author     : perer
 --%>
-
+<%@ include file="/nav.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Recipe" %>
 <%@ page import="dao.NutritionFactsDAO" %>

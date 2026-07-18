@@ -3,7 +3,7 @@
     Created on : Jul 12, 2026, 11:20:37?PM
     Author     : perer
 --%>
-
+<%@ include file="/nav.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.DietaryRestriction" %>
 
