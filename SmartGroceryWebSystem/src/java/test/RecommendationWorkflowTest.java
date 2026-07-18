@@ -11,46 +11,23 @@ package test;
 import model.MealPlanner;
 import model.Recipe;
 import model.ShoppingList;
+import model.Ingredient;
 import service.RecommendationEngine;
 
 import java.util.List;
 public class RecommendationWorkflowTest {
     public static void main(String[] args) {
+RecommendationEngine engine = new RecommendationEngine();
 
-        RecommendationEngine engine = new RecommendationEngine();
+List<Recipe> recipes = engine.recommendRecipes(6);
+System.out.println("Recipes returned with empty inventory: " + recipes.size());
 
-        int userId = 1;
+for (Recipe r : recipes) {
+    System.out.println(r.getName() + " -> score: " + engine.calculateRecipeScore(r));
+}
 
-        System.out.println("============== STEP 1 ==============");
-        System.out.println("Recommended Recipes");
-
-        List<Recipe> recipes = engine.recommendRecipes(userId);
-
-        for(Recipe recipe : recipes){
-
-            System.out.println(recipe.getRecipeId()+ " - " + recipe.getName());
-
-        }
-        
-        System.out.println("\n============== STEP 2 ==============");
-        System.out.println("Generate Weekly Meal Plan");
-
-        MealPlanner planner = engine.generateWeeklyMealPlan(userId);
-
-        System.out.println(planner);
-
-        System.out.println("\n============== STEP 3 ==============");
-        System.out.println("Generate Shopping List");
-
-        //ShoppingList shoppingList = engine.createShoppingListFromMealPlan(planner.getMealPlanId());//
-
-        //System.out.println(shoppingList);//
-
-        System.out.println("\n============== STEP 4 ==============");
-        System.out.println("Inventory Check");
-
-        engine.compareInventory(planner.getMealPlanId());
-
-        System.out.println("\n============== DONE ==============");
+List<Ingredient> missing = engine.getMissingIngredientsForRecipe(4);
+System.out.println("Missing ingredients for recipe 4 (all should be missing): " + missing.size());
     }
 }
+

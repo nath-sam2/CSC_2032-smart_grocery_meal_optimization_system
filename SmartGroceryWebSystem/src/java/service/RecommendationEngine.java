@@ -40,7 +40,7 @@ public class RecommendationEngine {
 
 
     private IngredientDAO ingredientDAO;
-    private RecipeDAO recipeDAO;
+    public RecipeDAO recipeDAO;
     private NutritionFactsDAO nutritionDAO;
     private MealPlannerDAO mealPlannerDAO;
     private MealPlanDetailDAO mealPlanDetailDAO;
@@ -113,50 +113,21 @@ public class RecommendationEngine {
     */
     public List<Recipe> recommendRecipes(int userId){
 
+    List<Recipe> recipes = recipeDAO.getAllRecipes();
 
+    // Dietary restrictions = hard exclusion, highest priority
+    recipes = filterByDietaryRestrictions(recipes, userId);
 
-        // Get all recipes
+    // Combined scoring: nutrition + inventory + expiry - missing
+    recipes.sort((r1, r2) ->
+            Double.compare(
+                    calculateRecipeScore(r2),
+                    calculateRecipeScore(r1)
+            )
+    );
 
-        List<Recipe> recipes =
-                recipeDAO.getAllRecipes();
-
-
-
-
-        // Remove recipes based on restrictions
-
-        recipes =
-                filterByDietaryRestrictions(
-                        recipes,
-                        userId
-                );
-
-
-
-
-        // Sort using NutriScore
-
-        recipes =
-                sortByNutriScore(
-                        recipes
-                );
-
-
-
-
-        // Future inventory integration
-
-        recipes =
-                prioritizeByExpiry(
-                        recipes
-                );
-
-
-
-        return recipes;
-
-    }
-
+    return recipes;
+}
 
 
 
@@ -531,6 +502,10 @@ for (DietaryRestriction restriction : restrictions) {
                 recommendRecipes(userId);
 
 
+        if(recipes.isEmpty()){
+        System.out.println("No suitable recipes found for user " + userId + " - cannot generate meal plan.");
+        return null;
+    }
 
         MealPlanner planner =
                 new MealPlanner();
@@ -953,7 +928,80 @@ for (Product product : expiringProducts) {
 
     return false;
 }
-    
+ /*
+    Combined recipe score:
+    Nutrition + Inventory Match + Expiry Priority - Missing Ingredients
+*/
+public double calculateRecipeScore(Recipe recipe) {
+
+    double score = 0;
+
+    // Nutrition Score (reuses existing NutriScore grade -> points)
+    NutritionFacts nutrition =
+            nutritionDAO.getNutritionFactsByRecipeId(recipe.getRecipeId());
+
+    if (nutrition != null) {
+
+        char grade = NutriScoreService.calculateNutriScore(nutrition, false);
+
+        switch (grade) {
+            case 'A': score += 20; break;
+            case 'B': score += 15; break;
+            case 'C': score += 10; break;
+            case 'D': score += 5;  break;
+            default:  score += 0;
+        }
+    }
+
+    List<RecipeIngredient> required =
+            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+
+    List<Product> expiringProducts =
+            inventoryDAO.getExpiringItems(3);
+
+    Set<Integer> expiringProductIds = new HashSet<>();
+    for (Product p : expiringProducts) {
+        expiringProductIds.add(p.getProductId());
+    }
+
+    int totalIngredients = required.size();
+    int availableCount = 0;
+    int missingCount = 0;
+    int expiringCount = 0;
+
+    for (RecipeIngredient ri : required) {
+
+        Ingredient ingredient =
+                ingredientDAO.getIngredientById(ri.getIngredientId());
+
+        if (ingredient == null) {
+            continue;
+        }
+
+        if (isIngredientAvailable(ri.getIngredientId(), ri.getQuantity())) {
+            availableCount++;
+        } else {
+            missingCount++;
+        }
+
+        if (expiringProductIds.contains(ingredient.getProductId())) {
+            expiringCount++;
+        }
+    }
+
+    // Inventory Match: up to 10 points based on % of ingredients on hand
+    if (totalIngredients > 0) {
+        score += ((double) availableCount / totalIngredients) * 10;
+    }
+
+    // Expiry Priority: 5 points per ingredient that's about to expire
+    score += expiringCount * 5;
+
+    // Missing Ingredients: penalty, 3 points per missing ingredient
+    score -= missingCount * 3;
+
+    return score;
+}   
     public List<Recipe> sortRecommendations(List<Recipe> recipes) {
 
     recipes.sort((r1, r2) ->
