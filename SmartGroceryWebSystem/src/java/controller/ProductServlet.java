@@ -1,8 +1,8 @@
-package com.smartgrocery.controller;
+package controller;
 
-import com.smartgrocery.model.Product;
-import com.smartgrocery.service.ProductService;
-import com.smartgrocery.service.InventoryService;
+import model.Product;
+import service.ProductService;
+import service.InventoryService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

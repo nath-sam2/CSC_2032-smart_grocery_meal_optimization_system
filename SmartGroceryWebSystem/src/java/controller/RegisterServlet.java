@@ -1,6 +1,6 @@
-package com.smartgrocery.controller;
+package controller;
 
-import com.smartgrocery.service.AuthService;
+import service.AuthService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
