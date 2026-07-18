@@ -8,6 +8,7 @@ package dao;
  *
  * @author perer
  */
+import model.Product;
 import model.Ingredient;
 import model.RecipeIngredient;
 
@@ -216,5 +217,42 @@ public class IngredientDAO {
 
 
     return ingredients;
+}
+    
+    
+
+public Product getRelatedProduct(int ingredientId) {
+
+    String sql =
+        "SELECT p.productId, p.name, p.price, p.quantity, " +
+        "p.expiryDate, p.unit, p.categoryId " +
+        "FROM ingredients i " +
+        "JOIN products p ON i.productId = p.productId " +
+        "WHERE i.ingredientId = ?";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+        stmt.setInt(1, ingredientId);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return new Product(
+                rs.getInt("productId"),
+                rs.getString("name"),
+                rs.getDouble("price"),
+                rs.getInt("quantity"),
+                rs.getDate("expiryDate"),
+                rs.getString("unit"),
+                rs.getInt("categoryId")
+            );
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
 }
 }

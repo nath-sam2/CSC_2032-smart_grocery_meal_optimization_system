@@ -783,16 +783,46 @@ for (DietaryRestriction restriction : restrictions) {
 
 
 
-    public List<Ingredient> getMissingIngredients(
-            int mealPlanId){
+    public boolean isIngredientAvailable(int ingredientId, double requiredQty) {
 
+    Ingredient ingredient = ingredientDAO.getIngredientById(ingredientId);
 
-
-        // Inventory integration later
-
-        return new ArrayList<>();
-
+    if (ingredient == null) {
+        return false;
     }
+
+    Inventory inventory = inventoryDAO.getInventoryByProduct(ingredient.getProductId());
+
+    if (inventory == null) {
+        return false;
+    }
+
+    return inventory.getQuantity() >= requiredQty;
+}
+
+
+public List<Ingredient> getMissingIngredientsForRecipe(int recipeId) {
+
+    List<Ingredient> missing = new ArrayList<>();
+
+    List<RecipeIngredient> required =
+            IngredientDAO.getIngredientsByRecipe(recipeId);
+
+    for (RecipeIngredient ri : required) {
+
+        if (!isIngredientAvailable(ri.getIngredientId(), ri.getQuantity())) {
+
+            Ingredient ingredient =
+                    ingredientDAO.getIngredientById(ri.getIngredientId());
+
+            if (ingredient != null) {
+                missing.add(ingredient);
+            }
+        }
+    }
+
+    return missing;
+}
 
 
 
