@@ -705,73 +705,44 @@ for (DietaryRestriction restriction : restrictions) {
 
 
 
-    // Collect ingredients
+    // Collect ingredients, combining duplicates across the whole meal plan
 
-    for(MealPlanDetail detail : details){
+java.util.Map<Integer, ShoppingListItem> combined = new java.util.HashMap<>();
 
+for(MealPlanDetail detail : details){
 
-
-        List<Ingredient> ingredients =
-                recipeIngredientDAO
-                .getIngredientsByRecipeId(
-                        detail.getRecipeId()
-                );
-
-
-
-        for(Ingredient ingredient : ingredients){
-
-
-
-            ShoppingListItem item =
-                    new ShoppingListItem();
-
-
-
-            item.setShoppingListId(
-                    shoppingList.getShoppingListId()
+    List<Ingredient> missingIngredients =
+            getMissingIngredientsForRecipe(
+                    detail.getRecipeId()
             );
 
+    for(Ingredient ingredient : missingIngredients){
 
+        int id = ingredient.getIngredientId();
 
-            item.setIngredientId(
-                    ingredient.getIngredientId()
-            );
+        if(combined.containsKey(id)){
 
+            ShoppingListItem existing = combined.get(id);
+            existing.setQuantity(existing.getQuantity() + 1);
 
+        } else {
 
-            /*
-              Temporary quantity.
-              Inventory integration with Member 1
-              will calculate the real missing amount.
-            */
+            ShoppingListItem item = new ShoppingListItem();
 
+            item.setShoppingListId(shoppingList.getShoppingListId());
+            item.setIngredientId(id);
             item.setQuantity(1);
+            item.setUnit(ingredient.getUnit());
+            item.setStatus("Pending");
 
-
-
-            item.setUnit(
-                    "unit"
-            );
-
-
-
-            item.setStatus(
-                    "Pending"
-            );
-
-
-
-            shoppingListItemDAO
-                    .insertShoppingListItem(item);
-
-
-
+            combined.put(id, item);
         }
-
-
     }
+}
 
+for(ShoppingListItem item : combined.values()){
+    shoppingListItemDAO.insertShoppingListItem(item);
+}
 
 
     return shoppingList;

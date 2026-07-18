@@ -65,15 +65,12 @@ public class MealPlannerController extends HttpServlet {
 
                 HttpSession session = request.getSession();
 
+Integer userId = (Integer) session.getAttribute("userId");
+if(userId == null){
+    userId = 6;
+}
 
-                int userId = 1;
-                //(int) session.getAttribute("userId");//
-
-
-
-                List<MealPlanner> mealPlans =
-                mealPlannerDAO.getMealPlansByUser(userId);
-
+List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
 
 
                 request.setAttribute(
@@ -246,22 +243,15 @@ public class MealPlannerController extends HttpServlet {
         if(action.equals("createPlan")){
 
 
-            HttpSession session =
-            request.getSession();
+            HttpSession session = request.getSession();
 
+Integer userId = (Integer) session.getAttribute("userId");
+if(userId == null){
+    userId = 6;
+}
 
-
-            int userId =
-            (int)session.getAttribute("userId");
-
-
-
-            MealPlanner mealPlan =
-            new MealPlanner();
-
-
-
-            mealPlan.setUserId(userId);
+MealPlanner mealPlan = new MealPlanner();
+mealPlan.setUserId(userId);
 
 
 

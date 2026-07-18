@@ -62,46 +62,16 @@ public class ShoppingListController extends HttpServlet {
 
             // View shopping lists
             case "list":
+    HttpSession session = request.getSession();
+    Integer userId = (Integer)session.getAttribute("userId");
+    if(userId == null){
+        userId = 6;
+    }
 
-
-                HttpSession session =
-                        request.getSession();
-
-
-                Integer userId =
-                        (Integer)session.getAttribute("userId");
-
-
-
-                if(userId == null){
-
-                    response.sendRedirect("/shopping/shoppingList.jsp");
-                    return;
-
-                }
-
-
-
-                List<ShoppingList> lists =
-                        shoppingListDAO
-                        .getAllShoppingLists();
-
-
-
-                request.setAttribute(
-                        "shoppingLists",
-                        lists
-                );
-
-
-
-                request.getRequestDispatcher(
-                        "/shopping/shoppingList.jsp"
-                ).forward(request,response);
-
-
-
-                break;
+    List<ShoppingList> lists = shoppingListDAO.getAllShoppingLists();
+    request.setAttribute("shoppingLists", lists);
+    request.getRequestDispatcher("/shopping/shoppingList.jsp").forward(request,response);
+    break;
 
 
 
@@ -163,9 +133,7 @@ public class ShoppingListController extends HttpServlet {
                 );
 
 
-                request.getRequestDispatcher(
-                        "/shopping/shoppingList.jsp"
-                ).forward(request,response);
+                request.getRequestDispatcher("/shopping/shoppingListItems.jsp").forward(request,response);
 
 
 

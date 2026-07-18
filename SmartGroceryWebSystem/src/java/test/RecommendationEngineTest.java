@@ -10,21 +10,14 @@ import service.RecommendationEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.ShoppingList;
 
 public class RecommendationEngineTest {
 
     public static void main(String[] args) {
 
         RecommendationEngine engine = new RecommendationEngine();
-
-List<Ingredient> missing = engine.getMissingIngredientsForRecipe(4); // Vegetable Fried Rice, recipeId=4
-
-if (missing.isEmpty()) {
-    System.out.println("All ingredients available.");
-} else {
-    for (Ingredient i : missing) {
-        System.out.println("Missing: " + i.getName());
-    }
-}
+ShoppingList list = engine.generateShoppingListFromMealPlan(8);
+System.out.println("Shopping list created: " + list.getShoppingListId());
     }
 }
