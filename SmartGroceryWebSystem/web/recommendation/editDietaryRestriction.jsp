@@ -4,77 +4,54 @@
     Author     : perer
 --%>
 <%@ include file="/nav.jsp" %>
-<%@ page import="model.DietaryRestriction" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<div class="page-container">
 
-<%
+    <div class="card">
 
-DietaryRestriction r =
-(DietaryRestriction)
-request.getAttribute("restriction");
+        <h2>Edit Dietary Restriction</h2>
 
-%>
+        <a href="DietaryRestrictionController"
+           class="btn btn-secondary">
+            ← Back to Dietary Restrictions
+        </a>
 
+        <br><br>
 
+        <form action="DietaryRestrictionController" method="post">
 
-<html>
+            <input type="hidden" name="action" value="update">
 
+            <input type="hidden"
+                   name="restrictionId"
+                   value="${restriction.restrictionId}">
 
-<body>
+            <label><strong>Restriction Name</strong></label><br>
 
+            <input
+                type="text"
+                name="restrictionName"
+                value="${restriction.restrictionName}"
+                required
+                style="width:100%;padding:10px;margin-top:5px;margin-bottom:15px;">
 
-<h2>Edit Restriction</h2>
+            <label><strong>Description</strong></label><br>
 
+            <textarea
+                name="description"
+                rows="4"
+                style="width:100%;padding:10px;margin-top:5px;margin-bottom:20px;">${restriction.description}</textarea>
 
-<form action="DietaryRestrictionController" method="post">
+            <button type="submit"
+                    class="btn btn-primary">
 
+                Update Restriction
 
-<input type="hidden"
-name="action"
-value="update">
+            </button>
 
+        </form>
 
-<input type="hidden"
-name="restrictionId"
-value="<%=r.getRestrictionId()%>">
+    </div>
 
-
-
-Name:
-
-
-<input type="text"
-name="restrictionName"
-value="<%=r.getRestrictionName()%>">
-
-
-
-<br><br>
-
-
-Description:
-
-
-<textarea name="description">
-
-<%=r.getDescription()%>
-
-</textarea>
-
-
-<br><br>
-
-
-<button>
-Update
-</button>
-
-
-
-</form>
-
-
-
-</body>
-
-</html>
+</div>

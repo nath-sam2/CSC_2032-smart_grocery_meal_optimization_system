@@ -4,57 +4,50 @@
     Author     : perer
 --%>
 <%@ include file="/nav.jsp" %>
-<html>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 
-<head>
-<title>Add Restriction</title>
-</head>
+<div class="page-container">
 
+    <div class="card">
 
-<body>
+        <h2>Add Dietary Restriction</h2>
 
+        <a href="DietaryRestrictionController"
+           class="btn btn-secondary">
+            ← Back to Dietary Restrictions
+        </a>
 
-<h2>Add Dietary Restriction</h2>
+        <br><br>
 
+        <form action="DietaryRestrictionController" method="post">
 
+            <input type="hidden"
+                   name="action"
+                   value="insert">
 
-<form action="DietaryRestrictionController" method="post">
+            <label><strong>Restriction Name</strong></label><br>
 
+            <input
+                type="text"
+                name="restrictionName"
+                required
+                style="width:100%;padding:10px;margin:8px 0 16px;">
 
-<input type="hidden" 
-name="action" 
-value="insert">
+            <label><strong>Description</strong></label><br>
 
+            <textarea
+                name="description"
+                rows="4"
+                style="width:100%;padding:10px;margin:8px 0 20px;"></textarea>
 
-Restriction Name:
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Save Restriction
+            </button>
 
-<input type="text"
-name="restrictionName"
-required>
+        </form>
 
+    </div>
 
-<br><br>
-
-
-
-Description:
-
-<textarea name="description"></textarea>
-
-
-
-<br><br>
-
-
-<button type="submit">
-Save
-</button>
-
-
-
-</form>
-
-
-</body>
-
-</html>
+</div>

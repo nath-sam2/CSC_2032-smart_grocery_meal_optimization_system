@@ -7,111 +7,51 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.MealPlanner" %>
 
-<html>
+<div class="page-container">
 
-<head>
+    <h2>My Healthy Meal Plans</h2>
 
-<title>My Meal Plans</title>
+    <a href="MealPlannerController?action=create" class="btn btn-primary">+ Create New Meal Plan</a>
 
-</head>
+    <br><br>
 
+    <div class="card-grid">
 
-<body>
+    <%
+    List<MealPlanner> plans =
+    (List<MealPlanner>) request.getAttribute("mealPlans");
 
+    if(plans != null){
+        for(MealPlanner plan : plans){
+    %>
 
-<h2>My Healthy Meal Plans</h2>
+        <div class="card">
+            <h3><%=plan.getPlanName()%></h3>
 
+            <p>
+                <span class="badge badge-grade-b"><%=plan.getStartDate()%> to <%=plan.getEndDate()%></span>
+            </p>
 
-<a href="MealPlannerController?action=create">
-Create New Meal Plan
-</a>
+            <p>Plan #<%=plan.getMealPlanId()%></p>
 
+            <br>
 
-<br><br>
+            <a href="MealPlannerController?action=view&id=<%=plan.getMealPlanId()%>" class="btn btn-primary">View Plan</a>
+        </div>
 
+    <%
+        }
+    }
+    %>
 
+    </div>
 
-<table border="1" cellpadding="10">
+    <%
+    if(plans == null || plans.isEmpty()){
+    %>
+        <p>You don't have any meal plans yet. Create one to get started!</p>
+    <%
+    }
+    %>
 
-
-<tr>
-
-<th>ID</th>
-<th>Name</th>
-<th>Start Date</th>
-<th>End Date</th>
-<th>Action</th>
-
-</tr>
-
-
-
-<%
-
-List<MealPlanner> plans =
-(List<MealPlanner>)
-request.getAttribute("mealPlans");
-
-
-
-if(plans != null){
-
-
-for(MealPlanner plan : plans){
-
-%>
-
-
-<tr>
-
-
-<td>
-<%=plan.getMealPlanId()%>
-</td>
-
-
-<td>
-<%=plan.getPlanName()%>
-</td>
-
-
-<td>
-<%=plan.getStartDate()%>
-</td>
-
-
-<td>
-<%=plan.getEndDate()%>
-</td>
-
-
-<td>
-
-<a href="MealPlannerController?action=view&id=<%=plan.getMealPlanId()%>">
-
-View
-
-</a>
-
-
-</td>
-
-
-</tr>
-
-
-<%
-
-}
-
-}
-
-%>
-
-
-</table>
-
-
-</body>
-
-</html>
+</div>
