@@ -9,6 +9,12 @@
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/profile.jsp</file>
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/products.jsp</file>
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/login.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/nbproject/project.xml</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/cart.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/checkout.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/orders.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/CartServlet.java</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/OrderServlet.java</file>
         </group>
     </open-files>
 </project-private>

@@ -49,6 +49,28 @@
                 <p><a href="orders.jsp">My Orders</a></p>
             </div>
             <div class="card">
+                    <div class="cards">
+    <div class="card">
+        <h2>🛒</h2>
+        <p><a href="products.jsp">Shop Groceries</a></p>
+    </div>
+    <div class="card">
+        <h2>📦</h2>
+        <p><a href="orders.jsp">My Orders</a></p>
+    </div>
+    <div class="card">
+        <h2>🛍️</h2>
+        <p><a href="cart.jsp">My Cart</a></p>
+    </div>
+    <div class="card">
+        <h2>🏭</h2>
+        <p><a href="inventory.jsp">Inventory</a></p>
+    </div>
+    <div class="card">
+        <h2>🔔</h2>
+        <p><a href="notifications.jsp">Notifications</a></p>
+    </div>
+</div>
                 <h2>🛍️</h2>
                 <p><a href="cart.jsp">My Cart</a></p>
             </div>
