@@ -15,6 +15,12 @@
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/orders.jsp</file>
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/CartServlet.java</file>
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/OrderServlet.java</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/inventory.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/notifications.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/dashboard.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/service/NotificationAlertService.java</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/integrationTest.jsp</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/systemTest.jsp</file>
         </group>
     </open-files>
 </project-private>
