@@ -6,93 +6,55 @@
 <%@ include file="/nav.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.ShoppingList" %>
-<%@ page import="model.ShoppingListItem" %>
 
+<div class="page-container">
 
-<html>
+    <h2>My Shopping Lists</h2>
 
-<body>
+    <a href="generateShoppingList.jsp" class="btn btn-primary">+ Generate New Shopping List</a>
+    <p style="color:#6b7280; font-size:0.9em;">Select a meal plan to generate a shopping list from.</p>
 
+    <br>
 
-<h2>
-My Shopping Lists
-</h2>
+    <div class="card-grid">
 
+    <%
+    List<ShoppingList> lists =
+    (List<ShoppingList>) request.getAttribute("shoppingLists");
 
+    if(lists != null){
+        for(ShoppingList list : lists){
+    %>
 
-<%
+        <div class="card">
+            <h3>Shopping List #<%=list.getShoppingListId()%></h3>
 
-List<ShoppingList> lists =
-(List<ShoppingList>)
-request.getAttribute("shoppingLists");
+            <p>Created: <%=list.getCreatedDate()%></p>
 
+            <p>
+                <span class="badge badge-grade-<%= "Pending".equals(list.getStatus()) ? "c" : "a" %>">
+                    <%=list.getStatus()%>
+                </span>
+            </p>
 
-if(lists != null){
+            <br>
 
+            <a href="ShoppingListController?action=view&id=<%=list.getShoppingListId()%>" class="btn btn-primary">View Items</a>
+        </div>
 
-for(ShoppingList list : lists){
+    <%
+        }
+    }
+    %>
 
-%>
+    </div>
 
+    <%
+    if(lists == null || lists.isEmpty()){
+    %>
+        <p>No shopping lists yet. Generate one from a meal plan!</p>
+    <%
+    }
+    %>
 
-<hr>
-
-
-<h3>
-Shopping List ID:
-<%=list.getShoppingListId()%>
-</h3>
-
-
-<p>
-
-Created Date:
-
-<%=list.getCreatedDate()%>
-
-</p>
-
-
-
-<p>
-
-Status:
-
-<%=list.getStatus()%>
-
-</p>
-
-
-
-<a href="ShoppingListController?action=view&id=<%=list.getShoppingListId()%>">
-
-View Items
-
-</a>
-
-
-
-<%
-
-}
-
-}
-
-%>
-
-
-
-<hr>
-
-
-<a href="generateShoppingList.jsp">
-
-Generate New Shopping List
-
-</a>
-
-
-
-</body>
-
-</html>
+</div>

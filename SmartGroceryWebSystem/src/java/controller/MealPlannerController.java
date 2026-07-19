@@ -12,6 +12,8 @@ import model.MealPlanner;
 import model.MealPlanDetail;
 import model.Recipe;
 
+import service.RecommendationEngine;
+
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -260,6 +262,33 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
     mealDetailDAO.insertMealPlanDetail(quickAddDetail);
 
     response.sendRedirect("MealPlannerController?action=view&id=" + targetPlan.getMealPlanId());
+
+    return;
+    
+    case "generate":
+
+    HttpSession generateSession = request.getSession();
+
+    Integer generateUserId =
+            (Integer) generateSession.getAttribute("userId");
+
+    if (generateUserId == null) {
+        generateUserId = 6;
+    }
+
+    RecommendationEngine engine = new RecommendationEngine();
+
+    MealPlanner generatedPlan =
+            engine.generateWeeklyMealPlan(generateUserId);
+
+    if (generatedPlan == null) {
+        response.sendRedirect("MealPlannerController?action=list");
+        return;
+    }
+
+    response.sendRedirect(
+            "MealPlannerController?action=view&id=" + generatedPlan.getMealPlanId()
+    );
 
     return;
         }

@@ -7,166 +7,115 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.DietaryRestriction" %>
 
+<div class="page-container">
 
-<html>
+    <div class="card">
 
-<head>
+        <h2>My Dietary Restrictions</h2>
 
-<title>
-Dietary Restrictions
-</title>
+        <table>
 
-</head>
+            <tr>
+                <th>Restriction</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
 
+            <%
+                List<DietaryRestriction> restrictions =
+                    (List<DietaryRestriction>) request.getAttribute("restrictions");
 
-<body>
+                if (restrictions != null) {
+                    for (DietaryRestriction r : restrictions) {
+            %>
 
+            <tr>
 
-<h2>
-My Dietary Restrictions
-</h2>
+                <td data-label="Restriction">
+                    <%= r.getRestrictionName() %>
+                </td>
 
+                <td data-label="Description">
+                    <%= r.getDescription() %>
+                </td>
 
+                <td data-label="Action">
 
-<table border="1">
+                    <form action="DietaryRestrictionController"
+                          method="post"
+                          style="display:inline;">
 
+                        <input type="hidden"
+                               name="action"
+                               value="deleteUserRestriction">
 
-<tr>
+                        <input type="hidden"
+                               name="restrictionId"
+                               value="<%= r.getRestrictionId() %>">
 
-<th>
-Restriction
-</th>
+                        <button class="btn btn-secondary"
+                                type="submit">
+                            Remove
+                        </button>
 
-<th>
-Description
-</th>
+                    </form>
 
-<th>
-Action
-</th>
+                </td>
 
+            </tr>
 
-</tr>
+            <%
+                    }
+                }
+            %>
 
+        </table>
 
+    </div>
 
-<%
+    <div class="card">
 
-List<DietaryRestriction> restrictions =
-(List<DietaryRestriction>)
-request.getAttribute("restrictions");
+        <h3>Add Dietary Restriction</h3>
 
+        <form action="DietaryRestrictionController"
+              method="post">
 
+            <input type="hidden"
+                   name="action"
+                   value="addUserRestriction">
 
-for(DietaryRestriction r : restrictions){
+            <label>Select Restriction</label><br><br>
 
-%>
+            <select name="restrictionId">
 
+                <%
+                    List<DietaryRestriction> all =
+                        (List<DietaryRestriction>) request.getAttribute("allRestrictions");
 
-<tr>
+                    if (all != null) {
+                        for (DietaryRestriction r : all) {
+                %>
 
-<td>
-<%=r.getRestrictionName()%>
-</td>
+                <option value="<%= r.getRestrictionId() %>">
+                    <%= r.getRestrictionName() %>
+                </option>
 
+                <%
+                        }
+                    }
+                %>
 
-<td>
-<%=r.getDescription()%>
-</td>
+            </select>
 
+            <br><br>
 
-<td>
+            <button class="btn btn-primary"
+                    type="submit">
+                Add Restriction
+            </button>
 
+        </form>
 
-<a href="DietaryRestrictionController?action=delete&restrictionId=<%=r.getRestrictionId()%>">
+    </div>
 
-Delete
-
-</a>
-
-
-</td>
-
-
-</tr>
-
-
-<%
-
-}
-
-%>
-
-
-</table>
-
-
-
-
-<h3>
-Add New Restriction
-</h3>
-
-
-
-<form action="DietaryRestrictionController"
-method="post">
-
-
-<input type="hidden"
-name="action"
-value="add">
-
-
-
-<select name="restrictionId">
-
-
-<%
-
-List<DietaryRestriction> all =
-(List<DietaryRestriction>)
-request.getAttribute("allRestrictions");
-
-
-
-for(DietaryRestriction r: all){
-
-%>
-
-
-<option value="<%=r.getRestrictionId()%>">
-
-<%=r.getRestrictionName()%>
-
-</option>
-
-
-<%
-
-}
-
-%>
-
-
-</select>
-
-
-
-<br><br>
-
-
-<button type="submit">
-
-Add Restriction
-
-</button>
-
-
-</form>
-
-
-
-</body>
-
-</html>
+</div>

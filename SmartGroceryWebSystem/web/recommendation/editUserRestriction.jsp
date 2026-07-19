@@ -5,62 +5,53 @@
 --%>
 <%@ include file="/nav.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<html>
 
+<div class="page-container">
 
-<body>
+    <div class="card">
 
+        <h2>Edit Dietary Restriction</h2>
 
-<h2>
-Edit Dietary Restriction
-</h2>
+        <a href="DietaryRestrictionController"
+           class="btn btn-secondary">
+            ← Back to Dietary Restrictions
+        </a>
 
-<a href="DietaryRestrictionController">
+        <br><br>
 
-Manage Dietary Restrictions
+        <form action="DietaryRestrictionController" method="post">
 
-</a>
+            <input type="hidden"
+                   name="action"
+                   value="update">
 
+            <!-- Keep the restriction ID hidden -->
+            <input type="hidden"
+                   name="restrictionId"
+                   value="${restriction.restrictionId}">
 
-<form action="DietaryRestrictionController"
-method="post">
+            <label><strong>Restriction Name</strong></label><br>
 
+            <input
+                type="text"
+                name="restrictionName"
+                value="${restriction.restrictionName}"
+                required
+                style="width:100%;padding:10px;margin:8px 0 16px;">
 
-<input type="hidden"
-name="action"
-value="update">
+            <label><strong>Description</strong></label><br>
 
+            <textarea
+                name="description"
+                rows="4"
+                style="width:100%;padding:10px;margin:8px 0 20px;">${restriction.description}</textarea>
 
+            <button type="submit" class="btn btn-primary">
+                Update Restriction
+            </button>
 
-<input type="hidden"
-name="oldRestrictionId"
-value="${restrictionId}">
+        </form>
 
+    </div>
 
-
-New Restriction ID:
-
-
-<input type="number"
-name="restrictionId">
-
-
-
-<br><br>
-
-
-
-<button type="submit">
-
-Update
-
-</button>
-
-
-</form>
-
-
-
-</body>
-
-</html>
+</div>

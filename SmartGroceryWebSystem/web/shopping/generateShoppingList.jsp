@@ -5,73 +5,64 @@
 --%>
 <%@ include file="/nav.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.MealPlanner" %>
+<%@ page import="dao.MealPlannerDAO" %>
 
+<%
+HttpSession genSession = request.getSession();
+Integer genUserId = (Integer) genSession.getAttribute("userId");
+if (genUserId == null) {
+    genUserId = 6;
+}
 
-<html>
+MealPlannerDAO mealPlannerDAO = new MealPlannerDAO();
+List<MealPlanner> userPlans = mealPlannerDAO.getMealPlansByUser(genUserId);
+%>
 
-<head>
+<div class="page-container">
 
-<title>
-Generate Shopping List
-</title>
+    <h2>Generate Shopping List From Meal Plan</h2>
 
-</head>
+    <div class="card">
 
+        <% if (userPlans == null || userPlans.isEmpty()) { %>
 
-<body>
+            <p>You don't have any meal plans yet.</p>
+            <br>
+            <a href="MealPlannerController?action=create" class="btn btn-primary">Create a Meal Plan</a>
 
+        <% } else { %>
 
-<h2>
-Generate Shopping List From Meal Plan
-</h2>
+            <form action="ShoppingListController" method="get">
 
+                <input type="hidden" name="action" value="generate">
 
+                <p>
+                    <label>Select Meal Plan</label><br>
+                    <select name="mealPlanId" style="width:100%; padding:8px;">
+                    <%
+                    for (MealPlanner plan : userPlans) {
+                    %>
+                        <option value="<%=plan.getMealPlanId()%>">
+                            <%=plan.getPlanName()%> (<%=plan.getStartDate()%> to <%=plan.getEndDate()%>)
+                        </option>
+                    <%
+                    }
+                    %>
+                    </select>
+                </p>
 
-<form action="ShoppingListController"
-      method="get">
+                <br>
+                <button type="submit" class="btn btn-primary">Generate Shopping List</button>
 
+            </form>
 
-<input type="hidden"
-       name="action"
-       value="generate">
+        <% } %>
 
+    </div>
 
+    <br>
+    <a href="ShoppingListController?action=list" class="btn btn-secondary">View Shopping Lists</a>
 
-<label>
-Meal Plan ID:
-</label>
-
-
-<input type="number"
-       name="mealPlanId"
-       required>
-
-
-<br><br>
-
-
-<button type="submit">
-
-Generate Shopping List
-
-</button>
-
-
-</form>
-
-
-
-<br>
-
-
-<a href="ShoppingListController?action=list">
-
-View Shopping Lists
-
-</a>
-
-
-
-</body>
-
-</html>
+</div>

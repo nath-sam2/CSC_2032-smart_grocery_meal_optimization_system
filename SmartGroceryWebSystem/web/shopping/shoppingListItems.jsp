@@ -7,55 +7,93 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.ShoppingListItem" %>
 <%@ page import="model.Ingredient" %>
+<%@ page import="model.Inventory" %>
 <%@ page import="dao.IngredientDAO" %>
-<html>
-<body>
-
-<h2>
-Shopping List Items
-</h2>
+<%@ page import="dao.InventoryDAO" %>
 
 <%
 List<ShoppingListItem> items =
-(List<ShoppingListItem>)
-request.getAttribute("items");
+(List<ShoppingListItem>) request.getAttribute("items");
 
 IngredientDAO ingredientDAO = new IngredientDAO();
-
-if(items != null){
-for(ShoppingListItem item : items){
-
-Ingredient ingredient =
-ingredientDAO.getIngredientById(item.getIngredientId());
-
-String ingredientName =
-(ingredient != null) ? ingredient.getName() : "Unknown Ingredient";
+InventoryDAO inventoryDAO = new InventoryDAO();
 %>
 
-<hr>
-<p>
-Ingredient:
-<%=ingredientName%>
-</p>
-<p>
-Quantity:
-<%=item.getQuantity()%>
-<%=item.getUnit()%>
-</p>
-<p>
-Status:
-<%=item.getStatus()%>
-</p>
+<div class="page-container">
 
-<%
-}
-}
-%>
+    <h2>Shopping List Items</h2>
 
-<hr>
-<a href="ShoppingListController?action=list">
-Back to Shopping Lists
-</a>
+    <div class="card">
 
-</body>
-</html>
+        <table>
+            <tr>
+                <th>Ingredient</th>
+                <th>Quantity</th>
+                <th>Availability</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            <%
+            if(items != null){
+                for(ShoppingListItem item : items){
+
+                    Ingredient ingredient =
+                    ingredientDAO.getIngredientById(item.getIngredientId());
+
+                    String ingredientName =
+                    (ingredient != null) ? ingredient.getName() : "Unknown Ingredient";
+
+                    String availability = "Not tracked";
+                    String availabilityBadgeClass = "badge-grade-c";
+
+                    if (ingredient != null) {
+                        Inventory inv = inventoryDAO.getInventoryByProduct(ingredient.getProductId());
+
+                        if (inv == null) {
+                            availability = "Out of stock";
+                            availabilityBadgeClass = "badge-warning";
+                        } else if (inv.getQuantity() <= 0) {
+                            availability = "Out of stock";
+                            availabilityBadgeClass = "badge-warning";
+                        } else {
+                            availability = "In stock (" + inv.getQuantity() + " " + item.getUnit() + ")";
+                            availabilityBadgeClass = "badge-grade-a";
+                        }
+                    }
+
+                    boolean purchased = "Purchased".equals(item.getStatus());
+            %>
+
+            <tr>
+                <td data-label="Ingredient"><%=ingredientName%></td>
+                <td data-label="Quantity"><%=item.getQuantity()%> <%=item.getUnit()%></td>
+                <td data-label="Availability">
+                    <span class="badge <%=availabilityBadgeClass%>"><%=availability%></span>
+                </td>
+                <td data-label="Status">
+                    <span class="badge <%= purchased ? "badge-grade-a" : "badge-grade-c" %>"><%=item.getStatus()%></span>
+                </td>
+                <td data-label="Action">
+                    <% if (!purchased) { %>
+                        <a href="ShoppingListController?action=purchase&id=<%=item.getShoppingListItemId()%>" class="btn btn-secondary">Mark Purchased</a>
+                    <% } else { %>
+                        &#10003; Done
+                    <% } %>
+                </td>
+            </tr>
+
+            <%
+                }
+            }
+            %>
+
+        </table>
+
+    </div>
+
+    <br>
+    <a href="ShoppingListController?action=list" class="btn btn-secondary">Back to Shopping Lists</a>
+    <button onclick="window.print()" class="btn btn-secondary">Print List</button>
+
+</div>
