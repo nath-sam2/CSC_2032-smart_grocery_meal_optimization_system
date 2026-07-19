@@ -1,1 +1,27 @@
-/SmartGrocerySystem/target/
+# ===== Accidentally committed dependency source tree (Day 18 incident) =====
+mysql-connector-j-9.7.0/
+mysql-connector-*/
+
+# ===== Build output =====
+build/
+dist/
+
+# ===== NetBeans private/generated project files =====
+nbproject/private/
+nbproject/genfiles.properties
+
+# ===== Compiled class files (in case any land outside build/) =====
+*.class
+
+# ===== Downloaded/extracted libraries (should live in Libraries via NetBeans, not committed) =====
+*.zip
+*.tar.gz
+
+# ===== OS/editor junk =====
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# ===== IDE-specific caches (if either of you uses VS Code alongside NetBeans) =====
+.vscode/

@@ -2,9 +2,15 @@
 
 ## Overview
 
-The Smart Grocery Management and Meal Optimization System is a web-based application developed using Java Object-Oriented Programming principles. The system allows users to purchase groceries online while efficiently managing household food inventory.
+The Smart Grocery Management and Meal Optimization System is a web-based application designed to simplify grocery shopping while promoting efficient household food management and healthy eating habits. The system enables users to purchase groceries online, maintain an up-to-date inventory of available products, and monitor food stock levels effectively.
 
-It tracks product quantities, monitors expiry dates, provides low-stock alerts, and recommends healthy meals based on available ingredients, expiry dates, and user-defined dietary restrictions. The system also generates optimized shopping lists to reduce food waste and improve purchasing decisions.
+The application automatically tracks product quantities and expiry dates, generating low-stock and expiry notifications to help users replenish essential items on time and minimize food waste. Administrators manage products, categories, inventory, and customer orders while monitoring overall system operations.
+
+Beyond traditional grocery management, the system incorporates an intelligent meal optimization module. Using product availability from the inventory, expiry information, nutritional information of recipes, and user-defined dietary restrictions such as allergies or food intolerances, the system recommends healthy recipes that best utilize existing ingredients while excluding unsuitable foods.
+
+Users can organize recommended recipes into personalized meal plans. Based on these meal plans, the system automatically generates optimized shopping lists containing only the missing ingredients required for the selected recipes. This helps reduce unnecessary purchases, improve cost efficiency, and minimize food waste.
+
+Overall, the Smart Grocery Management and Meal Optimization System integrates online grocery shopping, inventory management, nutrition-aware meal planning, dietary restriction management, intelligent recipe recommendation, shopping list generation, and notification services into a single platform. By combining these functionalities, the system enhances user convenience, promotes healthier lifestyles, reduces food waste, and improves overall household grocery management.
 
 ---
 
