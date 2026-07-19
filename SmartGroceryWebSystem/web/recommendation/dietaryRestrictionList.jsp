@@ -12,7 +12,7 @@
 
     <h2>Dietary Restrictions</h2>
 
-    <a href="addRestriction.jsp" class="btn btn-primary">+ Add New Restriction</a>
+    <a href="DietaryRestrictionController?action=add" class="btn btn-primary">+ Add New Restriction</a>
 
     <br><br>
 

@@ -75,7 +75,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 request.getRequestDispatcher(
-                        "/recommendation/addDietaryRestriction.jsp"
+                        "/recommendation/addRestriction.jsp"
                 )
                 .forward(request,response);
 
@@ -136,7 +136,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
                 response.sendRedirect(
-                        "/recommendation/DietaryRestrictionController"
+                        request.getContextPath() + "/DietaryRestrictionController"
                 );
 
 
@@ -154,8 +154,10 @@ public class DietaryRestrictionController extends HttpServlet {
                         request.getSession();
 
 
-                int userId =1;
-                //(int)session.getAttribute("userId")//;
+                Integer userId = (Integer) session.getAttribute("userId");
+                if (userId == null) {
+                    userId = 6;
+                }
 
 
 
@@ -250,7 +252,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
             response.sendRedirect(
-                    "DietaryRestrictionController"
+                    request.getContextPath() + "/DietaryRestrictionController"
             );
 
 
@@ -293,7 +295,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
             response.sendRedirect(
-                    "DietaryRestrictionController"
+                    request.getContextPath() + "/DietaryRestrictionController"
             );
 
         }
@@ -310,8 +312,10 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
 
-            int userId =
-            (int)session.getAttribute("userId");
+            Integer userId = (Integer) session.getAttribute("userId");
+            if (userId == null) {
+                userId = 6;
+            }
 
 
 
@@ -337,7 +341,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
             response.sendRedirect(
-            "DietaryRestrictionController?action=userRestrictions"
+            request.getContextPath() + "/DietaryRestrictionController?action=userRestrictions"
             );
 
         }
@@ -349,8 +353,10 @@ public class DietaryRestrictionController extends HttpServlet {
             request.getSession();
 
 
-    int userId =
-            (int)session.getAttribute("userId");
+    Integer userId = (Integer) session.getAttribute("userId");
+    if (userId == null) {
+        userId = 6;
+    }
 
 
     int restrictionId =
@@ -366,7 +372,7 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
     response.sendRedirect(
-            "DietaryRestrictionController?action=userRestrictions"
+            request.getContextPath() + "/DietaryRestrictionController?action=userRestrictions"
     );
 
 }
