@@ -1,8 +1,3 @@
-<%-- 
-    Document   : editRecipe
-    Created on : Jul 12, 2026, 9:49:22?AM
-    Author     : perer
---%>
 <%@ include file="/nav.jsp" %>
 <%@ page import="model.Recipe" %>
 
@@ -10,94 +5,64 @@
 Recipe r = (Recipe)request.getAttribute("recipe");
 %>
 
+<div class="page-container">
 
-<html>
+    <h2>Edit Recipe</h2>
 
-<head>
-<title>Edit Recipe</title>
-</head>
+    <div class="card">
+        <form action="RecipeController" method="post">
 
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="recipeId" value="<%=r.getRecipeId()%>">
 
-<body>
+            <p>
+                <label>Name</label><br>
+                <input type="text" name="name" value="<%=r.getName()%>" required style="width:100%; padding:8px;">
+            </p>
 
+            <p>
+                <label>Description</label><br>
+                <textarea name="description" rows="3" style="width:100%; padding:8px;"><%=r.getDescription()%></textarea>
+            </p>
 
-<h1>Edit Recipe</h1>
+            <p>
+                <label>Meal Type</label><br>
+                <select name="mealType" style="width:100%; padding:8px;">
+                    <option value="Breakfast" <%="Breakfast".equals(r.getMealType()) ? "selected" : ""%>>Breakfast</option>
+                    <option value="Lunch" <%="Lunch".equals(r.getMealType()) ? "selected" : ""%>>Lunch</option>
+                    <option value="Dinner" <%="Dinner".equals(r.getMealType()) ? "selected" : ""%>>Dinner</option>
+                </select>
+            </p>
 
+            <p>
+                <label>Cuisine</label><br>
+                <input type="text" name="cuisine" value="<%=r.getCuisine()%>" style="width:100%; padding:8px;">
+            </p>
 
-<form action="RecipeController" method="post">
+            <p>
+                <label>Cooking Time (minutes)</label><br>
+                <input type="number" name="cookingTime" value="<%=r.getCookingTime()%>" required style="width:100%; padding:8px;">
+            </p>
 
+            <p>
+                <label>Difficulty</label><br>
+                <select name="difficulty" style="width:100%; padding:8px;">
+                    <option value="Easy" <%="Easy".equals(r.getDifficulty()) ? "selected" : ""%>>Easy</option>
+                    <option value="Medium" <%="Medium".equals(r.getDifficulty()) ? "selected" : ""%>>Medium</option>
+                    <option value="Hard" <%="Hard".equals(r.getDifficulty()) ? "selected" : ""%>>Hard</option>
+                </select>
+            </p>
 
-<input type="hidden" name="action" value="update">
+            <p>
+                <label>Servings</label><br>
+                <input type="number" name="servings" value="<%=r.getServings()%>" required style="width:100%; padding:8px;">
+            </p>
 
+            <br>
+            <button type="submit" class="btn btn-primary">Update Recipe</button>
+            <a href="RecipeController" class="btn btn-secondary">Cancel</a>
 
-<input type="hidden" name="recipeId"
-value="<%=r.getRecipeId()%>">
+        </form>
+    </div>
 
-
-Name:
-
-<input type="text" name="name"
-value="<%=r.getName()%>">
-
-<br>
-
-
-Description:
-
-<textarea name="description">
-<%=r.getDescription()%>
-</textarea>
-
-<br>
-
-
-Meal Type:
-
-<input type="text" name="mealType"
-value="<%=r.getMealType()%>">
-
-<br>
-
-
-Cuisine:
-
-<input type="text" name="cuisine"
-value="<%=r.getCuisine()%>">
-
-<br>
-
-
-Cooking Time:
-
-<input type="number" name="cookingTime"
-value="<%=r.getCookingTime()%>">
-
-<br>
-
-
-Difficulty:
-
-<input type="text" name="difficulty"
-value="<%=r.getDifficulty()%>">
-
-<br>
-
-
-Servings:
-
-<input type="number" name="servings"
-value="<%=r.getServings()%>">
-
-<br>
-
-
-<button type="submit">
-Update Recipe
-</button>
-
-
-</form>
-
-
-</body>
-</html>
+</div>

@@ -1,244 +1,95 @@
 <%-- 
     Document   : recommendation
-    Created on : Jul 13, 2026, 9:29:22?AM
+    Created on : Jul 13, 2026, 9:29:22 AM
     Author     : perer
 --%>
 <%@ include file="/nav.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Recipe" %>
+<%@ page import="model.RecipeIngredient" %>
 <%@ page import="dao.NutritionFactsDAO" %>
+<%@ page import="dao.IngredientDAO" %>
 <%@ page import="model.NutritionFacts" %>
 <%@ page import="service.RecommendationEngine" %>
 
-
-<html>
-
-<head>
-
-<title>Healthy Meal Recommendations</title>
-
-
-<style>
-
-table{
-
-border-collapse:collapse;
-width:90%;
-
-}
-
-
-th,td{
-
-border:1px solid black;
-padding:10px;
-
-}
-
-
-</style>
-
-
-</head>
-
-
-<body>
-
-
-<h1>
-Healthy Meal Recommendations
-</h1>
-
-
-
-<table>
-
-
-<tr>
-
-<th>
-Recipe Name
-</th>
-
-
-<th>
-Meal Type
-</th>
-
-
-<th>
-Cuisine
-</th>
-
-
-<th>
-Cooking Time
-</th>
-
-
-<th>
-Difficulty
-</th>
-
-
-<th>
-Calories
-</th>
-
-
-<th>
-NutriScore
-</th>
-
-
-</tr>
-
-
-
 <%
-
-
 List<Recipe> recipes =
-(List<Recipe>)request.getAttribute(
-"recommendations"
-);
+        (List<Recipe>) request.getAttribute("recommendations");
 
-
-
-NutritionFactsDAO nutritionDAO =
-new NutritionFactsDAO();
-
-
-
-RecommendationEngine engine =
-new RecommendationEngine();
-
-
-
-if(recipes != null){
-
-
-for(Recipe recipe : recipes){
-
-
-
-NutritionFacts nutrition =
-nutritionDAO.getNutritionFactsByRecipeId(
-recipe.getRecipeId()
-);
-
-
-
-char grade =
-engine.getRecipeGrade(
-recipe.getRecipeId()
-);
-
-
-
+NutritionFactsDAO nutritionDAO = new NutritionFactsDAO();
+RecommendationEngine engine = new RecommendationEngine();
 %>
 
+<div class="page-container">
 
+    <h2>Healthy Meal Recommendations</h2>
 
-<tr>
+    <div class="card-grid">
 
+    <%
+    if (recipes != null) {
+        for (Recipe recipe : recipes) {
 
-<td>
+            NutritionFacts nutrition =
+                    nutritionDAO.getNutritionFactsByRecipeId(recipe.getRecipeId());
 
-<a href="RecipeController?action=view&id=<%=recipe.getRecipeId()%>">
+            char grade = engine.getRecipeGrade(recipe.getRecipeId());
 
-<%=recipe.getName()%>
+            double score = engine.calculateRecipeScore(recipe);
 
-</a>
+            List<RecipeIngredient> required =
+                    IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
 
-</td>
+            int missingCount = engine.getMissingIngredientsForRecipe(recipe.getRecipeId()).size();
+            int availableCount = required.size() - missingCount;
 
+            boolean usesExpiringIngredient =
+                    engine.calculateWasteReductionScore(recipe) >= 25;
+    %>
 
+        <div class="card">
 
-<td>
-<%=recipe.getMealType()%>
-</td>
+            <h3><%= recipe.getName() %></h3>
 
+            <p>
+                <span class="badge badge-grade-<%= Character.toLowerCase(grade) %>">NutriScore <%= grade %></span>
+                <span class="badge badge-grade-b"><%= recipe.getMealType() %></span>
 
-<td>
-<%=recipe.getCuisine()%>
-</td>
+                <% if (usesExpiringIngredient) { %>
+                    <span class="badge badge-warning">Uses Expiring Ingredients</span>
+                <% } %>
+            </p>
 
+            <p>
+                <% if (nutrition != null) { %>
+                    <%= nutrition.getCalories() %> kcal
+                <% } else { %>
+                    Calories: N/A
+                <% } %>
+                &nbsp; | &nbsp; Health Score: <%= String.format("%.1f", score) %>
+            </p>
 
+            <p>
+                Ingredients available: <%= availableCount %> / <%= required.size() %>
+                <% if (missingCount > 0) { %>
+                    <span class="badge badge-warning"><%= missingCount %> missing</span>
+                <% } %>
+            </p>
 
-<td>
-<%=recipe.getCookingTime()%> mins
-</td>
+            <p>? <%= recipe.getCookingTime() %> mins &nbsp; | &nbsp; <%= recipe.getDifficulty() %></p>
 
+            <br>
 
+            <a href="RecipeController?action=view&id=<%=recipe.getRecipeId()%>" class="btn btn-primary">View Recipe</a>
+            <a href="MealPlannerController?action=quickAdd&recipeId=<%=recipe.getRecipeId()%>" class="btn btn-secondary">Add to Meal Plan</a>
 
-<td>
-<%=recipe.getDifficulty()%>
-</td>
+        </div>
 
+    <%
+        }
+    }
+    %>
 
+    </div>
 
-<td>
-
-<%
-
-if(nutrition != null){
-
-%>
-
-<%=nutrition.getCalories()%> kcal
-
-
-<%
-
-}
-else{
-
-%>
-
-N/A
-
-
-<%
-
-}
-
-%>
-
-</td>
-
-
-
-
-<td>
-
-<%=grade%>
-
-
-</td>
-
-
-
-</tr>
-
-
-
-<%
-
-
-}
-
-}
-
-
-%>
-
-
-
-</table>
-
-
-
-</body>
-
-</html>
+</div>

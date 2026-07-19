@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css">
 
 <div class="navbar">
-    <div class="brand">Smart Grocery ? Healthy Meal Optimization</div>
+    <div class="brand">Smart Grocery - Healthy Meal Optimization</div>
     <div class="nav-links">
         <a href="<%=request.getContextPath()%>/MealDashboardController">Dashboard</a>
         <a href="<%=request.getContextPath()%>/RecipeController">Recipes</a>

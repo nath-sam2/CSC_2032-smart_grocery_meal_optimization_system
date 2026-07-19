@@ -215,6 +215,53 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
                 break;
 
 
+                case "quickAdd":
+
+    int quickAddRecipeId =
+            Integer.parseInt(request.getParameter("recipeId"));
+
+    HttpSession quickAddSession = request.getSession();
+
+    Integer quickAddUserId =
+            (Integer) quickAddSession.getAttribute("userId");
+
+    if (quickAddUserId == null) {
+        quickAddUserId = 6;
+    }
+
+    List<MealPlanner> existingPlans =
+            mealPlannerDAO.getMealPlansByUser(quickAddUserId);
+
+    MealPlanner targetPlan;
+
+    if (!existingPlans.isEmpty()) {
+        // Use the most recently created plan
+        targetPlan = existingPlans.get(existingPlans.size() - 1);
+    } else {
+        // No plans yet — create one
+        targetPlan = new MealPlanner();
+        targetPlan.setUserId(quickAddUserId);
+        targetPlan.setPlanName("My Meal Plan");
+        targetPlan.setStartDate(LocalDate.now());
+        targetPlan.setEndDate(LocalDate.now().plusDays(6));
+        mealPlannerDAO.insertMealPlan(targetPlan);
+    }
+
+    Recipe quickAddRecipe = recipeDAO.getRecipeById(quickAddRecipeId);
+
+    MealPlanDetail quickAddDetail = new MealPlanDetail();
+    quickAddDetail.setMealPlanId(targetPlan.getMealPlanId());
+    quickAddDetail.setRecipeId(quickAddRecipeId);
+    quickAddDetail.setMealDate(LocalDate.now());
+    quickAddDetail.setMealType(
+            quickAddRecipe != null ? quickAddRecipe.getMealType() : "Lunch"
+    );
+
+    mealDetailDAO.insertMealPlanDetail(quickAddDetail);
+
+    response.sendRedirect("MealPlannerController?action=view&id=" + targetPlan.getMealPlanId());
+
+    return;
         }
 
 
