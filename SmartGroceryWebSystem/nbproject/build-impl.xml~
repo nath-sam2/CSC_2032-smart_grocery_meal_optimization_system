@@ -54,12 +54,12 @@
         </condition>
         <condition property="have.sources">
             <or>
-                <available file="${src.util.dir}"/>
-                <available file="${src.util.dir}"/>
-                <available file="${src.util.dir}"/>
-                <available file="${src.util.dir}"/>
-                <available file="${src.util.dir}"/>
-                <available file="${src.util.dir}"/>
+                <available file="${src.controller.dir}"/>
+                <available file="${src.dao.dir}"/>
+                <available file="${src.model.dir}"/>
+                <available file="${src.service.dir}"/>
+                <available file="${src.smartgrocerymanagementsystem.dir}"/>
+                <available file="${src.test.dir}"/>
                 <available file="${src.util.dir}"/>
             </or>
         </condition>
@@ -238,12 +238,12 @@
         <!-- You can override this target in the ../build.xml file. -->
     </target>
     <target depends="-pre-init,-init-private,-init-user,-init-project,-do-init" name="-init-check">
-        <fail unless="src.util.dir">Must set src.util.dir</fail>
-        <fail unless="src.util.dir">Must set src.util.dir</fail>
-        <fail unless="src.util.dir">Must set src.util.dir</fail>
-        <fail unless="src.util.dir">Must set src.util.dir</fail>
-        <fail unless="src.util.dir">Must set src.util.dir</fail>
-        <fail unless="src.util.dir">Must set src.util.dir</fail>
+        <fail unless="src.controller.dir">Must set src.controller.dir</fail>
+        <fail unless="src.dao.dir">Must set src.dao.dir</fail>
+        <fail unless="src.model.dir">Must set src.model.dir</fail>
+        <fail unless="src.service.dir">Must set src.service.dir</fail>
+        <fail unless="src.smartgrocerymanagementsystem.dir">Must set src.smartgrocerymanagementsystem.dir</fail>
+        <fail unless="src.test.dir">Must set src.test.dir</fail>
         <fail unless="src.util.dir">Must set src.util.dir</fail>
         <fail unless="build.dir">Must set build.dir</fail>
         <fail unless="build.web.dir">Must set build.web.dir</fail>
@@ -288,7 +288,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
     </target>
     <target depends="-init-ap-cmdline-properties" if="ap.supported.internal" name="-init-macrodef-javac-with-processors">
         <macrodef name="javac" uri="http://www.netbeans.org/ns/web-project/2">
-            <attribute default="${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}" name="srcdir"/>
+            <attribute default="${src.controller.dir}:${src.dao.dir}:${src.model.dir}:${src.service.dir}:${src.smartgrocerymanagementsystem.dir}:${src.test.dir}:${src.util.dir}" name="srcdir"/>
             <attribute default="${build.classes.dir}" name="destdir"/>
             <attribute default="${javac.classpath}:${j2ee.platform.classpath}" name="classpath"/>
             <attribute default="${javac.processorpath}" name="processorpath"/>
@@ -326,7 +326,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
     </target>
     <target depends="-init-ap-cmdline-properties" name="-init-macrodef-javac-without-processors" unless="ap.supported.internal">
         <macrodef name="javac" uri="http://www.netbeans.org/ns/web-project/2">
-            <attribute default="${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}" name="srcdir"/>
+            <attribute default="${src.controller.dir}:${src.dao.dir}:${src.model.dir}:${src.service.dir}:${src.smartgrocerymanagementsystem.dir}:${src.test.dir}:${src.util.dir}" name="srcdir"/>
             <attribute default="${build.classes.dir}" name="destdir"/>
             <attribute default="${javac.classpath}:${j2ee.platform.classpath}" name="classpath"/>
             <attribute default="${javac.processorpath}" name="processorpath"/>
@@ -357,7 +357,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
     </target>
     <target depends="-init-macrodef-javac-with-processors,-init-macrodef-javac-without-processors" name="-init-macrodef-javac">
         <macrodef name="depend" uri="http://www.netbeans.org/ns/web-project/2">
-            <attribute default="${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}:${src.util.dir}" name="srcdir"/>
+            <attribute default="${src.controller.dir}:${src.dao.dir}:${src.model.dir}:${src.service.dir}:${src.smartgrocerymanagementsystem.dir}:${src.test.dir}:${src.util.dir}" name="srcdir"/>
             <attribute default="${build.classes.dir}" name="destdir"/>
             <attribute default="${javac.classpath}:${j2ee.platform.classpath}" name="classpath"/>
             <sequential>
@@ -857,12 +857,12 @@ exists or setup the property manually. For example like this:
     <target depends="init, deps-jar, -pre-pre-compile, -pre-compile, -copy-manifest, -copy-persistence-xml, -copy-webdir, library-inclusion-in-archive,library-inclusion-in-manifest" if="have.sources" name="-do-compile">
         <webproject2:javac destdir="${build.classes.dir}" gensrcdir="${build.generated.sources.dir}"/>
         <copy todir="${build.classes.dir}">
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.controller.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.dao.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.model.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.service.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.smartgrocerymanagementsystem.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.test.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
             <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
         </copy>
     </target>
@@ -891,12 +891,12 @@ exists or setup the property manually. For example like this:
         <fail unless="javac.includes">Must select some files in the IDE or set javac.includes</fail>
         <webproject2:javac excludes="" gensrcdir="${build.generated.sources.dir}" includes="${javac.includes}"/>
         <copy todir="${build.classes.dir}">
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
-            <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.controller.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.dao.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.model.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.service.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.smartgrocerymanagementsystem.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.test.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
             <fileset dir="${src.util.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
         </copy>
     </target>
@@ -993,12 +993,16 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,-do-dist-with-manifest,-do-dist-without-manifest" name="do-dist"/>
     <target depends="init" if="dist.ear.dir" name="library-inclusion-in-manifest">
-        <copyfiles files="${file.reference.Downloads-mysql-connector-j-9.7.0}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.mysql-connector-j-9.7.0.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+<copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-3.0.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-3.0.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
-        <copyfiles files="${file.reference.Downloads-mysql-connector-j-9.7.0}" todir="${build.web.dir}/WEB-INF/classes"/>
+        <copyfiles files="${file.reference.mysql-connector-j-9.7.0.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-3.0.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-3.0.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>
@@ -1290,22 +1294,22 @@ exists or setup the property manually. For example like this:
             <classpath>
                 <path path="${javac.classpath}:${j2ee.platform.classpath}"/>
             </classpath>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.controller.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.dao.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.model.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.service.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.smartgrocerymanagementsystem.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.test.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
             <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
@@ -1316,22 +1320,22 @@ exists or setup the property manually. For example like this:
             </fileset>
         </javadoc>
         <copy todir="${dist.javadoc.dir}">
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.controller.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.dao.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.model.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.service.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.smartgrocerymanagementsystem.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
-            <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.test.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
             <fileset dir="${src.util.dir}" excludes="${excludes}" includes="${includes}">
