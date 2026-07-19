@@ -14,22 +14,18 @@
                     <file>${file.reference.jakarta.servlet.jsp.jstl-3.0.1.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library dirs="200">
-                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-3.0.1.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.mysql-connector-j-9.7.0.jar-1}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
-                <root id="src.dir"/>
+                <root id="src.controller.dir"/>
+                <root id="src.dao.dir"/>
+                <root id="src.model.dir"/>
+                <root id="src.service.dir"/>
+                <root id="src.smartgrocerymanagementsystem.dir"/>
+                <root id="src.test.dir"/>
+                <root id="src.util.dir"/>
             </source-roots>
-            <test-roots>
-                <root id="test.src.dir"/>
-            </test-roots>
+            <test-roots/>
         </data>
     </configuration>
 </project>

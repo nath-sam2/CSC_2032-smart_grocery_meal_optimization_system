@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.smartgrocery.model.User"%>
-<%@page import="com.smartgrocery.model.Category"%>
-<%@page import="com.smartgrocery.service.CategoryService"%>
+<%@page import="model.User"%>
+<%@page import="model.Category"%>
+<%@page import="service.CategoryService"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
