@@ -42,5 +42,23 @@ public class CartServlet extends HttpServlet {
             cartService.removeFromCart(cartItemId);
             response.sendRedirect("cart.jsp");
         }
+
+        if ("update".equals(action)) {
+            int cartItemId = Integer.parseInt(
+                request.getParameter("cartItemId"));
+            int quantity = Integer.parseInt(
+                request.getParameter("quantity"));
+            if (quantity < 1) {
+                cartService.removeFromCart(cartItemId);
+            } else {
+                cartService.updateQuantity(cartItemId, quantity);
+            }
+            response.sendRedirect("cart.jsp");
+        }
+
+        if ("clear".equals(action)) {
+            cartService.clearCart(user.getUserId());
+            response.sendRedirect("cart.jsp");
+        }
     }
 }
