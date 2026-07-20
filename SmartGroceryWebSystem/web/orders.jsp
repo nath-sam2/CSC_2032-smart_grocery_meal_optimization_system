@@ -3,8 +3,14 @@
 <%@page import="model.Order"%>
 <%@page import="model.OrderItem"%>
 <%@page import="model.Product"%>
+<%@page import="model.Inventory"%>
+<%@page import="model.CartItem"%>
+<%@page import="model.NotificationService"%>
 <%@page import="service.OrderService"%>
+<%@page import="service.InventoryService"%>
+<%@page import="service.CartService"%>
 <%@page import="dao.ProductDAO"%>
+<%@page import="dao.NotificationDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 
@@ -18,6 +24,17 @@ if (user == null) {
 OrderService orderService = new OrderService();
 ProductDAO productDAO = new ProductDAO();
 boolean isAdmin = "ADMIN".equals(user.getRole());
+
+// Same sidebar/navbar counters as dashboard.jsp, kept in sync
+InventoryService inventoryService = new InventoryService();
+CartService cartService = new CartService();
+NotificationDAO notificationDAO = new NotificationDAO();
+
+int lowStockCount = inventoryService.getLowStockItems().size();
+List<CartItem> cartItems = cartService.getCartItems(user.getUserId());
+int cartCount = cartItems.size();
+List<NotificationService> unreadNotifications = notificationDAO.getUnreadNotifications();
+int notifCount = unreadNotifications.size();
 
 List<Order> orders;
 if (isAdmin) {
@@ -80,13 +97,13 @@ display:flex; flex-direction:column; overflow-y:auto;
 .logo-sub{ font-size:11px; color:var(--soft); margin-bottom:35px; margin-left:54px; margin-top:-2px; }
 .menu{ list-style:none; }
 .menu li{ margin-bottom:6px; }
-.menu a{ display:flex; align-items:center; gap:15px; padding:12px 16px; text-decoration:none; color:#cbd5e1; border-radius:12px; transition:.25s; font-size:14.5px; font-weight:500; position:relative; }
+.menu a{ display:flex; align-items:center; gap:15px; padding:12px 16px; text-decoration:none; color:#cbd5e1; border-radius:12px; transition:.25s; font-size:14.5px; font-weight:500; position:relative; cursor:pointer; border:none; background:none; width:100%; text-align:left; }
 .menu a:hover{ background:#1c1c1c; color:white; }
 .menu a.active{ background:var(--green); color:white; }
 .menu-count{ margin-left:auto; background:#ef4444; color:white; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; }
 .menu a.active .menu-count{ background:rgba(255,255,255,.25); }
 .side-label{ font-size:11px; letter-spacing:.08em; color:#666; text-transform:uppercase; margin:22px 0 10px 16px; font-weight:700; }
-.help-card{ margin-top:auto; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; text-decoration:none; display:block; color:white; }
+.help-card{ margin-top:auto; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; cursor:pointer; border:none; text-align:left; width:100%; text-decoration:none; display:block; color:white; }
 .help-card i{ font-size:22px; margin-bottom:8px; display:block; }
 .help-card b{ display:block; font-size:14px; }
 .help-card span{ font-size:12px; opacity:.85; }
@@ -101,9 +118,9 @@ display:flex; flex-direction:column; overflow-y:auto;
 .user{ display:flex; align-items:center; gap:22px; }
 .icon-btn{ position:relative; width:44px; height:44px; border-radius:12px; background:#1b1b1b; border:1px solid #2b2b2b; display:flex; align-items:center; justify-content:center; font-size:17px; color:#cbd5e1; cursor:pointer; text-decoration:none; }
 .icon-btn:hover{ border-color:var(--green); color:var(--green); }
+.icon-btn .dot{ position:absolute; top:-6px; right:-6px; background:#ef4444; color:white; font-size:10px; font-weight:700; min-width:18px; height:18px; border-radius:20px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
 .profile-chip{ display:flex; align-items:center; gap:10px; padding:6px 12px 6px 6px; background:#1b1b1b; border:1px solid #2b2b2b; border-radius:30px; cursor:pointer; text-decoration:none; }
-.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; overflow:hidden; }
-.avatar img{ width:100%; height:100%; object-fit:cover; }
+.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; }
 .profile-chip span{ font-size:14px; font-weight:600; color:white; }
 .content{ padding:40px; }
 
@@ -188,22 +205,100 @@ display:flex; flex-direction:column; overflow-y:auto;
 <div class="logo-sub">Manage Smart, Eat Smart</div>
 
 <ul class="menu">
-<li><a href="dashboard.jsp"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-<li><a href="products.jsp"><i class="fa-solid fa-cart-shopping"></i> Shop Groceries</a></li>
-<li><a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory</a></li>
-<li><a href="mealplanner.jsp"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
-<li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
-<li><a class="active" href="orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders</a></li>
-<li><a href="recipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
-<li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts</a></li>
-<li><a href="inventory.jsp?filter=low"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+
+<li>
+<a href="dashboard.jsp">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</a>
+</li>
+
+<li>
+<a href="products.jsp">
+<i class="fa-solid fa-cart-shopping"></i>
+Shop Groceries
+</a>
+</li>
+
+<li>
+<a href="inventory.jsp">
+<i class="fa-solid fa-warehouse"></i>
+My Inventory
+</a>
+</li>
+
+<li>
+<a href="mealplanner.jsp">
+<i class="fa-solid fa-utensils"></i>
+Meal Planner
+</a>
+</li>
+
+<li>
+<a href="cart.jsp">
+<i class="fa-solid fa-list-check"></i>
+Shopping List
+<% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
+</a>
+</li>
+
+<li>
+<a class="active" href="orders.jsp">
+<i class="fa-solid fa-receipt"></i>
+My Orders
+</a>
+</li>
+
+<li>
+<a href="recipes.jsp">
+<i class="fa-solid fa-book-open"></i>
+Recipes
+</a>
+</li>
+
+<li>
+<a href="notifications.jsp">
+<i class="fa-solid fa-bell"></i>
+Expiry Alerts
+<% if (notifCount > 0) { %><span class="menu-count"><%= notifCount %></span><% } %>
+</a>
+</li>
+
+<li>
+<a href="inventory.jsp?filter=low">
+<i class="fa-solid fa-triangle-exclamation"></i>
+Low Stock
+<% if (lowStockCount > 0) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
+</a>
+</li>
+
 </ul>
 
 <div class="side-label">Account</div>
+
 <ul class="menu">
-<li><a href="profile.jsp"><i class="fa-solid fa-user"></i> Profile</a></li>
-<li><a href="settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
-<li><a href="LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+<li>
+<a href="profile.jsp">
+<i class="fa-solid fa-user"></i>
+Profile
+</a>
+</li>
+
+<li>
+<a href="settings.jsp">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+</li>
+
+<li>
+<a href="LogoutServlet">
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</a>
+</li>
+
 </ul>
 
 <a href="tel:+94112345678" class="help-card">
@@ -224,16 +319,16 @@ display:flex; flex-direction:column; overflow-y:auto;
 </form>
 
 <div class="user">
-<a href="cart.jsp" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i></a>
-<a href="notifications.jsp" class="icon-btn"><i class="fa-regular fa-bell"></i></a>
+<a href="cart.jsp" class="icon-btn">
+<i class="fa-solid fa-cart-shopping"></i>
+<% if (cartCount > 0) { %><span class="dot"><%= cartCount %></span><% } %>
+</a>
+<a href="notifications.jsp" class="icon-btn">
+<i class="fa-regular fa-bell"></i>
+<% if (notifCount > 0) { %><span class="dot"><%= notifCount %></span><% } %>
+</a>
 <a href="profile.jsp" class="profile-chip">
-<div class="avatar">
-<% if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) { %>
-<img src="<%= user.getProfileImage() %>" alt="">
-<% } else { %>
-<%= user.getName().substring(0,1).toUpperCase() %>
-<% } %>
-</div>
+<div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
 <span><%= user.getName() %></span>
 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
 </a>

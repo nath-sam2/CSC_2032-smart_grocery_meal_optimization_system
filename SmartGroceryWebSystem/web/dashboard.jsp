@@ -1,5 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.User"%>
+<%@page import="model.Inventory"%>
+<%@page import="model.Product"%>
+<%@page import="model.CartItem"%>
+<%@page import="model.NotificationService"%>
+<%@page import="service.InventoryService"%>
+<%@page import="service.CartService"%>
+<%@page import="dao.ProductDAO"%>
+<%@page import="dao.NotificationDAO"%>
+<%@page import="java.util.List"%>
 
 <%
 User user=(User)session.getAttribute("user");
@@ -8,6 +17,23 @@ if(user==null){
     response.sendRedirect("login.jsp");
     return;
 }
+
+InventoryService inventoryService = new InventoryService();
+ProductDAO productDAO = new ProductDAO();
+CartService cartService = new CartService();
+NotificationDAO notificationDAO = new NotificationDAO();
+
+// Real low stock items (quantity <= reorderLevel)
+List<Inventory> lowStockList = inventoryService.getLowStockItems();
+int lowStockCount = lowStockList.size();
+
+// Real cart count
+List<CartItem> cartItems = cartService.getCartItems(user.getUserId());
+int cartCount = cartItems.size();
+
+// Real unread notifications count
+List<NotificationService> unreadNotifications = notificationDAO.getUnreadNotifications();
+int notifCount = unreadNotifications.size();
 %>
 
 <!DOCTYPE html>
@@ -947,7 +973,7 @@ Meal Planner
 <a href="cart.jsp">
 <i class="fa-solid fa-list-check"></i>
 Shopping List
-<span class="menu-count">4</span>
+<% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
 </a>
 </li>
 
@@ -962,7 +988,7 @@ Recipes
 <a href="notifications.jsp">
 <i class="fa-solid fa-bell"></i>
 Expiry Alerts
-<span class="menu-count">5</span>
+<% if (notifCount > 0) { %><span class="menu-count"><%= notifCount %></span><% } %>
 </a>
 </li>
 
@@ -970,7 +996,7 @@ Expiry Alerts
 <a href="inventory.jsp?filter=low">
 <i class="fa-solid fa-triangle-exclamation"></i>
 Low Stock
-<span class="menu-count">8</span>
+<% if (lowStockCount > 0) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
 </a>
 </li>
 
@@ -1027,16 +1053,16 @@ Logout
 
 <a href="cart.jsp" class="icon-btn">
 <i class="fa-solid fa-cart-shopping"></i>
-<span class="dot">3</span>
+<% if (cartCount > 0) { %><span class="dot"><%= cartCount %></span><% } %>
 </a>
 
 <a href="notifications.jsp" class="icon-btn">
 <i class="fa-regular fa-bell"></i>
-<span class="dot">4</span>
+<% if (notifCount > 0) { %><span class="dot"><%= notifCount %></span><% } %>
 </a>
 
 <a href="profile.jsp" class="profile-chip">
-<div class="avatar"><%=user.getName().substring(0,1).toUpperCase()%></div>
+<div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
 <span><%=user.getName()%></span>
 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
 </a>
@@ -1250,29 +1276,41 @@ Logout
 <div class="panel">
 <h2><span>📦 Low Stock Items</span><a href="inventory.jsp?filter=low">View All</a></h2>
 
-<a href="products.jsp?reorder=Milk" class="list-item">
-<div class="list-icon" style="background:#222;">🥛</div>
-<div><div class="list-name">Milk</div><div class="list-sub">20% left</div></div>
-<div class="stock-bar"><span style="width:20%"></span></div>
-</a>
+<%
+if (lowStockList.isEmpty()) {
+%>
+<div class="list-sub" style="padding:10px 0;">No low stock items right now. 🎉</div>
+<%
+} else {
+    int shown = 0;
+    for (Inventory inv : lowStockList) {
+        if (shown >= 4) break; // dashboard preview shows top 4, full list on inventory.jsp
+        shown++;
 
-<a href="products.jsp?reorder=Bread" class="list-item">
-<div class="list-icon" style="background:#222;">🍞</div>
-<div><div class="list-name">Bread</div><div class="list-sub">30% left</div></div>
-<div class="stock-bar"><span style="width:30%"></span></div>
-</a>
+        Product p = productDAO.getProductById(inv.getProductId());
+        String pName = (p != null) ? p.getName() : ("Product #" + inv.getProductId());
 
-<a href="products.jsp?reorder=Eggs" class="list-item">
-<div class="list-icon" style="background:#222;">🥚</div>
-<div><div class="list-name">Eggs</div><div class="list-sub">25% left</div></div>
-<div class="stock-bar"><span style="width:25%"></span></div>
+        int reorderLevel = inv.getReorderLevel();
+        int qty = inv.getQuantity();
+        // % of stock remaining relative to reorder level (capped 0-100)
+        int pct;
+        if (reorderLevel <= 0) {
+            pct = (qty <= 0) ? 0 : 100;
+        } else {
+            pct = (int) Math.round((qty * 100.0) / reorderLevel);
+            if (pct > 100) pct = 100;
+            if (pct < 0) pct = 0;
+        }
+%>
+<a href="products.jsp?reorder=<%= inv.getProductId() %>" class="list-item">
+<div class="list-icon" style="background:#222;">📦</div>
+<div><div class="list-name"><%= pName %></div><div class="list-sub"><%= qty %> left (reorder at <%= reorderLevel %>)</div></div>
+<div class="stock-bar"><span style="width:<%= pct %>%"></span></div>
 </a>
-
-<a href="products.jsp?reorder=Rice" class="list-item">
-<div class="list-icon" style="background:#222;">🍚</div>
-<div><div class="list-name">Rice</div><div class="list-sub">15% left</div></div>
-<div class="stock-bar"><span style="width:15%"></span></div>
-</a>
+<%
+    }
+}
+%>
 
 </div>
 
