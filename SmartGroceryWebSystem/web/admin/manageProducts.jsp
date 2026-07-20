@@ -30,8 +30,11 @@ for (Category c : categories) {
     categoryNames.put(c.getCategoryId(), c.getName());
 }
 
-String success = request.getAttribute("success") != null ? (String) request.getAttribute("success") : null;
-String error = request.getAttribute("error") != null ? (String) request.getAttribute("error") : null;
+String success = request.getParameter("success") != null ? "Product added successfully!"
+                : (request.getAttribute("success") != null ? (String) request.getAttribute("success") : null);
+String error = request.getParameter("error") != null ? "Failed to add product!"
+              : (request.getAttribute("error") != null ? (String) request.getAttribute("error") : null);
+String deleted = request.getParameter("deleted");
 %>
 
 <!DOCTYPE html>
@@ -126,6 +129,7 @@ tr:hover td{ background:#1e1e1e; }
 
 <% if (success != null) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> <%= success %></div><% } %>
 <% if (error != null) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> <%= error %></div><% } %>
+<% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Product deleted successfully.</div><% } %>
 
 <div class="layout">
 

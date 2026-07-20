@@ -53,13 +53,10 @@ public class ProductServlet extends HttpServlet {
                 inventoryService.addInventory(
                     p.getProductId(), quantity, 5
                 );
-                request.setAttribute("success",
-                    "Product added successfully!");
+                response.sendRedirect("admin/manageProducts.jsp?success=1");
             } else {
-                request.setAttribute("error", "Failed to add product!");
+                response.sendRedirect("admin/manageProducts.jsp?error=1");
             }
-            request.getRequestDispatcher("addProduct.jsp")
-                   .forward(request, response);
         }
     }
 
@@ -73,7 +70,7 @@ public class ProductServlet extends HttpServlet {
         if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             productService.deleteProduct(id);
-            response.sendRedirect("products.jsp");
+            response.sendRedirect("admin/manageProducts.jsp?deleted=1");
         }
     }
 }

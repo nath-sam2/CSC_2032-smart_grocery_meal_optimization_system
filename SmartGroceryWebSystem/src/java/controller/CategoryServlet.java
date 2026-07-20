@@ -27,16 +27,16 @@ public class CategoryServlet extends HttpServlet {
             );
 
             if (added) {
-                response.sendRedirect("categories.jsp?success=1");
+                response.sendRedirect("admin/manageCategories.jsp?success=1");
             } else {
-                response.sendRedirect("categories.jsp?error=1");
+                response.sendRedirect("admin/manageCategories.jsp?error=1");
             }
         }
 
         if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             categoryService.deleteCategory(id);
-            response.sendRedirect("categories.jsp");
+            response.sendRedirect("admin/manageCategories.jsp?deleted=1");
         }
     }
 }

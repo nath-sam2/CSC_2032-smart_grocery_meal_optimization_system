@@ -20,6 +20,7 @@ List<Category> categories = categoryService.getAllCategories();
 
 String success = request.getParameter("success");
 String error = request.getParameter("error");
+String deleted = request.getParameter("deleted");
 %>
 
 <!DOCTYPE html>
@@ -109,6 +110,7 @@ tr:hover td{ background:#1e1e1e; }
 
 <% if ("1".equals(success)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Category added successfully.</div><% } %>
 <% if ("1".equals(error)) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> Failed to add category.</div><% } %>
+<% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Category deleted successfully.</div><% } %>
 
 <div class="layout">
 
