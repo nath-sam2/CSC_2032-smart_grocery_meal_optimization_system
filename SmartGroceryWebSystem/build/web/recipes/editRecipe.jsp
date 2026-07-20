@@ -1,13 +1,25 @@
 <%@ include file="/nav.jsp" %>
 <%@ page import="model.Recipe" %>
+<%@ page import="java.util.List" %>
 
 <%
 Recipe r = (Recipe)request.getAttribute("recipe");
+List<String> formErrors = (List<String>) request.getAttribute("formErrors");
 %>
 
 <div class="page-container">
 
     <h2>Edit Recipe</h2>
+
+    <% if (formErrors != null && !formErrors.isEmpty()) { %>
+    <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+        <ul style="margin: 0; padding-left: 20px;">
+            <% for (String err : formErrors) { %>
+            <li><%= err %></li>
+            <% } %>
+        </ul>
+    </div>
+    <% } %>
 
     <div class="card">
         <form action="RecipeController" method="post">
@@ -41,7 +53,7 @@ Recipe r = (Recipe)request.getAttribute("recipe");
 
             <p>
                 <label>Cooking Time (minutes)</label><br>
-                <input type="number" name="cookingTime" value="<%=r.getCookingTime()%>" required style="width:100%; padding:8px;">
+                <input type="number" name="cookingTime" value="<%= request.getParameter("cookingTime") != null ? request.getParameter("cookingTime") : r.getCookingTime() %>" required style="width:100%; padding:8px;">
             </p>
 
             <p>
@@ -55,7 +67,7 @@ Recipe r = (Recipe)request.getAttribute("recipe");
 
             <p>
                 <label>Servings</label><br>
-                <input type="number" name="servings" value="<%=r.getServings()%>" required style="width:100%; padding:8px;">
+                <input type="number" name="servings" value="<%= request.getParameter("servings") != null ? request.getParameter("servings") : r.getServings() %>" required style="width:100%; padding:8px;">
             </p>
 
             <br>

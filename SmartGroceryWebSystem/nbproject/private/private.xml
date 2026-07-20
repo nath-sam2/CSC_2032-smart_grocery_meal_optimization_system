@@ -3,45 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/nbproject/project.properties</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/nbproject/build-impl.xml</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/register.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/profile.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/products.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/login.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/nbproject/project.xml</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/cart.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/checkout.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/orders.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/CartServlet.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/OrderServlet.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/inventory.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/notifications.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/dashboard.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/service/NotificationAlertService.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/integrationTest.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/systemTest.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/index.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/images/carousel1.jpg.jpg</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/recipes.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/index.html</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/css/style.css</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/NotificationServlet.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/settings.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/ProfileServlet.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/dao/UserDAO.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/service/AuthService.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/admin/manageCategories.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/admin/adminDashboard.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/RegisterServlet.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/admin/manageProducts.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/admin/manageOrders.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/web/admin/manageUsers.jsp</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/dao/ShoppingListItemDAO.java</file>
-            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/controller/UserManageServle.java</file>
-
             <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/src/java/model/MealPlanner.java</file>
             <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/src/java/service/AuthService.java</file>
             <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/src/java/model/User.java</file>
@@ -139,7 +100,9 @@
             <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/src/java/test/UserDietaryRestrictionTesst.java</file>
             <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/web/recommendation/userRestrictionList.jsp</file>
             <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/web/addProduct.jsp</file>
-
+            <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/web/systemTest.jsp</file>
+            <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/web/shop.jsp</file>
+            <file>file:/C:/University%20Projects%20-%20nathali/AS20240628-OFFICIAL/CSC%202032%20-%20Smart%20Grocery%20Management%20and%20Meal%20Optimization%20System/SmartGroceryWebSystem/web/settings.jsp</file>
         </group>
     </open-files>
 </project-private>
