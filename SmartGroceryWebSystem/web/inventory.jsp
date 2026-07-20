@@ -155,7 +155,7 @@ tr:hover td{ background:#1e1e1e; }
 <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
 <% if (!expiring.isEmpty()) { %><span class="menu-count"><%= expiring.size() %></span><% } %>
 </a></li>
-<li><a href="inventory.jsp?filter=low"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock
+<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock
 <% if (!lowStock.isEmpty()) { %><span class="menu-count"><%= lowStock.size() %></span><% } %>
 </a></li>
 </ul>
@@ -208,7 +208,7 @@ tr:hover td{ background:#1e1e1e; }
 <div class="icon-circle green"><i class="fa-solid fa-box"></i></div>
 <div><div class="stat-num"><%= allInv.size() %></div><div class="stat-title">Total Items</div></div>
 </a>
-<a href="inventory.jsp?filter=low" class="stat-card <%= "low".equals(filter) ? "active" : "" %>">
+<a href="lowstock.jsp" class="stat-card <%= "low".equals(filter) ? "active" : "" %>">
 <div class="icon-circle red"><i class="fa-solid fa-triangle-exclamation"></i></div>
 <div><div class="stat-num"><%= lowStock.size() %></div><div class="stat-title">Low Stock Items</div></div>
 </a>

@@ -266,7 +266,7 @@ if (selectedCatId != null) {
         <li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
         <li><a href="recipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
         <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts</a></li>
-        <li><a href="inventory.jsp?filter=low"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+        <li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
     </ul>
 
     <div class="side-label">Account</div>

@@ -995,7 +995,7 @@ Expiry Alerts
 </li>
 
 <li>
-<a href="inventory.jsp?filter=low">
+<a href="lowstock.jsp">
 <i class="fa-solid fa-triangle-exclamation"></i>
 Low Stock
 <% if (lowStockCount > 0) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
@@ -1276,7 +1276,7 @@ Logout
 
 <!-- LOW STOCK -->
 <div class="panel">
-<h2><span>📦 Low Stock Items</span><a href="inventory.jsp?filter=low">View All</a></h2>
+<h2><span>📦 Low Stock Items</span><a href="lowstock.jsp">View All</a></h2>
 
 <%
 if (lowStockList.isEmpty()) {

@@ -192,7 +192,7 @@ Expiry Alerts
 <% if (unreadCount > 0) { %><span class="menu-count"><%= unreadCount %></span><% } %>
 </a>
 </li>
-<li><a href="inventory.jsp?filter=low"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
 </ul>
 
 <div class="side-label">Account</div>
