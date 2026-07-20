@@ -130,9 +130,66 @@ public class RecommendationEngine {
 }
 
 
+/*
+    Health Score: point-based scoring using specific
+    nutrition thresholds (separate from NutriScore grade)
+*/
+public int calculateHealthScore(NutritionFacts nutrition) {
+
+    if (nutrition == null) {
+        return 0;
+    }
+
+    int score = 0;
+
+    if (nutrition.getProtein() >= 15) {
+        score += 15;
+    }
+
+    if (nutrition.getDietaryFiber() >= 5) {
+        score += 10;
+    }
+
+    if (nutrition.getTotalSugar() <= 5) {
+        score += 10;
+    }
+
+    if (nutrition.getSaturatedFat() <= 3) {
+        score += 10;
+    }
+
+    if (nutrition.getSodium() >= 600) {
+        score -= 10;
+    }
+
+    if (nutrition.getCalories() >= 500) {
+        score -= 5;
+    }
+
+    return score;
+}
 
 
+/*
+    Calculate the actual shortfall quantity for one ingredient:
+    how much more is needed beyond what's currently in inventory
+*/
+public double calculateShortfall(int ingredientId, double totalRequiredQty) {
 
+    Ingredient ingredient = ingredientDAO.getIngredientById(ingredientId);
+
+    if (ingredient == null) {
+        return totalRequiredQty;
+    }
+
+    Inventory inventory = inventoryDAO.getInventoryByProduct(ingredient.getProductId());
+
+    double availableQty = (inventory != null) ? inventory.getQuantity() : 0;
+
+    double shortfall = totalRequiredQty - availableQty;
+
+    return Math.max(shortfall, 0);
+}
 
     /*
         Filter recipes using user restrictions
@@ -680,46 +737,47 @@ for (DietaryRestriction restriction : restrictions) {
 
 
 
-    // Collect ingredients, combining duplicates across the whole meal plan
+    // Aggregate total required quantity per ingredient AND unit across the whole meal plan
 
-java.util.Map<Integer, ShoppingListItem> combined = new java.util.HashMap<>();
+java.util.Map<String, Double> totalRequired = new java.util.HashMap<>();
+java.util.Map<String, Integer> ingredientIds = new java.util.HashMap<>();
+java.util.Map<String, String> unitsMap = new java.util.HashMap<>();
 
 for(MealPlanDetail detail : details){
 
-    List<Ingredient> missingIngredients =
-            getMissingIngredientsForRecipe(
-                    detail.getRecipeId()
-            );
+    List<RecipeIngredient> recipeIngredients =
+            IngredientDAO.getIngredientsByRecipe(detail.getRecipeId());
 
-    for(Ingredient ingredient : missingIngredients){
+    for(RecipeIngredient ri : recipeIngredients){
 
-        int id = ingredient.getIngredientId();
+        String key = ri.getIngredientId() + "_" + ri.getUnit();
 
-        if(combined.containsKey(id)){
-
-            ShoppingListItem existing = combined.get(id);
-            existing.setQuantity(existing.getQuantity() + 1);
-
-        } else {
-
-            ShoppingListItem item = new ShoppingListItem();
-
-            item.setShoppingListId(shoppingList.getShoppingListId());
-            item.setIngredientId(id);
-            item.setQuantity(1);
-            item.setUnit(ingredient.getUnit());
-            item.setStatus("Pending");
-
-            combined.put(id, item);
-        }
+        totalRequired.merge(key, ri.getQuantity(), Double::sum);
+        ingredientIds.put(key, ri.getIngredientId());
+        unitsMap.put(key, ri.getUnit());
     }
 }
 
-for(ShoppingListItem item : combined.values()){
-    shoppingListItemDAO.insertShoppingListItem(item);
+for (java.util.Map.Entry<String, Double> entry : totalRequired.entrySet()) {
+
+    int ingredientId = ingredientIds.get(entry.getKey());
+    double requiredQty = entry.getValue();
+
+    double shortfall = calculateShortfall(ingredientId, requiredQty);
+
+    if (shortfall > 0) {
+
+        ShoppingListItem item = new ShoppingListItem();
+
+        item.setShoppingListId(shoppingList.getShoppingListId());
+        item.setIngredientId(ingredientId);
+        item.setQuantity(shortfall);
+        item.setUnit(unitsMap.get(entry.getKey()));
+        item.setStatus("Pending");
+
+        shoppingListItemDAO.insertShoppingListItem(item);
+    }
 }
-
-
     return shoppingList;
 
 }

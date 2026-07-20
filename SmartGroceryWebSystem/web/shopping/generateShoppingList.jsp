@@ -1,6 +1,6 @@
 <%-- 
     Document   : generateShoppingList
-    Created on : Jul 13, 2026, 5:33:08 PM
+    Created on : Jul 13, 2026, 5:33:08 PM
     Author     : perer
 --%>
 <%@ include file="/nav.jsp" %>
@@ -30,11 +30,11 @@ List<MealPlanner> userPlans = mealPlannerDAO.getMealPlansByUser(genUserId);
 
             <p>You don't have any meal plans yet.</p>
             <br>
-            <a href="MealPlannerController?action=create" class="btn btn-primary">Create a Meal Plan</a>
+            <a href="<%=request.getContextPath()%>/MealPlannerController?action=create" class="btn btn-primary">Create a Meal Plan</a>
 
         <% } else { %>
 
-            <form action="ShoppingListController" method="get">
+            <form action="<%=request.getContextPath()%>/ShoppingListController" method="get">
 
                 <input type="hidden" name="action" value="generate">
 
@@ -63,6 +63,6 @@ List<MealPlanner> userPlans = mealPlannerDAO.getMealPlansByUser(genUserId);
     </div>
 
     <br>
-    <a href="ShoppingListController?action=list" class="btn btn-secondary">View Shopping Lists</a>
+    <a href="<%=request.getContextPath()%>/ShoppingListController?action=list" class="btn btn-secondary">View Shopping Lists</a>
 
 </div>

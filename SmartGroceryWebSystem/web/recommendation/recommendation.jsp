@@ -60,14 +60,19 @@ RecommendationEngine engine = new RecommendationEngine();
                 <% } %>
             </p>
 
-            <p>
-                <% if (nutrition != null) { %>
-                    <%= nutrition.getCalories() %> kcal
-                <% } else { %>
-                    Calories: N/A
-                <% } %>
-                &nbsp; | &nbsp; Health Score: <%= String.format("%.1f", score) %>
-            </p>
+            <%
+int healthScore = (nutrition != null) ? engine.calculateHealthScore(nutrition) : 0;
+%>
+
+<p>
+    <% if (nutrition != null) { %>
+        <%= nutrition.getCalories() %> kcal
+    <% } else { %>
+        Calories: N/A
+    <% } %>
+    &nbsp; | &nbsp; Recipe Score: <%= String.format("%.1f", score) %>
+    &nbsp; | &nbsp; Health Score: <%= healthScore %>
+</p>
 
             <p>
                 Ingredients available: <%= availableCount %> / <%= required.size() %>
@@ -76,7 +81,7 @@ RecommendationEngine engine = new RecommendationEngine();
                 <% } %>
             </p>
 
-            <p>? <%= recipe.getCookingTime() %> mins &nbsp; | &nbsp; <%= recipe.getDifficulty() %></p>
+            <p><%= recipe.getCookingTime() %> mins ...  &nbsp; | &nbsp; <%= recipe.getDifficulty() %></p>
 
             <br>
 
