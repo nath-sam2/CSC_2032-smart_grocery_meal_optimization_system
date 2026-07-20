@@ -18,18 +18,26 @@
                     <file>${file.reference.jakarta.servlet.jsp.jstl-api-3.0.1.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-3.0.1.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-3.0.1.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.mysql-connector-j-9.7.0.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
-                <root id="src.util.dir"/>
-                <root id="src.util.dir"/>
-                <root id="src.util.dir"/>
-                <root id="src.util.dir"/>
-                <root id="src.util.dir"/>
-                <root id="src.util.dir"/>
-                <root id="src.util.dir"/>
+                <root id="src.dir"/>
             </source-roots>
-            <test-roots/>
+            <test-roots>
+                <root id="src.util.dir"/>
+            </test-roots>
         </data>
     </configuration>
 </project>
