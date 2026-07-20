@@ -27,6 +27,7 @@ import model.ShoppingList;
 import model.ShoppingListItem;
 import model.Product;
 
+
 import java.util.HashSet;
 import java.util.Set;
 import java.time.LocalDate;
@@ -39,6 +40,7 @@ import java.util.List;
 public class RecommendationEngine {
 
 
+    private List<Product> cachedExpiringProducts = null;
     private IngredientDAO ingredientDAO;
     public RecipeDAO recipeDAO;
     private NutritionFactsDAO nutritionDAO;
@@ -75,6 +77,12 @@ public class RecommendationEngine {
 
 
 
+    private List<Product> getExpiringProductsCached() {
+    if (cachedExpiringProducts == null) {
+        cachedExpiringProducts = inventoryDAO.getExpiringItems(3);
+    }
+    return cachedExpiringProducts;
+}
 
     /*
         Check if recipe contains an ingredient keyword
@@ -552,51 +560,28 @@ for (DietaryRestriction restriction : restrictions) {
     */
     public MealPlanner generateWeeklyMealPlan(
             int userId){
-
-
-
         List<Recipe> recipes =
                 recommendRecipes(userId);
-
-
         if(recipes.isEmpty()){
         System.out.println("No suitable recipes found for user " + userId + " - cannot generate meal plan.");
         return null;
     }
-
         MealPlanner planner =
                 new MealPlanner();
-
-
-
         planner.setUserId(userId);
-
         planner.setPlanName(
                 "Weekly Healthy Meal Plan"
         );
-
-
         planner.setStartDate(
                 LocalDate.now()
         );
-
-
         planner.setEndDate(
                 LocalDate.now()
                 .plusDays(6)
         );
-
-
-
         mealPlannerDAO.insertMealPlan(planner);
-
-
-
         LocalDate date =
                 LocalDate.now();
-
-
-
         String meals[] =
         {
             "Breakfast",
@@ -604,77 +589,45 @@ for (DietaryRestriction restriction : restrictions) {
             "Dinner"
         };
 
-
-
-        int index=0;
-
-
-
         for(int i=0;i<7;i++){
-
 
             for(String meal:meals){
 
+                // Find the best-scoring recipe for this specific meal slot
+                Recipe bestMatch = null;
+                double bestScore = Double.NEGATIVE_INFINITY;
 
-
-                if(index >= recipes.size()){
-
-                    index=0;
-
+                for (Recipe candidate : recipes) {
+                    double candidateScore = calculateRecipeScore(candidate, meal);
+                    if (candidateScore > bestScore) {
+                        bestScore = candidateScore;
+                        bestMatch = candidate;
+                    }
                 }
 
-
+                if (bestMatch == null) {
+                    continue;
+                }
 
                 MealPlanDetail detail =
                         new MealPlanDetail();
-
-
-
                 detail.setMealPlanId(
                         planner.getMealPlanId()
                 );
-
-
-
                 detail.setRecipeId(
-                        recipes.get(index)
-                        .getRecipeId()
+                        bestMatch.getRecipeId()
                 );
-
-
-
                 detail.setMealDate(
                         date.plusDays(i)
                 );
-
-
-
                 detail.setMealType(meal);
-
-
-
                 mealPlanDetailDAO
                 .insertMealPlanDetail(detail);
-
-
-
                 planner.addRecipe(detail);
-
-
-
-                index++;
-
             }
-
-
         }
-
-
-
         return planner;
-
     }
-
 
 
 
@@ -893,7 +846,7 @@ public List<Ingredient> getMissingIngredientsForRecipe(int recipeId) {
     }
 
     List<Product> expiringProducts =
-        inventoryDAO.getExpiringItems(3);
+    getExpiringProductsCached();
 
 for (Product product : expiringProducts) {
 
@@ -911,7 +864,7 @@ for (Product product : expiringProducts) {
     public List<Recipe> prioritizeExpiringIngredients(List<Recipe> recipes) {
 
     List<Product> expiringProducts =
-            inventoryDAO.getExpiringItems(3);
+        getExpiringProductsCached();
 
     if (expiringProducts.isEmpty()) {
         return recipes;
@@ -991,17 +944,13 @@ for (Product product : expiringProducts) {
     Nutrition + Inventory Match + Expiry Priority - Missing Ingredients
 */
 public double calculateRecipeScore(Recipe recipe) {
-
     double score = 0;
-
+    
     // Nutrition Score (reuses existing NutriScore grade -> points)
     NutritionFacts nutrition =
             nutritionDAO.getNutritionFactsByRecipeId(recipe.getRecipeId());
-
     if (nutrition != null) {
-
         char grade = NutriScoreService.calculateNutriScore(nutrition, false);
-
         switch (grade) {
             case 'A': score += 20; break;
             case 'B': score += 15; break;
@@ -1010,56 +959,64 @@ public double calculateRecipeScore(Recipe recipe) {
             default:  score += 0;
         }
     }
-
     List<RecipeIngredient> required =
             IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
-
     List<Product> expiringProducts =
-            inventoryDAO.getExpiringItems(3);
-
+        getExpiringProductsCached();
     Set<Integer> expiringProductIds = new HashSet<>();
     for (Product p : expiringProducts) {
         expiringProductIds.add(p.getProductId());
     }
-
     int totalIngredients = required.size();
     int availableCount = 0;
     int missingCount = 0;
     int expiringCount = 0;
-
     for (RecipeIngredient ri : required) {
-
         Ingredient ingredient =
                 ingredientDAO.getIngredientById(ri.getIngredientId());
-
         if (ingredient == null) {
             continue;
         }
-
         if (isIngredientAvailable(ri.getIngredientId(), ri.getQuantity())) {
             availableCount++;
         } else {
             missingCount++;
         }
-
         if (expiringProductIds.contains(ingredient.getProductId())) {
             expiringCount++;
         }
     }
-
     // Inventory Match: up to 10 points based on % of ingredients on hand
     if (totalIngredients > 0) {
         score += ((double) availableCount / totalIngredients) * 10;
     }
-
     // Expiry Priority: 5 points per ingredient that's about to expire
     score += expiringCount * 5;
-
     // Missing Ingredients: penalty, 3 points per missing ingredient
     score -= missingCount * 3;
+    return score;
+}
+
+/*
+    Same as calculateRecipeScore, but with a bonus/penalty
+    based on whether the recipe's mealType matches the
+    meal slot it's being considered for
+*/
+public double calculateRecipeScore(Recipe recipe, String targetMealType) {
+
+    double score = calculateRecipeScore(recipe);
+
+    if (targetMealType != null && recipe.getMealType() != null) {
+
+        if (recipe.getMealType().equalsIgnoreCase(targetMealType)) {
+            score += 10;
+        } else {
+            score -= 15;
+        }
+    }
 
     return score;
-}   
+}  
     public List<Recipe> sortRecommendations(List<Recipe> recipes) {
 
     recipes.sort((r1, r2) ->

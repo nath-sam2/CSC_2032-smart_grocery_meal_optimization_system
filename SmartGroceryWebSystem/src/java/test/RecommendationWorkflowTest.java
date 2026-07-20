@@ -20,9 +20,11 @@ import model.NutritionFacts;
 public class RecommendationWorkflowTest {
     public static void main(String[] args) {
 RecommendationEngine engine = new RecommendationEngine();
-NutritionFactsDAO nutritionDAO = new NutritionFactsDAO();
-NutritionFacts n = nutritionDAO.getNutritionFactsByRecipeId(6); // Quinoa Salad
-System.out.println("Health Score: " + engine.calculateHealthScore(n));
+List<Recipe> recipes = engine.recommendRecipes(6);
+
+for (Recipe r : recipes) {
+    System.out.println(r.getName() + " -> score: " + engine.calculateRecipeScore(r));
+}
     }
 }
 
