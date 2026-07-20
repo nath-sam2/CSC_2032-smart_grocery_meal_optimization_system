@@ -26,4 +26,26 @@ public class AuthService {
         }
         return null;
     }
+
+    public User getUserById(int userId) {
+        return userDAO.getUserById(userId);
+    }
+
+    public boolean updateProfile(int userId, String name, String email) {
+        User existing = userDAO.getUserByEmail(email);
+        if (existing != null && existing.getUserId() != userId) {
+            // email already taken by another account
+            return false;
+        }
+        return userDAO.updateProfile(userId, name, email);
+    }
+
+    public boolean changePassword(int userId, String currentPassword,
+                                  String newPassword) {
+        User user = userDAO.getUserById(userId);
+        if (user == null || !user.getPassword().equals(currentPassword)) {
+            return false;
+        }
+        return userDAO.updatePassword(userId, newPassword);
+    }
 }

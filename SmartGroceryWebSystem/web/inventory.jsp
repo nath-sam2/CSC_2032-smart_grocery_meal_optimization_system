@@ -93,8 +93,11 @@ display:flex; flex-direction:column; overflow-y:auto;
 
 /* STATS */
 .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:36px; }
-.stat-card{ background:var(--card); border:1px solid var(--border); border-radius:18px; padding:24px; display:flex; align-items:center; gap:16px; transition:.2s; }
+.stat-card{ background:var(--card); border:1px solid var(--border); border-radius:18px; padding:24px; display:flex; align-items:center; gap:16px; transition:.2s; text-decoration:none; }
 .stat-card:hover{ border-color:var(--green); transform:translateY(-3px); }
+.stat-card.active{ border-color:var(--green); box-shadow:0 0 0 1px var(--green) inset; }
+.view-all-link{ font-size:12.5px; font-weight:700; color:var(--green); text-decoration:none; }
+.view-all-link:hover{ text-decoration:underline; }
 .icon-circle{ min-width:54px; height:54px; border-radius:14px; display:flex; justify-content:center; align-items:center; font-size:20px; }
 .green{ background:rgba(34,197,94,.15); color:#22c55e; }
 .red{ background:rgba(239,68,68,.15); color:#ef4444; }
@@ -103,7 +106,8 @@ display:flex; flex-direction:column; overflow-y:auto;
 .stat-title{ font-size:13.5px; color:var(--soft); margin-top:2px; }
 
 /* SECTION */
-.section-title{ font-size:19px; font-weight:700; margin:36px 0 18px; display:flex; align-items:center; gap:10px; }
+.section-title{ font-size:19px; font-weight:700; margin:36px 0 18px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.section-title > span{ display:flex; align-items:center; gap:10px; }
 
 /* PANEL / TABLE */
 .panel{ background:var(--card); border:1px solid var(--border); border-radius:18px; overflow:hidden; margin-bottom:8px; }
@@ -199,21 +203,22 @@ tr:hover td{ background:#1e1e1e; }
 
 <!-- STATS -->
 <div class="stats">
-<div class="stat-card">
+<a href="inventory.jsp" class="stat-card <%= filter == null ? "active" : "" %>">
 <div class="icon-circle green"><i class="fa-solid fa-box"></i></div>
 <div><div class="stat-num"><%= allInv.size() %></div><div class="stat-title">Total Items</div></div>
-</div>
-<div class="stat-card">
+</a>
+<a href="inventory.jsp?filter=low" class="stat-card <%= "low".equals(filter) ? "active" : "" %>">
 <div class="icon-circle red"><i class="fa-solid fa-triangle-exclamation"></i></div>
 <div><div class="stat-num"><%= lowStock.size() %></div><div class="stat-title">Low Stock Items</div></div>
-</div>
-<div class="stat-card">
+</a>
+<a href="inventory.jsp?filter=expiring" class="stat-card <%= "expiring".equals(filter) ? "active" : "" %>">
 <div class="icon-circle amber"><i class="fa-solid fa-clock"></i></div>
 <div><div class="stat-num"><%= expiring.size() %></div><div class="stat-title">Expiring Soon (7 days)</div></div>
-</div>
+</a>
 </div>
 
 <!-- ALL INVENTORY -->
+<% if (filter == null) { %>
 <h2 class="section-title"><i class="fa-solid fa-boxes-stacked" style="color:var(--green);"></i> All Inventory</h2>
 <div class="panel">
 <table>
@@ -255,10 +260,14 @@ if (allInv.isEmpty()) {
 </tbody>
 </table>
 </div>
+<% } %>
 
 <!-- LOW STOCK -->
-<% if (!lowStock.isEmpty()) { %>
-<h2 class="section-title"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Low Stock Alerts</h2>
+<% if (filter == null || "low".equals(filter)) { %>
+<h2 class="section-title">
+<span><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Low Stock Alerts</span>
+<% if ("low".equals(filter)) { %><a href="inventory.jsp" class="view-all-link">View Full Inventory <i class="fa-solid fa-chevron-right"></i></a><% } %>
+</h2>
 <div class="panel">
 <table>
 <thead>
@@ -271,7 +280,12 @@ if (allInv.isEmpty()) {
 </thead>
 <tbody>
 <%
-for (Inventory i : lowStock) {
+if (lowStock.isEmpty()) {
+%>
+<tr><td colspan="4" class="empty-row">No low stock items right now. You're well stocked!</td></tr>
+<%
+} else {
+    for (Inventory i : lowStock) {
 %>
 <tr>
 <td>#<%= i.getProductId() %></td>
@@ -280,6 +294,7 @@ for (Inventory i : lowStock) {
 <td><a href="products.jsp?reorder=<%= i.getProductId() %>" class="badge badge-low"><i class="fa-solid fa-cart-plus"></i> Reorder</a></td>
 </tr>
 <%
+    }
 }
 %>
 </tbody>
@@ -288,8 +303,11 @@ for (Inventory i : lowStock) {
 <% } %>
 
 <!-- EXPIRING SOON -->
-<% if (!expiring.isEmpty()) { %>
-<h2 class="section-title"><i class="fa-solid fa-clock" style="color:#f59e0b;"></i> Expiring Soon (within 7 days)</h2>
+<% if (filter == null || "expiring".equals(filter)) { %>
+<h2 class="section-title">
+<span><i class="fa-solid fa-clock" style="color:#f59e0b;"></i> Expiring Soon (within 7 days)</span>
+<% if ("expiring".equals(filter)) { %><a href="inventory.jsp" class="view-all-link">View Full Inventory <i class="fa-solid fa-chevron-right"></i></a><% } %>
+</h2>
 <div class="panel">
 <table>
 <thead>
@@ -302,7 +320,12 @@ for (Inventory i : lowStock) {
 </thead>
 <tbody>
 <%
-for (Product p : expiring) {
+if (expiring.isEmpty()) {
+%>
+<tr><td colspan="4" class="empty-row">Nothing expiring in the next 7 days.</td></tr>
+<%
+} else {
+    for (Product p : expiring) {
 %>
 <tr>
 <td>#<%= p.getProductId() %></td>
@@ -311,6 +334,7 @@ for (Product p : expiring) {
 <td><span class="badge badge-expiry"><i class="fa-solid fa-clock"></i> Near Expiry</span></td>
 </tr>
 <%
+    }
 }
 %>
 </tbody>

@@ -78,8 +78,9 @@ nav {
   z-index: 1;
 }
 .hero-bg-img {
-  position: absolute; inset: 0;
-  background: url('images/carousel1.jpg') center/cover no-repeat;
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80') center center/cover no-repeat;
   z-index: 0;
 }
 .hero-glow {
@@ -499,12 +500,12 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
 
   /* Auto-rotating carousel photos - each box shows a DIFFERENT photo at the same time */
   const carouselPhotos = [
-    'images/carousel1.jpg',
-    'images/carousel2.jpg',
-    'images/carousel3.jpg',
-    'images/carousel4.jpg',
-    'images/carousel5.jpg',
-    'images/carousel6.jpg'
+    'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80',
+    'https://images.unsplash.com/photo-1506617420156-8e4536971650?w=900&q=80',
+    'https://images.unsplash.com/photo-1518843875459-f738682238a6?w=900&q=80',
+    'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=900&q=80',
+    'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=900&q=80',
+    'https://images.unsplash.com/photo-1580913428735-bce91382018c?w=900&q=80'
   ];
   const numPhotos = carouselPhotos.length;
 
