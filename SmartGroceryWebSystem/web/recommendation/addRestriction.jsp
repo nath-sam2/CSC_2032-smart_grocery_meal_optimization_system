@@ -5,6 +5,7 @@
 --%>
 <%@ include file="/nav.jsp" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="page-container">
 
@@ -19,6 +20,12 @@
 
         <br><br>
 
+        <c:if test="${not empty formError}">
+            <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+                ${formError}
+            </div>
+        </c:if>
+
         <form action="DietaryRestrictionController" method="post">
 
             <input type="hidden"
@@ -30,6 +37,7 @@
             <input
                 type="text"
                 name="restrictionName"
+                value="${param.restrictionName}"
                 required
                 style="width:100%;padding:10px;margin:8px 0 16px;">
 
@@ -38,7 +46,7 @@
             <textarea
                 name="description"
                 rows="4"
-                style="width:100%;padding:10px;margin:8px 0 20px;"></textarea>
+                style="width:100%;padding:10px;margin:8px 0 20px;">${param.description}</textarea>
 
             <button
                 type="submit"

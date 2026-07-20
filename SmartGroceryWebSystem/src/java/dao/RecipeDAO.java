@@ -78,6 +78,41 @@ public class RecipeDAO {
 
     return null;
 }
+    public Recipe getRecipeByName(String name) {
+
+    String sql = "SELECT * FROM Recipes WHERE LOWER(name) = LOWER(?)";
+
+    try (
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+
+        stmt.setString(1, name);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+
+            Recipe recipe = new Recipe();
+
+            recipe.setRecipeId(rs.getInt("recipeId"));
+            recipe.setName(rs.getString("name"));
+            recipe.setDescription(rs.getString("description"));
+            recipe.setMealType(rs.getString("mealType"));
+            recipe.setCuisine(rs.getString("cuisine"));
+            recipe.setCookingTime(rs.getInt("cookingTime"));
+            recipe.setDifficulty(rs.getString("difficulty"));
+            recipe.setServings(rs.getInt("servings"));
+
+            return recipe;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
     public List<Recipe> getAllRecipes() {
 
     List<Recipe> recipes = new ArrayList<>();

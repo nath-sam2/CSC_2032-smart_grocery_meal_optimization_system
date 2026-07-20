@@ -37,11 +37,10 @@ public class FoodWasteController extends HttpServlet {
         /*
          * Temporary until Member 1 login integration.
          */
-        int userId = 1;
-
-        if (session != null && session.getAttribute("userId") != null) {
-            userId = (Integer) session.getAttribute("userId");
-        }
+        int userId = 6;
+if (session != null && session.getAttribute("userId") != null) {
+    userId = (Integer) session.getAttribute("userId");
+}
 
         String action = request.getParameter("action");
 

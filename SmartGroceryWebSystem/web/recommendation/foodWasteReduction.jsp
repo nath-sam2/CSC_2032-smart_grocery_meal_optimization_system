@@ -32,7 +32,7 @@ List<Product> expiringItems = inventoryDAO.getExpiringItems(3);
             <%
             for (Product p : expiringItems) {
             %>
-                <li><%= p.getName() %> ? expires <%= p.getExpiryDate() %></li>
+                <li><%= p.getName() %> - expires <%= p.getExpiryDate() %></li>
             <%
             }
             %>

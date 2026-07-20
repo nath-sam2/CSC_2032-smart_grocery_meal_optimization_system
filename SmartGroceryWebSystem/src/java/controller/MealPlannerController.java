@@ -113,15 +113,26 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
             case "view":
 
 
-                int planId =
-                Integer.parseInt(
-                request.getParameter("id")
-                );
+                int planId;
+
+                try {
+                    planId = Integer.parseInt(
+                        request.getParameter("id")
+                    );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("MealPlannerController?action=list");
+                    return;
+                }
 
 
 
                 MealPlanner plan =
                 mealPlannerDAO.getMealPlansById(planId);
+
+                if (plan == null) {
+                    response.sendRedirect("MealPlannerController?action=list");
+                    return;
+                }
 
 
 
@@ -158,10 +169,16 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
             case "addMeal":
 
 
-                int mealPlanId =
-                Integer.parseInt(
-                request.getParameter("id")
-                );
+                int mealPlanId;
+
+                try {
+                    mealPlanId = Integer.parseInt(
+                        request.getParameter("id")
+                    );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("MealPlannerController?action=list");
+                    return;
+                }
 
 
 
@@ -199,10 +216,16 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
             case "deleteMeal":
 
 
-                int detailId =
-                Integer.parseInt(
-                request.getParameter("id")
-                );
+                int detailId;
+
+                try {
+                    detailId = Integer.parseInt(
+                        request.getParameter("id")
+                    );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("MealPlannerController?action=list");
+                    return;
+                }
 
 
                 mealDetailDAO.deleteMealPlanDetail(detailId);
@@ -219,8 +242,14 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
 
                 case "quickAdd":
 
-    int quickAddRecipeId =
-            Integer.parseInt(request.getParameter("recipeId"));
+    int quickAddRecipeId;
+
+    try {
+        quickAddRecipeId = Integer.parseInt(request.getParameter("recipeId"));
+    } catch (NumberFormatException e) {
+        response.sendRedirect("MealPlannerController?action=list");
+        return;
+    }
 
     HttpSession quickAddSession = request.getSession();
 
@@ -331,23 +360,46 @@ mealPlan.setUserId(userId);
 
 
 
+            String planName = request.getParameter("planName");
+
+            if (planName == null || planName.trim().isEmpty()) {
+                response.sendRedirect("MealPlannerController?action=create");
+                return;
+            }
+
             mealPlan.setPlanName(
-            request.getParameter("planName")
+            planName
             );
 
 
 
-            mealPlan.setStartDate(
-            LocalDate.parse(
-            request.getParameter("startDate"))
-            );
+            String startDateParam = request.getParameter("startDate");
+            String endDateParam = request.getParameter("endDate");
 
+            if (startDateParam == null || startDateParam.isBlank()
+                    || endDateParam == null || endDateParam.isBlank()) {
+                response.sendRedirect("MealPlannerController?action=create");
+                return;
+            }
 
+            LocalDate startDate;
+            LocalDate endDate;
 
-            mealPlan.setEndDate(
-            LocalDate.parse(
-            request.getParameter("endDate"))
-            );
+            try {
+                startDate = LocalDate.parse(startDateParam);
+                endDate = LocalDate.parse(endDateParam);
+            } catch (java.time.format.DateTimeParseException e) {
+                response.sendRedirect("MealPlannerController?action=create");
+                return;
+            }
+
+            if (startDate.isAfter(endDate)) {
+                response.sendRedirect("MealPlannerController?action=create");
+                return;
+            }
+
+            mealPlan.setStartDate(startDate);
+            mealPlan.setEndDate(endDate);
 
 
 
@@ -374,19 +426,32 @@ mealPlan.setUserId(userId);
             MealPlanDetail detail =
             new MealPlanDetail();
 
+            int addMealPlanId;
+            int addRecipeId;
+            LocalDate addMealDate;
+
+            try {
+                addMealPlanId = Integer.parseInt(request.getParameter("mealPlanId"));
+                addRecipeId = Integer.parseInt(request.getParameter("recipeId"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect("MealPlannerController?action=list");
+                return;
+            }
+
+            try {
+                addMealDate = LocalDate.parse(request.getParameter("mealDate"));
+            } catch (java.time.format.DateTimeParseException e) {
+                response.sendRedirect("MealPlannerController?action=addMeal&id=" + addMealPlanId);
+                return;
+            }
 
 
-            detail.setMealPlanId(
-            Integer.parseInt(
-            request.getParameter("mealPlanId"))
-            );
+
+            detail.setMealPlanId(addMealPlanId);
 
 
 
-            detail.setRecipeId(
-            Integer.parseInt(
-            request.getParameter("recipeId"))
-            );
+            detail.setRecipeId(addRecipeId);
 
 
 
@@ -396,10 +461,7 @@ mealPlan.setUserId(userId);
 
 
 
-            detail.setMealDate(
-            LocalDate.parse(
-            request.getParameter("mealDate"))
-            );
+            detail.setMealDate(addMealDate);
 
 
 

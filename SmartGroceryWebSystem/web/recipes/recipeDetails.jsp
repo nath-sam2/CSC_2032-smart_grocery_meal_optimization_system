@@ -70,6 +70,7 @@ if (nutritionFacts != null) {
 
     <div class="card">
         <h3>Ingredients</h3>
+        <% if (!ingredients.isEmpty()) { %>
         <table>
             <tr>
                 <th>Ingredient</th>
@@ -88,6 +89,9 @@ if (nutritionFacts != null) {
             }
             %>
         </table>
+        <% } else { %>
+        <p>No ingredients listed.</p>
+        <% } %>
     </div>
 
     <div class="card">
