@@ -102,7 +102,8 @@ display:flex; flex-direction:column; overflow-y:auto;
 .icon-btn:hover{ border-color:var(--green); color:var(--green); }
 .icon-btn .dot{ position:absolute; top:-6px; right:-6px; background:#ef4444; color:white; font-size:10px; font-weight:700; min-width:18px; height:18px; border-radius:20px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
 .profile-chip{ display:flex; align-items:center; gap:10px; padding:6px 12px 6px 6px; background:#1b1b1b; border:1px solid #2b2b2b; border-radius:30px; cursor:pointer; text-decoration:none; }
-.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; }
+.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; overflow:hidden; }
+.avatar img{ width:100%; height:100%; object-fit:cover; }
 .profile-chip span{ font-size:14px; font-weight:600; color:white; }
 .content{ padding:40px; }
 
@@ -227,7 +228,7 @@ Expiry Alerts
 <% if (unreadCount > 0) { %><span class="dot"><%= unreadCount %></span><% } %>
 </a>
 <a href="profile.jsp" class="profile-chip">
-<div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
+<div class="avatar"><% if (user.hasProfilePhoto()) { %><img src="<%= user.getProfilePhoto() %>" alt="Profile photo"><% } else { %><%= user.getName().substring(0,1).toUpperCase() %><% } %></div>
 <span><%= user.getName() %></span>
 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
 </a>

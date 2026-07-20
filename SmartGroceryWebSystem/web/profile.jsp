@@ -75,7 +75,7 @@ display:flex; flex-direction:column; overflow-y:auto;
 .icon-btn{ position:relative; width:44px; height:44px; border-radius:12px; background:#1b1b1b; border:1px solid #2b2b2b; display:flex; align-items:center; justify-content:center; font-size:17px; color:#cbd5e1; cursor:pointer; text-decoration:none; }
 .icon-btn:hover{ border-color:var(--green); color:var(--green); }
 .profile-chip{ display:flex; align-items:center; gap:10px; padding:6px 12px 6px 6px; background:#1b1b1b; border:1px solid #2b2b2b; border-radius:30px; cursor:pointer; text-decoration:none; }
-.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; }
+.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; overflow:hidden; }
 .profile-chip span{ font-size:14px; font-weight:600; color:white; }
 .content{ padding:40px; max-width:960px; }
 
@@ -90,7 +90,13 @@ display:flex; flex-direction:column; overflow-y:auto;
 
 /* PROFILE HERO CARD */
 .profile-hero{ background:var(--card); border:1px solid var(--border); border-radius:18px; padding:30px; display:flex; align-items:center; gap:24px; margin-bottom:26px; }
-.big-avatar{ width:84px; height:84px; min-width:84px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--greenDark)); display:flex; align-items:center; justify-content:center; font-size:34px; font-weight:800; color:white; }
+.big-avatar{ width:84px; height:84px; min-width:84px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--greenDark)); display:flex; align-items:center; justify-content:center; font-size:34px; font-weight:800; color:white; overflow:hidden; }
+.big-avatar img{ width:100%; height:100%; object-fit:cover; }
+.avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; }
+.avatar-wrap{ position:relative; width:84px; height:84px; min-width:84px; }
+.avatar-upload-btn{ position:absolute; bottom:-2px; right:-2px; width:30px; height:30px; border-radius:50%; background:var(--green); border:3px solid var(--card); display:flex; align-items:center; justify-content:center; cursor:pointer; color:white; font-size:12px; }
+.avatar-upload-btn:hover{ background:var(--greenDark); }
+.avatar-upload-btn input[type="file"]{ display:none; }
 .profile-hero h2{ font-size:22px; font-weight:800; margin-bottom:4px; }
 .profile-hero p{ color:var(--soft); font-size:14px; margin-bottom:10px; }
 .role-badge{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:5px 14px; border-radius:20px; background:rgba(34,197,94,.15); color:var(--green); text-transform:uppercase; letter-spacing:.03em; }
@@ -166,7 +172,7 @@ display:flex; flex-direction:column; overflow-y:auto;
 <a href="cart.jsp" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i></a>
 <a href="notifications.jsp" class="icon-btn"><i class="fa-regular fa-bell"></i></a>
 <a href="profile.jsp" class="profile-chip">
-<div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
+<div class="avatar"><% if (user.hasProfilePhoto()) { %><img src="<%= user.getProfilePhoto() %>" alt="Profile photo"><% } else { %><%= user.getName().substring(0,1).toUpperCase() %><% } %></div>
 <span><%= user.getName() %></span>
 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
 </a>
@@ -183,13 +189,37 @@ display:flex; flex-direction:column; overflow-y:auto;
 <% if ("1".equals(success)) { %>
 <div class="alert alert-success"><i class="fa-solid fa-circle-check"></i> Profile updated successfully.</div>
 <% } %>
+<% if ("photo".equals(success)) { %>
+<div class="alert alert-success"><i class="fa-solid fa-circle-check"></i> Profile photo updated successfully.</div>
+<% } %>
 <% if ("1".equals(error)) { %>
 <div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> That email is already in use by another account.</div>
+<% } %>
+<% if ("badtype".equals(error)) { %>
+<div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> Please choose an image file (JPG, PNG, etc.) for your profile photo.</div>
+<% } %>
+<% if ("nophoto".equals(error)) { %>
+<div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> Please choose a photo before uploading.</div>
 <% } %>
 
 <!-- PROFILE HERO -->
 <div class="profile-hero">
-<div class="big-avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
+<form action="ProfileServlet" method="post" enctype="multipart/form-data" id="photoForm">
+<input type="hidden" name="action" value="uploadPhoto">
+<div class="avatar-wrap">
+<div class="big-avatar">
+<% if (user.hasProfilePhoto()) { %>
+<img src="<%= user.getProfilePhoto() %>" alt="Profile photo">
+<% } else { %>
+<%= user.getName().substring(0,1).toUpperCase() %>
+<% } %>
+</div>
+<label class="avatar-upload-btn" title="Change profile photo">
+<i class="fa-solid fa-camera"></i>
+<input type="file" name="photo" accept="image/*" onchange="document.getElementById('photoForm').submit();">
+</label>
+</div>
+</form>
 <div>
 <h2><%= user.getName() %></h2>
 <p><%= user.getEmail() %></p>

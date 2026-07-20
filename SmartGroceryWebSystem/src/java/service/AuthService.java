@@ -33,6 +33,11 @@ public class AuthService {
         return userDAO.updateProfile(userId, name, email);
     }
 
+    // Used by ProfileServlet to save the path of an uploaded profile photo
+    public boolean updateProfilePhoto(int userId, String photoPath) {
+        return userDAO.updateProfilePhoto(userId, photoPath);
+    }
+
     // Used by ProfileServlet after a successful profile update,
     // to refresh the session with the latest user data
     public User getUserById(int userId) {

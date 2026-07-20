@@ -337,7 +337,9 @@ justify-content:center;
 align-items:center;
 font-weight:bold;
 font-size:14px;
+overflow:hidden;
 }
+.avatar img{ width:100%; height:100%; object-fit:cover; }
 
 .profile-chip span{
 font-size:14px;
@@ -1062,7 +1064,7 @@ Logout
 </a>
 
 <a href="profile.jsp" class="profile-chip">
-<div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
+<div class="avatar"><% if (user.hasProfilePhoto()) { %><img src="<%= user.getProfilePhoto() %>" alt="Profile photo"><% } else { %><%= user.getName().substring(0,1).toUpperCase() %><% } %></div>
 <span><%=user.getName()%></span>
 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
 </a>

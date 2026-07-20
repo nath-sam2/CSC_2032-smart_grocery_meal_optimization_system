@@ -5,12 +5,21 @@ import service.AuthService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet("/ProfileServlet")
+@MultipartConfig(
+    maxFileSize = 5 * 1024 * 1024,      // 5MB per file
+    maxRequestSize = 6 * 1024 * 1024
+)
 public class ProfileServlet extends HttpServlet {
 
     private AuthService authService = new AuthService();
+
+    // Where uploaded photos are written to on disk, relative to the webapp root
+    private static final String UPLOAD_DIR = "images/profiles";
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -25,6 +34,50 @@ public class ProfileServlet extends HttpServlet {
         }
 
         String action = request.getParameter("action");
+
+        if ("uploadPhoto".equals(action)) {
+            Part filePart = request.getPart("photo");
+
+            if (filePart == null || filePart.getSize() == 0) {
+                response.sendRedirect("profile.jsp?error=nophoto");
+                return;
+            }
+
+            String contentType = filePart.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                response.sendRedirect("profile.jsp?error=badtype");
+                return;
+            }
+
+            String submittedName = filePart.getSubmittedFileName();
+            String extension = "";
+            if (submittedName != null && submittedName.contains(".")) {
+                extension = submittedName.substring(submittedName.lastIndexOf('.'));
+            }
+
+            String fileName = "user_" + user.getUserId() + "_" +
+                               UUID.randomUUID().toString().substring(0, 8) + extension;
+
+            String uploadPath = getServletContext().getRealPath("/" + UPLOAD_DIR);
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            filePart.write(uploadPath + File.separator + fileName);
+
+            String relativePath = UPLOAD_DIR + "/" + fileName;
+            boolean success = authService.updateProfilePhoto(user.getUserId(), relativePath);
+
+            if (success) {
+                User refreshed = authService.getUserById(user.getUserId());
+                session.setAttribute("user", refreshed);
+                response.sendRedirect("profile.jsp?success=photo");
+            } else {
+                response.sendRedirect("profile.jsp?error=1");
+            }
+            return;
+        }
 
         if ("updateProfile".equals(action)) {
             String name  = request.getParameter("name");

@@ -2,8 +2,10 @@
 <%@page import="model.User"%>
 <%@page import="model.Product"%>
 <%@page import="model.Category"%>
+<%@page import="model.Inventory"%>
 <%@page import="service.ProductService"%>
 <%@page import="service.CategoryService"%>
+<%@page import="service.InventoryService"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
@@ -18,6 +20,7 @@ if (user == null) {
 
 ProductService productService = new ProductService();
 CategoryService categoryService = new CategoryService();
+InventoryService inventoryService = new InventoryService();
 
 String search = request.getParameter("search");
 String added  = request.getParameter("added");
@@ -31,6 +34,15 @@ if (search != null && !search.trim().isEmpty()) {
 }
 
 List<Category> categories = categoryService.getAllCategories();
+
+// Real live stock levels + per-product reorder level, keyed by productId.
+// (Product.quantity is only the initial seed value and never changes after
+// checkout — the inventory table is what actually tracks live stock, so
+// that's what "Low Stock" / "Out of Stock" must be based on.)
+Map<Integer, Inventory> inventoryMap = new HashMap<Integer, Inventory>();
+for (Inventory inv : inventoryService.getAllInventory()) {
+    inventoryMap.put(inv.getProductId(), inv);
+}
 Map<Integer, String> categoryNames = new HashMap<Integer, String>();
 for (Category c : categories) {
     categoryNames.put(c.getCategoryId(), c.getName());
@@ -175,7 +187,8 @@ if (selectedCatId != null) {
         .icon-btn{ position:relative; width:44px; height:44px; border-radius:12px; background:#1b1b1b; border:1px solid #2b2b2b; display:flex; align-items:center; justify-content:center; font-size:17px; color:#cbd5e1; cursor:pointer; text-decoration:none; }
         .icon-btn:hover{ border-color:var(--green); color:var(--green); }
         .profile-chip{ display:flex; align-items:center; gap:10px; padding:6px 12px 6px 6px; background:#1b1b1b; border:1px solid #2b2b2b; border-radius:30px; cursor:pointer; text-decoration:none; }
-        .avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; }
+        .avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; overflow:hidden; }
+        .avatar img{ width:100%; height:100%; object-fit:cover; }
         .profile-chip span{ font-size:14px; font-weight:600; color:white; }
         .content{ padding:40px; }
 
@@ -283,7 +296,7 @@ if (selectedCatId != null) {
             <a href="cart.jsp" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i></a>
             <a href="notifications.jsp" class="icon-btn"><i class="fa-regular fa-bell"></i></a>
             <a href="profile.jsp" class="profile-chip">
-                <div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
+                <div class="avatar"><% if (user.hasProfilePhoto()) { %><img src="<%= user.getProfilePhoto() %>" alt="Profile photo"><% } else { %><%= user.getName().substring(0,1).toUpperCase() %><% } %></div>
                 <span><%= user.getName() %></span>
                 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
             </a>
@@ -331,8 +344,15 @@ if (selectedCatId != null) {
                 String catName = categoryNames.get(p.getCategoryId());
                 if (catName == null) catName = "General";
 
-                String stockClass = p.getQuantity() <= 0 ? "stock-out" : (p.getQuantity() < 10 ? "stock-low" : "stock-in");
-                String stockLabel = p.getQuantity() <= 0 ? "Out of Stock" : (p.getQuantity() < 10 ? "Low Stock" : "In Stock");
+                // Prefer the live inventory record; fall back to the product's
+                // seed quantity only if no inventory row exists for it yet.
+                Inventory prodInv = inventoryMap.get(p.getProductId());
+                int stockQty = (prodInv != null) ? prodInv.getQuantity() : p.getQuantity();
+                boolean isOutOfStock = stockQty <= 0;
+                boolean isLowStock = (prodInv != null) ? prodInv.isLowStock() : (stockQty < 10);
+
+                String stockClass = isOutOfStock ? "stock-out" : (isLowStock ? "stock-low" : "stock-in");
+                String stockLabel = isOutOfStock ? "Out of Stock" : (isLowStock ? "Low Stock" : "In Stock");
 
                 // --- IMAGE: looks up the URL you pasted into the productImages map above ---
                 String mappedUrl = productImages.get(p.getProductId());
@@ -346,12 +366,12 @@ if (selectedCatId != null) {
                 <div class="product-body">
                     <div class="product-cat"><%= catName %></div>
                     <div class="product-name"><%= p.getName() %></div>
-                    <div class="product-meta"><%= p.getQuantity() %> <%= p.getUnit() %> available</div>
+                    <div class="product-meta"><%= stockQty %> <%= p.getUnit() %> available</div>
                     <div class="stock-tag <%= stockClass %>"><%= stockLabel %></div>
                     <div class="product-footer">
                         <!-- Rupees and Cents Format (.2f handles the decimals perfectly) -->
                         <div class="product-price">Rs. <%= String.format("%.2f", p.getPrice()) %><span> / <%= p.getUnit() %></span></div>
-                        <% if (p.getQuantity() <= 0) { %>
+                        <% if (isOutOfStock) { %>
                             <button type="button" class="add-cart-btn" disabled><i class="fa-solid fa-plus"></i></button>
                         <% } else { %>
                             <a href="CartServlet?action=add&productId=<%= p.getProductId() %>&price=<%= p.getPrice() %>" class="add-cart-btn">

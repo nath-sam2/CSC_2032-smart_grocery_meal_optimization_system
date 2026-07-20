@@ -75,7 +75,8 @@ display:flex; flex-direction:column; overflow-y:auto;
 .icon-btn{ position:relative; width:44px; height:44px; border-radius:12px; background:#1b1b1b; border:1px solid #2b2b2b; display:flex; align-items:center; justify-content:center; font-size:17px; color:#cbd5e1; cursor:pointer; text-decoration:none; }
 .icon-btn:hover{ border-color:var(--green); color:var(--green); }
 .profile-chip{ display:flex; align-items:center; gap:10px; padding:6px 12px 6px 6px; background:#1b1b1b; border:1px solid #2b2b2b; border-radius:30px; cursor:pointer; text-decoration:none; }
-.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; }
+.avatar{ width:34px; height:34px; background:var(--green); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px; overflow:hidden; }
+.avatar img{ width:100%; height:100%; object-fit:cover; }
 .profile-chip span{ font-size:14px; font-weight:600; color:white; }
 .content{ padding:40px; max-width:960px; }
 
@@ -175,7 +176,7 @@ display:flex; flex-direction:column; overflow-y:auto;
 <a href="cart.jsp" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i></a>
 <a href="notifications.jsp" class="icon-btn"><i class="fa-regular fa-bell"></i></a>
 <a href="profile.jsp" class="profile-chip">
-<div class="avatar"><%= user.getName().substring(0,1).toUpperCase() %></div>
+<div class="avatar"><% if (user.hasProfilePhoto()) { %><img src="<%= user.getProfilePhoto() %>" alt="Profile photo"><% } else { %><%= user.getName().substring(0,1).toUpperCase() %><% } %></div>
 <span><%= user.getName() %></span>
 <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
 </a>

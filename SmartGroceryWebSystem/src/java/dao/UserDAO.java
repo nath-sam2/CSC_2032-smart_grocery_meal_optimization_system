@@ -32,13 +32,15 @@ public class UserDAO {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(
+                User u = new User(
                     rs.getInt("userId"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("password"),
                     rs.getString("role")
                 );
+                u.setProfilePhoto(rs.getString("profilePhoto"));
+                return u;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,13 +56,15 @@ public class UserDAO {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(
+                User u = new User(
                     rs.getInt("userId"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("password"),
                     rs.getString("role")
                 );
+                u.setProfilePhoto(rs.getString("profilePhoto"));
+                return u;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,18 +109,34 @@ public class UserDAO {
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new User(
+                User u = new User(
                     rs.getInt("userId"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("password"),
                     rs.getString("role")
-                ));
+                );
+                u.setProfilePhoto(rs.getString("profilePhoto"));
+                list.add(u);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // Used by ProfileServlet to save the uploaded photo's path for a user
+    public boolean updateProfilePhoto(int userId, String photoPath) {
+        String sql = "UPDATE users SET profilePhoto = ? WHERE userId = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, photoPath);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Used by admin/manageUsers.jsp to change a user's role

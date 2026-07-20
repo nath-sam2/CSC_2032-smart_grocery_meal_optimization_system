@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private String profilePhoto;
 
     public User(int userId, String name, String email,
                 String password, String role) {
@@ -27,6 +28,8 @@ public class User {
         { return password; }
     public String getRole()     
         { return role; }
+    public String getProfilePhoto()
+        { return profilePhoto; }
 
     public void setName(String name)         
         { this.name = name; }
@@ -34,6 +37,14 @@ public class User {
         { this.email = email; }
     public void setPassword(String password) 
         { this.password = password; }
+    public void setProfilePhoto(String profilePhoto)
+        { this.profilePhoto = profilePhoto; }
+
+    // True when the user has uploaded a real photo (used by JSPs to decide
+    // whether to show the <img> or fall back to the initial-letter avatar)
+    public boolean hasProfilePhoto() {
+        return profilePhoto != null && !profilePhoto.trim().isEmpty();
+    }
 
     public void login()    
         { System.out.println("User logged in."); }
