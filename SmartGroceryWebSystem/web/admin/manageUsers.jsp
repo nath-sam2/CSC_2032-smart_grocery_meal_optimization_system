@@ -9,7 +9,7 @@ if (user == null) {
     response.sendRedirect("../login.jsp");
     return;
 }
-if (!"admin".equals(user.getRole())) {
+if (!"admin".equalsIgnoreCase(user.getRole())) {
     response.sendRedirect("../dashboard.jsp");
     return;
 }
@@ -127,7 +127,7 @@ if (users.isEmpty()) {
 <%
 } else {
     for (User u : users) {
-        boolean isAdmin = "admin".equals(u.getRole());
+        boolean isAdmin = "admin".equalsIgnoreCase(u.getRole());
         boolean isSelf = u.getUserId() == user.getUserId();
 %>
 <tr>

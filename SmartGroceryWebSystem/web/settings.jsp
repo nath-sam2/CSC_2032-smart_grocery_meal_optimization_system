@@ -152,6 +152,9 @@ display:flex; flex-direction:column; overflow-y:auto;
 <ul class="menu">
 <li><a href="profile.jsp"><i class="fa-solid fa-user"></i> Profile</a></li>
 <li><a class="active" href="settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
+<% if ("admin".equalsIgnoreCase(user.getRole())) { %>
+<li><a href="admin/adminDashboard.jsp"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a></li>
+<% } %>
 <li><a href="LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
 </ul>
 
@@ -236,17 +239,21 @@ display:flex; flex-direction:column; overflow-y:auto;
 
 <div class="pref-row">
 <div><b>Expiry Alerts</b><span>Get notified when items are about to expire.</span></div>
-<label class="switch"><input type="checkbox" checked disabled><span class="slider"></span></label>
+<label class="switch"><input type="checkbox" id="pref-expiry" data-pref="expiry" checked><span class="slider"></span></label>
 </div>
 
 <div class="pref-row">
 <div><b>Low Stock Alerts</b><span>Get notified when inventory runs low.</span></div>
-<label class="switch"><input type="checkbox" checked disabled><span class="slider"></span></label>
+<label class="switch"><input type="checkbox" id="pref-lowstock" data-pref="lowstock" checked><span class="slider"></span></label>
 </div>
 
 <div class="pref-row">
 <div><b>Meal Planner Reminders</b><span>Daily reminders to plan your meals.</span></div>
-<label class="switch"><input type="checkbox" disabled><span class="slider"></span></label>
+<label class="switch"><input type="checkbox" id="pref-mealplanner" data-pref="mealplanner"><span class="slider"></span></label>
+</div>
+
+<div id="pref-saved-msg" style="display:none; margin-top:14px; font-size:12.5px; color:var(--green); font-weight:600;">
+<i class="fa-solid fa-circle-check"></i> Preference saved.
 </div>
 
 </div>
@@ -255,6 +262,9 @@ display:flex; flex-direction:column; overflow-y:auto;
 <div class="panel danger-zone">
 <h3><i class="fa-solid fa-triangle-exclamation"></i> Account</h3>
 <div class="sub">Sign out of Smart Grocery on this device.</div>
+<% if ("admin".equalsIgnoreCase(user.getRole())) { %>
+<a href="admin/adminDashboard.jsp" class="btn-primary" style="margin-right:12px; text-decoration:none;"><i class="fa-solid fa-shield-halved"></i> Go to Admin Panel</a>
+<% } %>
 <a href="LogoutServlet" class="btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
 </div>
 
@@ -265,6 +275,45 @@ display:flex; flex-direction:column; overflow-y:auto;
 </div>
 
 </div>
+
+<script>
+(function(){
+  var prefKeys = ['expiry','lowstock','mealplanner'];
+  var storageKey = 'sg_notif_prefs';
+
+  function loadPrefs(){
+    try{
+      var saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved){
+        prefKeys.forEach(function(k){
+          if(typeof saved[k] === 'boolean'){
+            document.getElementById('pref-' + k).checked = saved[k];
+          }
+        });
+      }
+    }catch(e){ /* ignore corrupt storage */ }
+  }
+
+  function savePrefs(){
+    var data = {};
+    prefKeys.forEach(function(k){
+      data[k] = document.getElementById('pref-' + k).checked;
+    });
+    localStorage.setItem(storageKey, JSON.stringify(data));
+
+    var msg = document.getElementById('pref-saved-msg');
+    msg.style.display = 'block';
+    clearTimeout(msg._hideTimer);
+    msg._hideTimer = setTimeout(function(){ msg.style.display = 'none'; }, 1800);
+  }
+
+  loadPrefs();
+
+  prefKeys.forEach(function(k){
+    document.getElementById('pref-' + k).addEventListener('change', savePrefs);
+  });
+})();
+</script>
 
 </body>
 </html>

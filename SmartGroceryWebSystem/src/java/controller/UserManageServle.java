@@ -22,7 +22,7 @@ public class UserManageServle extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        if (!"admin".equals(admin.getRole())) {
+        if (!"admin".equalsIgnoreCase(admin.getRole())) {
             response.sendRedirect("dashboard.jsp");
             return;
         }

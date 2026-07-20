@@ -62,7 +62,7 @@ public class OrderServlet extends HttpServlet {
 
         // Admin-only: update the status of any order
         if ("updateStatus".equals(action)) {
-            if (!"admin".equals(user.getRole())) {
+            if (!"admin".equalsIgnoreCase(user.getRole())) {
                 response.sendRedirect("dashboard.jsp");
                 return;
             }

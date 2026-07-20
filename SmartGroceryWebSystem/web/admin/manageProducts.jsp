@@ -14,7 +14,7 @@ if (user == null) {
     response.sendRedirect("../login.jsp");
     return;
 }
-if (!"admin".equals(user.getRole())) {
+if (!"admin".equalsIgnoreCase(user.getRole())) {
     response.sendRedirect("../dashboard.jsp");
     return;
 }
