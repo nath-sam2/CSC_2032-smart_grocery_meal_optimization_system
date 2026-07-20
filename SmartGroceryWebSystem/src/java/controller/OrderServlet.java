@@ -22,6 +22,7 @@ public class OrderServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+
         User user = (User) request.getSession()
                                   .getAttribute("user");
         if (user == null) {
@@ -43,6 +44,32 @@ public class OrderServlet extends HttpServlet {
             } else {
                 response.sendRedirect("cart.jsp");
             }
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // Admin-only: update the status of any order
+        if ("updateStatus".equals(action)) {
+            if (!"admin".equals(user.getRole())) {
+                response.sendRedirect("dashboard.jsp");
+                return;
+            }
+            int orderId   = Integer.parseInt(request.getParameter("orderId"));
+            String status = request.getParameter("status");
+            orderService.updateStatus(orderId, status);
+            response.sendRedirect("admin/manageOrders.jsp?updated=1");
         }
     }
 }
