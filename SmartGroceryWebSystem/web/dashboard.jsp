@@ -46,1021 +46,857 @@ font-family:'Inter',sans-serif;
 }
 
 body{
-
 background:#0b0b0b;
 color:white;
-
 }
 
-/* Sidebar */
+a{ color:inherit; }
+
+button{ font-family:'Inter',sans-serif; }
+
+/* ==========================
+   SIDEBAR
+========================== */
 
 .sidebar{
-
 position:fixed;
-
 left:0;
 top:0;
-
 width:260px;
 height:100vh;
-
 background:#111;
-
 border-right:1px solid #222;
-
 padding:25px;
-
+display:flex;
+flex-direction:column;
+overflow-y:auto;
 }
 
 .logo{
-
 display:flex;
 align-items:center;
 gap:12px;
-
-font-size:28px;
+font-size:24px;
 font-weight:800;
-
-margin-bottom:50px;
-
+margin-bottom:5px;
+text-decoration:none;
 }
 
 .logo i{
-
 color:var(--green);
+background:rgba(34,197,94,.15);
+width:42px;
+height:42px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
 
+.logo-sub{
+font-size:11px;
+color:var(--soft);
+margin-bottom:35px;
+margin-left:54px;
+margin-top:-2px;
 }
 
 .menu{
-
 list-style:none;
-
 }
 
 .menu li{
-
-margin-bottom:12px;
-
+margin-bottom:6px;
 }
 
 .menu a{
-
 display:flex;
-
 align-items:center;
-
 gap:15px;
-
-padding:14px 18px;
-
+padding:12px 16px;
 text-decoration:none;
-
 color:#cbd5e1;
-
 border-radius:12px;
-
-transition:.3s;
-
-font-size:15px;
-
+transition:.25s;
+font-size:14.5px;
+font-weight:500;
+position:relative;
+cursor:pointer;
+border:none;
+background:none;
+width:100%;
+text-align:left;
 }
 
 .menu a:hover{
-
-background:var(--green);
+background:#1c1c1c;
 color:white;
-
 }
 
 .menu a.active{
-
 background:var(--green);
 color:white;
-
 }
 
-/* Main */
+.menu-count{
+margin-left:auto;
+background:#ef4444;
+color:white;
+font-size:11px;
+font-weight:700;
+padding:2px 8px;
+border-radius:20px;
+}
+
+.menu a.active .menu-count{
+background:rgba(255,255,255,.25);
+}
+
+.side-label{
+font-size:11px;
+letter-spacing:.08em;
+color:#666;
+text-transform:uppercase;
+margin:22px 0 10px 16px;
+font-weight:700;
+}
+
+.help-card{
+margin-top:auto;
+background:linear-gradient(135deg,#16a34a,#22c55e);
+border-radius:16px;
+padding:18px;
+cursor:pointer;
+border:none;
+text-align:left;
+width:100%;
+color:white;
+}
+
+.help-card i{
+font-size:22px;
+margin-bottom:8px;
+display:block;
+}
+
+.help-card b{
+display:block;
+font-size:14px;
+}
+
+.help-card span{
+font-size:12px;
+opacity:.85;
+}
+
+/* ==========================
+   MAIN
+========================== */
 
 .main{
-
 margin-left:260px;
-
 }
 
-/* Navbar */
-
 .navbar{
-
 height:80px;
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 padding:0 40px;
-
 background:#111;
-
 border-bottom:1px solid #222;
-
+position:sticky;
+top:0;
+z-index:5;
 }
 
 .search{
-
 width:420px;
-
 position:relative;
-
+display:flex;
 }
 
 .search input{
-
 width:100%;
-
-padding:14px 20px;
-
+padding:13px 20px;
 padding-left:45px;
-
 background:#1b1b1b;
-
 border:1px solid #333;
-
-border-radius:12px;
-
+border-radius:12px 0 0 12px;
+border-right:none;
 color:white;
-
 outline:none;
-
 }
 
-.search i{
-
+.search i.fa-magnifying-glass{
 position:absolute;
-
-left:15px;
-
+left:16px;
 top:15px;
-
 color:#888;
+}
 
+.search button{
+width:46px;
+background:var(--green);
+border:none;
+border-radius:0 12px 12px 0;
+color:white;
+cursor:pointer;
+font-size:15px;
 }
 
 .user{
-
 display:flex;
-
 align-items:center;
-
-gap:20px;
-
+gap:22px;
 }
 
-.user i{
-
-font-size:22px;
-
+.icon-btn{
+position:relative;
+width:44px;
+height:44px;
+border-radius:12px;
+background:#1b1b1b;
+border:1px solid #2b2b2b;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:17px;
+color:#cbd5e1;
 cursor:pointer;
+text-decoration:none;
+}
 
+.icon-btn:hover{
+border-color:var(--green);
+color:var(--green);
+}
+
+.icon-btn .dot{
+position:absolute;
+top:-6px;
+right:-6px;
+background:#ef4444;
+color:white;
+font-size:10px;
+font-weight:700;
+min-width:18px;
+height:18px;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:0 4px;
+}
+
+.profile-chip{
+display:flex;
+align-items:center;
+gap:10px;
+padding:6px 12px 6px 6px;
+background:#1b1b1b;
+border:1px solid #2b2b2b;
+border-radius:30px;
+cursor:pointer;
+text-decoration:none;
 }
 
 .avatar{
-
-width:45px;
-height:45px;
-
+width:34px;
+height:34px;
 background:var(--green);
-
 border-radius:50%;
-
 display:flex;
-
 justify-content:center;
-
 align-items:center;
-
 font-weight:bold;
+font-size:14px;
+}
 
+.profile-chip span{
+font-size:14px;
+font-weight:600;
+color:white;
 }
 
 .content{
-
 padding:40px;
-
 }
 
-.content h1{
+/* ==========================
+   HERO
+========================== */
 
-font-size:40px;
-
-margin-bottom:10px;
-
+.hero{
+position:relative;
+border-radius:22px;
+overflow:hidden;
+min-height:260px;
+display:flex;
+align-items:center;
+padding:45px;
+background:
+linear-gradient(100deg, rgba(6,10,6,.92) 15%, rgba(6,10,6,.35) 55%, rgba(6,10,6,.05) 80%),
+url('https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1600&auto=format&fit=crop') center/cover;
 }
 
-.content p{
-
-color:#9ca3af;
-
-font-size:18px;
-
+.hero-eyebrow{
+display:flex;
+align-items:center;
+gap:8px;
+color:var(--green);
+font-weight:700;
+font-size:14px;
+margin-bottom:16px;
 }
+
+.hero h1{
+font-size:38px;
+line-height:1.2;
+max-width:560px;
+margin-bottom:14px;
+}
+
+.hero h1 span{
+color:var(--green);
+}
+
+.hero p{
+color:#d7d7d7;
+max-width:480px;
+line-height:24px;
+margin-bottom:26px;
+font-size:15px;
+}
+
+.hero-actions{
+display:flex;
+gap:14px;
+}
+
+.btn-primary{
+background:var(--green);
+color:white;
+border:none;
+padding:14px 26px;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+font-size:14.5px;
+display:flex;
+align-items:center;
+gap:10px;
+text-decoration:none;
+}
+
+.btn-primary:hover{ background:var(--greenDark); }
+
+.btn-outline{
+background:transparent;
+color:white;
+border:1px solid #555;
+padding:14px 26px;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+font-size:14.5px;
+display:flex;
+align-items:center;
+gap:10px;
+text-decoration:none;
+}
+
+.btn-outline:hover{ border-color:var(--green); color:var(--green); }
+
+/* ==========================
+   STATS
+========================== */
 
 .stats{
-
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:25px;
-margin-top:45px;
-
+gap:22px;
+margin-top:28px;
 }
 
 .stat-card{
-
-background:#181818;
-
-border:1px solid #2d2d2d;
-
+background:var(--card);
+border:1px solid var(--border);
 border-radius:18px;
-
-padding:28px;
-
-transition:.35s;
-
+padding:22px;
+display:flex;
+align-items:center;
+gap:16px;
+transition:.3s;
+text-decoration:none;
 cursor:pointer;
-
-position:relative;
-
-overflow:hidden;
-
 }
 
 .stat-card:hover{
-
-transform:translateY(-8px);
-
-border-color:#22c55e;
-
-box-shadow:0 15px 35px rgba(34,197,94,.15);
-
-}
-
-.stat-card::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-left:0;
-
-width:100%;
-height:4px;
-
-background:#22c55e;
-
+border-color:var(--green);
+transform:translateY(-4px);
 }
 
 .icon-circle{
-
-width:70px;
-height:70px;
-
-border-radius:50%;
-
+min-width:54px;
+height:54px;
+border-radius:14px;
 display:flex;
-
 justify-content:center;
 align-items:center;
-
-font-size:28px;
-
-margin-bottom:25px;
-
+font-size:20px;
 }
 
-.green{
-
-background:rgba(34,197,94,.15);
-
-color:#22c55e;
-
-}
-
-.orange{
-
-background:rgba(245,158,11,.15);
-
-color:#f59e0b;
-
-}
-
-.red{
-
-background:rgba(239,68,68,.15);
-
-color:#ef4444;
-
-}
-
-.blue{
-
-background:rgba(59,130,246,.15);
-
-color:#3b82f6;
-
-}
+.green{ background:rgba(34,197,94,.15); color:#22c55e; }
+.orange{ background:rgba(245,158,11,.15); color:#f59e0b; }
+.blue{ background:rgba(59,130,246,.15); color:#3b82f6; }
+.purple{ background:rgba(168,85,247,.15); color:#a855f7; }
 
 .stat-number{
-
-font-size:42px;
-
+font-size:24px;
 font-weight:800;
+display:flex;
+align-items:center;
+gap:8px;
+color:white;
+}
 
-margin-bottom:6px;
-
+.stat-number .trend{
+font-size:12px;
+color:var(--green);
+font-weight:700;
 }
 
 .stat-title{
-
-font-size:18px;
-
-font-weight:600;
-
-margin-bottom:5px;
-
+font-size:13.5px;
+color:var(--soft);
+margin-top:2px;
 }
 
-.stat-sub{
-
-font-size:14px;
-
-color:#9ca3af;
-
-}
-
-@media(max-width:1200px){
-
-.stats{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:700px){
-
-.stats{
-
-grid-template-columns:1fr;
-
-}
-
-}
 /* ==========================
-   QUICK ACTIONS
+   SECTION TITLES
 ========================== */
 
 .section-title{
-
-font-size:28px;
-
+font-size:22px;
 font-weight:700;
-
-margin-top:55px;
-
-margin-bottom:25px;
-
-}
-
-.quick-actions{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:25px;
-
-}
-
-.action-card{
-
-background:#181818;
-
-border:1px solid #2d2d2d;
-
-border-radius:18px;
-
-padding:28px;
-
-text-decoration:none;
-
-color:white;
-
-transition:.35s;
-
+margin-top:45px;
+margin-bottom:22px;
 display:flex;
-
-flex-direction:column;
-
 align-items:center;
-
-justify-content:center;
-
-height:190px;
-
+justify-content:space-between;
 }
 
-.action-card:hover{
-
-transform:translateY(-8px);
-
-border-color:#22c55e;
-
-box-shadow:0 18px 40px rgba(34,197,94,.18);
-
+.section-title a{
+font-size:13px;
+color:var(--green);
+font-weight:600;
+text-decoration:none;
 }
 
-.action-card i{
+.section-title a:hover{ text-decoration:underline; }
 
-font-size:42px;
-
-color:#22c55e;
-
-margin-bottom:20px;
-
-}
-
-.action-card h3{
-
-font-size:20px;
-
-margin-bottom:8px;
-
-}
-
-.action-card p{
-
-font-size:14px;
-
-color:#9ca3af;
-
-text-align:center;
-
-line-height:22px;
-
-}
-
-@media(max-width:1100px){
-
-.quick-actions{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:700px){
-
-.quick-actions{
-
-grid-template-columns:1fr;
-
-}
-
-}
 /* ==========================
-   DASHBOARD WIDGETS
+   WEEKLY MEAL PLANNER
 ========================== */
 
-.dashboard-grid{
-
+.planner{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:25px;
-margin-top:55px;
-
+grid-template-columns:repeat(7,1fr);
+gap:16px;
 }
 
-.widget{
-
-background:#181818;
-border:1px solid #2d2d2d;
-border-radius:18px;
-padding:28px;
-
-}
-
-.widget h2{
-
-font-size:24px;
-margin-bottom:22px;
-
-}
-
-.widget-item{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-padding:15px 0;
-
-border-bottom:1px solid #2b2b2b;
-
-}
-
-.widget-item:last-child{
-
-border-bottom:none;
-
-}
-
-.item-left{
-
-display:flex;
-align-items:center;
-gap:15px;
-
-}
-
-.item-icon{
-
-width:50px;
-height:50px;
-
-border-radius:50%;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-size:20px;
-
-}
-
-.red-bg{
-
-background:rgba(239,68,68,.15);
-color:#ef4444;
-
-}
-
-.green-bg{
-
-background:rgba(34,197,94,.15);
-color:#22c55e;
-
-}
-
-.orange-bg{
-
-background:rgba(245,158,11,.15);
-color:#f59e0b;
-
-}
-
-.item-name{
-
-font-size:17px;
-font-weight:600;
-
-}
-
-.item-desc{
-
-font-size:13px;
-color:#9ca3af;
-
-margin-top:3px;
-
-}
-
-.badge{
-
-padding:8px 14px;
-
-border-radius:30px;
-
-font-size:13px;
-font-weight:600;
-
-color:white;
-
-}
-
-.badge.red{
-
-background:#ef4444;
-
-}
-
-.badge.orange{
-
-background:#f59e0b;
-
-}
-
-.badge.green{
-
-background:#22c55e;
-
-}
-
-@media(max-width:1000px){
-
-.dashboard-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-/*===========================
-RECENT ORDERS
-===========================*/
-
-.bottom-grid{
-
-display:grid;
-
-grid-template-columns:2fr 1fr;
-
-gap:25px;
-
-margin-top:45px;
-
-}
-
-.table-card,
-.progress-card{
-
-background:#181818;
-
-border:1px solid #2d2d2d;
-
-border-radius:18px;
-
-padding:28px;
-
-}
-
-.table-card h2,
-.progress-card h2{
-
-margin-bottom:20px;
-
-font-size:24px;
-
-}
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-}
-
-table th{
-
-text-align:left;
-
-padding:15px;
-
-color:#9ca3af;
-
-border-bottom:1px solid #333;
-
-}
-
-table td{
-
+.day-col{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:16px;
 padding:16px;
-
-border-bottom:1px solid #2a2a2a;
-
-}
-
-.status{
-
-padding:8px 14px;
-
-border-radius:25px;
-
-font-size:13px;
-
-font-weight:600;
-
-}
-
-.delivered{
-
-background:#22c55e;
-
-}
-
-.processing{
-
-background:#f59e0b;
-
-}
-
-.cancelled{
-
-background:#ef4444;
-
-}
-
-/*===========================
-PROGRESS BARS
-===========================*/
-
-.progress-item{
-
-margin-bottom:25px;
-
-}
-
-.progress-title{
-
+min-height:280px;
 display:flex;
+flex-direction:column;
+}
 
-justify-content:space-between;
+.day-col.today{
+border-color:var(--green);
+box-shadow:0 0 0 1px var(--green) inset;
+}
 
-margin-bottom:8px;
+.day-head{
+font-size:12px;
+font-weight:700;
+letter-spacing:.05em;
+color:var(--soft);
+margin-bottom:14px;
+display:flex;
+align-items:center;
+gap:6px;
+}
 
+.day-col.today .day-head{ color:var(--green); }
+
+.meal-row{
+display:flex;
+align-items:flex-start;
+gap:8px;
+margin-bottom:14px;
+font-size:12.5px;
+}
+
+.meal-emoji{
+width:30px;
+height:30px;
+border-radius:9px;
+background:#222;
+display:flex;
+align-items:center;
+justify-content:center;
 font-size:15px;
-
+flex-shrink:0;
 }
 
-.progress{
-
-height:10px;
-
-background:#2a2a2a;
-
-border-radius:10px;
-
-overflow:hidden;
-
+.meal-slot{
+font-size:11px;
+color:#777;
+text-transform:uppercase;
+letter-spacing:.03em;
 }
 
-.progress span{
-
-display:block;
-
-height:100%;
-
-background:#22c55e;
-
-border-radius:10px;
-
+.meal-name{
+font-weight:600;
+margin-top:1px;
 }
 
-@media(max-width:1000px){
+.add-meal{
+margin-top:auto;
+color:var(--green);
+font-size:12px;
+font-weight:700;
+text-decoration:none;
+cursor:pointer;
+}
+
+.add-meal:hover{ text-decoration:underline; }
+
+.add-empty{
+font-size:12px;
+color:var(--green);
+font-weight:700;
+margin-bottom:14px;
+cursor:pointer;
+background:none;
+border:none;
+text-align:left;
+padding:0;
+}
+
+.add-empty:hover{ text-decoration:underline; }
+
+/* ==========================
+   BOTTOM GRID
+========================== */
 
 .bottom-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-/*==========================
-FINAL SECTION
-===========================*/
-
-.hero-banner{
-
-margin-top:45px;
-
-background:linear-gradient(120deg,#16a34a,#22c55e);
-
-border-radius:20px;
-
-padding:40px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-overflow:hidden;
-
-}
-
-.hero-banner h2{
-
-font-size:36px;
-
-margin-bottom:10px;
-
-}
-
-.hero-banner p{
-
-font-size:16px;
-
-color:#e8ffe8;
-
-max-width:500px;
-
-line-height:28px;
-
-}
-
-.hero-banner button{
-
-margin-top:25px;
-
-padding:14px 28px;
-
-background:white;
-
-color:#16a34a;
-
-font-weight:bold;
-
-border:none;
-
-border-radius:10px;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-.hero-banner button:hover{
-
-transform:translateY(-3px);
-
-}
-
-.hero-icon{
-
-font-size:120px;
-
-opacity:.25;
-
-}
-
-/*=====================
-ANALYTICS
-=====================*/
-
-.analytics{
-
 display:grid;
-
-grid-template-columns:2fr 1fr;
-
-gap:25px;
-
-margin-top:40px;
-
+grid-template-columns:1.5fr 1fr 1fr 1fr;
+gap:22px;
+margin-top:45px;
 }
 
-.chart-card,
-.profile-card{
-
-background:#181818;
-
-border:1px solid #2d2d2d;
-
+.panel{
+background:var(--card);
+border:1px solid var(--border);
 border-radius:18px;
-
-padding:30px;
-
+padding:24px;
 }
 
-.chart-bars{
-
+.panel h2{
+font-size:17px;
+margin-bottom:18px;
 display:flex;
-
-align-items:flex-end;
-
 justify-content:space-between;
-
-height:220px;
-
-margin-top:25px;
-
+align-items:center;
 }
 
-.bar{
-
-width:45px;
-
-background:#22c55e;
-
-border-radius:8px 8px 0 0;
-
-transition:.4s;
-
+.panel h2 a{
+font-size:12px;
+color:var(--green);
+font-weight:600;
+text-decoration:none;
 }
 
-.bar:hover{
+.panel h2 a:hover{ text-decoration:underline; }
 
-background:#16a34a;
+/* AI recipes */
 
+.recipe-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
 }
 
-.bar1{height:90px;}
-.bar2{height:130px;}
-.bar3{height:170px;}
-.bar4{height:120px;}
-.bar5{height:200px;}
-.bar6{height:150px;}
-.bar7{height:180px;}
-
-.profile{
-
-text-align:center;
-
+.recipe-card{
+background:#111;
+border:1px solid var(--border);
+border-radius:14px;
+overflow:hidden;
 }
 
-.profile img{
-
-width:90px;
-
+.recipe-card img{
+width:100%;
 height:90px;
-
-border-radius:50%;
-
-margin-bottom:15px;
-
-border:4px solid #22c55e;
-
+object-fit:cover;
+display:block;
 }
 
-.profile h3{
+.recipe-body{
+padding:12px;
+}
 
+.recipe-body h4{
+font-size:13.5px;
+margin-bottom:6px;
+}
+
+.tags{
+display:flex;
+gap:6px;
 margin-bottom:8px;
-
+flex-wrap:wrap;
 }
 
-.profile p{
-
-color:#9ca3af;
-
-margin-bottom:25px;
-
+.tag{
+font-size:10px;
+font-weight:700;
+padding:3px 8px;
+border-radius:20px;
+background:rgba(34,197,94,.15);
+color:var(--green);
 }
 
-.profile button{
+.recipe-meta{
+display:flex;
+justify-content:space-between;
+font-size:11.5px;
+color:var(--soft);
+margin-bottom:10px;
+}
 
-padding:12px 24px;
-
-background:#22c55e;
-
-color:white;
-
+.cook-btn{
+width:100%;
+background:var(--green);
 border:none;
-
-border-radius:10px;
-
+color:white;
+padding:9px;
+border-radius:9px;
+font-weight:700;
+font-size:12.5px;
 cursor:pointer;
+text-decoration:none;
+display:block;
+text-align:center;
+}
 
+.cook-btn:hover{ background:var(--greenDark); }
+
+/* list widgets */
+
+.list-item{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 0;
+border-bottom:1px solid #232323;
+text-decoration:none;
+cursor:pointer;
+}
+
+.list-item:hover{ opacity:.8; }
+
+.list-item:last-child{ border-bottom:none; }
+
+.list-icon{
+width:38px;
+height:38px;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:16px;
+flex-shrink:0;
+}
+
+.list-name{
+font-size:13.5px;
+font-weight:600;
+color:white;
+}
+
+.list-sub{
+font-size:11.5px;
+color:var(--soft);
+margin-top:2px;
+}
+
+.list-badge{
+margin-left:auto;
+font-size:11px;
+font-weight:700;
+padding:5px 10px;
+border-radius:20px;
+white-space:nowrap;
+}
+
+.badge-red{ background:rgba(239,68,68,.15); color:#ef4444; }
+.badge-orange{ background:rgba(245,158,11,.15); color:#f59e0b; }
+
+/* stock bar */
+
+.stock-bar{
+width:60px;
+height:6px;
+border-radius:10px;
+background:#2a2a2a;
+overflow:hidden;
+margin-left:auto;
+}
+
+.stock-bar span{
+display:block;
+height:100%;
+background:#ef4444;
+}
+
+.stock-pct{
+font-size:11px;
+color:var(--soft);
+margin-left:10px;
+width:60px;
+text-align:right;
+}
+
+/* shopping list */
+
+.check-item{
+display:flex;
+align-items:center;
+gap:12px;
+padding:10px 0;
+border-bottom:1px solid #232323;
+font-size:13.5px;
+cursor:pointer;
+}
+
+.check-item:last-child{ border-bottom:none; }
+
+.check-item input{
+width:17px;
+height:17px;
+accent-color:var(--green);
+cursor:pointer;
+}
+
+.check-item.done span{
+text-decoration:line-through;
+color:#666;
+}
+
+.add-item-btn{
+width:100%;
+margin-top:14px;
+background:transparent;
+border:1.5px dashed #333;
+color:var(--green);
+padding:10px;
+border-radius:10px;
+font-weight:700;
+font-size:12.5px;
+cursor:pointer;
+text-decoration:none;
+display:block;
+text-align:center;
+}
+
+.add-item-btn:hover{ border-color:var(--green); }
+
+/* ==========================
+   RECENT ACTIVITY
+========================== */
+
+.activity-strip{
+margin-top:22px;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+padding:22px 26px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.activity-strip h3{
+font-size:14px;
+display:flex;
+align-items:center;
+gap:8px;
+color:var(--soft);
+min-width:150px;
+}
+
+.activity-list{
+display:flex;
+gap:32px;
+flex-wrap:wrap;
+}
+
+.activity-item{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:12.5px;
+}
+
+.activity-item i{
+width:32px;
+height:32px;
+border-radius:9px;
+background:rgba(34,197,94,.15);
+color:var(--green);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13px;
+}
+
+.activity-item span{
+display:block;
+color:#666;
+font-size:11px;
+margin-top:2px;
 }
 
 .footer{
-
-margin-top:60px;
-
+margin-top:45px;
 padding:25px;
-
 text-align:center;
-
 color:#888;
-
 border-top:1px solid #222;
-
+font-size:13px;
 }
 
-@media(max-width:1000px){
-
-.analytics{
-
-grid-template-columns:1fr;
-
+@media(max-width:1300px){
+.stats{ grid-template-columns:repeat(2,1fr); }
+.planner{ grid-template-columns:repeat(4,1fr); }
+.bottom-grid{ grid-template-columns:1fr 1fr; }
 }
 
-.hero-banner{
-
-flex-direction:column;
-
-text-align:center;
-
-gap:25px;
-
+@media(max-width:800px){
+.planner{ grid-template-columns:repeat(2,1fr); }
+.bottom-grid{ grid-template-columns:1fr; }
+.recipe-grid{ grid-template-columns:1fr 1fr; }
 }
 
-}
 </style>
 
 </head>
@@ -1071,18 +907,16 @@ gap:25px;
 
 <div class="sidebar">
 
-<div class="logo">
-
+<a href="dashboard.jsp" class="logo">
 <i class="fa-solid fa-cart-shopping"></i>
-
 <span>Smart Grocery</span>
-
-</div>
+</a>
+<div class="logo-sub">Manage Smart, Eat Smart</div>
 
 <ul class="menu">
 
 <li>
-<a class="active" href="#">
+<a class="active" href="dashboard.jsp">
 <i class="fa-solid fa-house"></i>
 Dashboard
 </a>
@@ -1096,16 +930,9 @@ Shop Groceries
 </li>
 
 <li>
-<a href="orders.jsp">
-<i class="fa-solid fa-box"></i>
-My Orders
-</a>
-</li>
-
-<li>
 <a href="inventory.jsp">
 <i class="fa-solid fa-warehouse"></i>
-Inventory
+My Inventory
 </a>
 </li>
 
@@ -1113,6 +940,14 @@ Inventory
 <a href="mealplanner.jsp">
 <i class="fa-solid fa-utensils"></i>
 Meal Planner
+</a>
+</li>
+
+<li>
+<a href="cart.jsp">
+<i class="fa-solid fa-list-check"></i>
+Shopping List
+<span class="menu-count">4</span>
 </a>
 </li>
 
@@ -1126,14 +961,36 @@ Recipes
 <li>
 <a href="notifications.jsp">
 <i class="fa-solid fa-bell"></i>
-Notifications
+Expiry Alerts
+<span class="menu-count">5</span>
 </a>
 </li>
 
 <li>
-<a href="cart.jsp">
-<i class="fa-solid fa-cart-plus"></i>
-My Cart
+<a href="inventory.jsp?filter=low">
+<i class="fa-solid fa-triangle-exclamation"></i>
+Low Stock
+<span class="menu-count">8</span>
+</a>
+</li>
+
+</ul>
+
+<div class="side-label">Account</div>
+
+<ul class="menu">
+
+<li>
+<a href="profile.jsp">
+<i class="fa-solid fa-user"></i>
+Profile
+</a>
+</li>
+
+<li>
+<a href="settings.jsp">
+<i class="fa-solid fa-gear"></i>
+Settings
 </a>
 </li>
 
@@ -1146,6 +1003,12 @@ Logout
 
 </ul>
 
+<a href="tel:+94112345678" class="help-card">
+<i class="fa-solid fa-phone"></i>
+<b>Need Help?</b>
+<span>Emergency Call</span>
+</a>
+
 </div>
 
 <!-- Main -->
@@ -1154,31 +1017,29 @@ Logout
 
 <div class="navbar">
 
-<div class="search">
-
+<form class="search" action="products.jsp" method="get">
 <i class="fa-solid fa-magnifying-glass"></i>
-
-<input
-type="text"
-placeholder="Search products, recipes...">
-
-</div>
+<input type="text" name="search" placeholder="Search products, recipes...">
+<button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+</form>
 
 <div class="user">
 
+<a href="cart.jsp" class="icon-btn">
+<i class="fa-solid fa-cart-shopping"></i>
+<span class="dot">3</span>
+</a>
+
+<a href="notifications.jsp" class="icon-btn">
 <i class="fa-regular fa-bell"></i>
+<span class="dot">4</span>
+</a>
 
-<div>
-
-<b>Welcome, <%=user.getName()%></b>
-
-</div>
-
-<div class="avatar">
-
-<%=user.getName().substring(0,1).toUpperCase()%>
-
-</div>
+<a href="profile.jsp" class="profile-chip">
+<div class="avatar"><%=user.getName().substring(0,1).toUpperCase()%></div>
+<span><%=user.getName()%></span>
+<i class="fa-solid fa-chevron-down" style="font-size:11px;color:#888;"></i>
+</a>
 
 </div>
 
@@ -1186,648 +1047,294 @@ placeholder="Search products, recipes...">
 
 <div class="content">
 
-<h1>Welcome Back 👋</h1>
+<!-- HERO -->
 
-<p>
-Manage your groceries, inventory and healthy meals from one place.
-</p>
+<div class="hero">
+<div>
+<div class="hero-eyebrow"><i class="fa-solid fa-leaf"></i> SMART MEAL PLANNER</div>
+<h1>Plan Healthy Meals,<br>Reduce Waste, <span>Save More.</span></h1>
+<p>Organize your meals, track inventory and build a smarter kitchen every day.</p>
+<div class="hero-actions">
+<a href="mealplanner.jsp" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Plan Meals</a>
+<a href="recipes.jsp" class="btn-outline"><i class="fa-solid fa-utensils"></i> Explore Recipes</a>
+</div>
+</div>
+</div>
+
+<!-- STATS -->
 
 <div class="stats">
 
-<div class="stat-card">
+<a href="inventory.jsp" class="stat-card">
+<div class="icon-circle green"><i class="fa-solid fa-box"></i></div>
+<div>
+<div class="stat-number">128 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 12%</span></div>
+<div class="stat-title">Inventory Items</div>
+</div>
+</a>
 
-<div class="icon-circle green">
+<a href="mealplanner.jsp" class="stat-card">
+<div class="icon-circle orange"><i class="fa-solid fa-bowl-food"></i></div>
+<div>
+<div class="stat-number">18 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 8%</span></div>
+<div class="stat-title">Meals Planned This Week</div>
+</div>
+</a>
 
-<i class="fa-solid fa-box"></i>
+<a href="notifications.jsp" class="stat-card">
+<div class="icon-circle blue"><i class="fa-solid fa-seedling"></i></div>
+<div>
+<div class="stat-number">8.4 kg <span class="trend"><i class="fa-solid fa-arrow-up"></i> 15%</span></div>
+<div class="stat-title">Food Saved This Month</div>
+</div>
+</a>
+
+<a href="orders.jsp" class="stat-card">
+<div class="icon-circle purple"><i class="fa-solid fa-wallet"></i></div>
+<div>
+<div class="stat-number">Rs. 4,500 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 10%</span></div>
+<div class="stat-title">Money Saved This Month</div>
+</div>
+</a>
 
 </div>
 
-<div class="stat-number">
-128
-</div>
+<!-- WEEKLY MEAL PLANNER -->
 
-<div class="stat-title">
-Total Inventory
-</div>
-
-<div class="stat-sub">
-Items available in your kitchen
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="icon-circle orange">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-</div>
-
-<div class="stat-number">
-12
-</div>
-
-<div class="stat-title">
-Low Stock
-</div>
-
-<div class="stat-sub">
-Need to reorder soon
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="icon-circle red">
-
-<i class="fa-solid fa-calendar-days"></i>
-
-</div>
-
-<div class="stat-number">
-7
-</div>
-
-<div class="stat-title">
-Expiring Soon
-</div>
-
-<div class="stat-sub">
-Expire within 7 days
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="icon-circle blue">
-
-<i class="fa-solid fa-truck-fast"></i>
-
-</div>
-
-<div class="stat-number">
-5
-</div>
-
-<div class="stat-title">
-Active Orders
-</div>
-
-<div class="stat-sub">
-Currently processing
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
 <h2 class="section-title">
-
-Quick Actions
-
+<span><i class="fa-solid fa-calendar-days" style="color:var(--green);margin-right:8px;"></i>Weekly Meal Planner</span>
+<a href="mealplanner.jsp">View Full Planner <i class="fa-solid fa-chevron-right"></i></a>
 </h2>
 
-<div class="quick-actions">
+<div class="planner">
 
-<a href="products.jsp" class="action-card">
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-<h3>Shop Groceries</h3>
-
-<p>
-Browse fresh groceries and add products to your cart.
-</p>
-
-</a>
-
-<a href="inventory.jsp" class="action-card">
-
-<i class="fa-solid fa-warehouse"></i>
-
-<h3>Inventory</h3>
-
-<p>
-Track available items and monitor stock levels.
-</p>
-
-</a>
-
-<a href="mealplanner.jsp" class="action-card">
-
-<i class="fa-solid fa-utensils"></i>
-
-<h3>Meal Planner</h3>
-
-<p>
-Generate healthy meal plans using your inventory.
-</p>
-
-</a>
-
-<a href="recipes.jsp" class="action-card">
-
-<i class="fa-solid fa-book-open"></i>
-
-<h3>Recipes</h3>
-
-<p>
-Find delicious recipes based on available ingredients.
-</p>
-
-</a>
-
-<a href="cart.jsp" class="action-card">
-
-<i class="fa-solid fa-cart-plus"></i>
-
-<h3>My Cart</h3>
-
-<p>
-Review your shopping cart before checkout.
-</p>
-
-</a>
-
-<a href="notifications.jsp" class="action-card">
-
-<i class="fa-solid fa-bell"></i>
-
-<h3>Notifications</h3>
-
-<p>
-Check expiry alerts, low stock warnings and updates.
-</p>
-
-</a>
-
-</div>
-<div class="dashboard-grid">
-
-<!-- Expiring Soon -->
-
-<div class="widget">
-
-<h2>⏰ Expiring Soon</h2>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon red-bg">
-🥛
+<div class="day-col">
+<div class="day-head">MON 19</div>
+<div class="meal-row"><div class="meal-emoji">🥣</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Oats &amp; Banana</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🍚</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Dal Rice</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🥦</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Veg Stir Fry</div></div></div>
+<a href="addMeal.jsp?day=Monday" class="add-meal">+ Add Meal</a>
 </div>
 
-<div>
+<div class="day-col">
+<div class="day-head">TUE 20</div>
+<div class="meal-row"><div class="meal-emoji">🍳</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Bread &amp; Eggs</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🍛</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Chicken Curry</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🍜</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Rice &amp; Dahl</div></div></div>
+<a href="addMeal.jsp?day=Tuesday" class="add-meal">+ Add Meal</a>
+</div>
 
-<div class="item-name">Milk</div>
+<div class="day-col today">
+<div class="day-head"><i class="fa-solid fa-star"></i> WED 21</div>
+<div class="meal-row"><div class="meal-emoji">🍹</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Smoothie Bowl</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🥙</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Veg Wrap</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🥗</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Grilled Veggies</div></div></div>
+<a href="addMeal.jsp?day=Wednesday" class="add-meal">+ Add Meal</a>
+</div>
 
-<div class="item-desc">
-Expires in 2 days
+<div class="day-col">
+<div class="day-head">THU 22</div>
+<div class="meal-row"><div class="meal-emoji">🍓</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Yogurt &amp; Fruit</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🥪</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Veg Sandwich</div></div></div>
+<div class="meal-row"><div class="meal-emoji">🍲</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Veg Soup</div></div></div>
+<a href="addMeal.jsp?day=Thursday" class="add-meal">+ Add Meal</a>
+</div>
+
+<div class="day-col">
+<div class="day-head">FRI 23</div>
+<a href="addMeal.jsp?day=Friday&amp;slot=Breakfast" class="add-empty">+ Add Breakfast</a>
+<a href="addMeal.jsp?day=Friday&amp;slot=Lunch" class="add-empty">+ Add Lunch</a>
+<a href="addMeal.jsp?day=Friday&amp;slot=Dinner" class="add-empty">+ Add Dinner</a>
+</div>
+
+<div class="day-col">
+<div class="day-head">SAT 24</div>
+<a href="addMeal.jsp?day=Saturday&amp;slot=Breakfast" class="add-empty">+ Add Breakfast</a>
+<a href="addMeal.jsp?day=Saturday&amp;slot=Lunch" class="add-empty">+ Add Lunch</a>
+<a href="addMeal.jsp?day=Saturday&amp;slot=Dinner" class="add-empty">+ Add Dinner</a>
+</div>
+
+<div class="day-col">
+<div class="day-head">SUN 25</div>
+<a href="addMeal.jsp?day=Sunday&amp;slot=Breakfast" class="add-empty">+ Add Breakfast</a>
+<a href="addMeal.jsp?day=Sunday&amp;slot=Lunch" class="add-empty">+ Add Lunch</a>
+<a href="addMeal.jsp?day=Sunday&amp;slot=Dinner" class="add-empty">+ Add Dinner</a>
 </div>
 
 </div>
 
-</div>
+<!-- BOTTOM GRID -->
 
-<span class="badge red">
-Urgent
-</span>
-
-</div>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon orange-bg">
-🥚
-</div>
-
-<div>
-
-<div class="item-name">Eggs</div>
-
-<div class="item-desc">
-Expires in 4 days
-</div>
-
-</div>
-
-</div>
-
-<span class="badge orange">
-Soon
-</span>
-
-</div>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon green-bg">
-🍎
-</div>
-
-<div>
-
-<div class="item-name">Apples</div>
-
-<div class="item-desc">
-Expires in 6 days
-</div>
-
-</div>
-
-</div>
-
-<span class="badge green">
-Fresh
-</span>
-
-</div>
-
-</div>
-
-<!-- Meal Recommendations -->
-
-<div class="widget">
-
-<h2>🍽 Recommended Meals</h2>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon green-bg">
-🥗
-</div>
-
-<div>
-
-<div class="item-name">
-Healthy Salad
-</div>
-
-<div class="item-desc">
-Uses lettuce, tomatoes & eggs
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon orange-bg">
-🍝
-</div>
-
-<div>
-
-<div class="item-name">
-Pasta Primavera
-</div>
-
-<div class="item-desc">
-Uses vegetables before expiry
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon green-bg">
-🍲
-</div>
-
-<div>
-
-<div class="item-name">
-Chicken Soup
-</div>
-
-<div class="item-desc">
-High protein dinner
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="widget-item">
-
-<div class="item-left">
-
-<div class="item-icon green-bg">
-🥪
-</div>
-
-<div>
-
-<div class="item-name">
-Sandwich
-</div>
-
-<div class="item-desc">
-Ready in only 10 minutes
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
 <div class="bottom-grid">
 
-<!-- Recent Orders -->
+<!-- AI RECIPES -->
+<div class="panel">
+<h2><span><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--green);margin-right:6px;"></i>AI Suggested Recipes</span><a href="recipes.jsp">View All</a></h2>
 
-<div class="table-card">
+<div class="recipe-grid">
 
-<h2>🛒 Recent Orders</h2>
-
-<table>
-
-<tr>
-
-<th>Order ID</th>
-
-<th>Date</th>
-
-<th>Total</th>
-
-<th>Status</th>
-
-</tr>
-
-<tr>
-
-<td>#10021</td>
-
-<td>15 Jul</td>
-
-<td>$38.40</td>
-
-<td>
-
-<span class="status delivered">
-
-Delivered
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>#10022</td>
-
-<td>16 Jul</td>
-
-<td>$52.80</td>
-
-<td>
-
-<span class="status processing">
-
-Processing
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>#10023</td>
-
-<td>17 Jul</td>
-
-<td>$18.60</td>
-
-<td>
-
-<span class="status cancelled">
-
-Cancelled
-
-</span>
-
-</td>
-
-</tr>
-
-</table>
-
+<div class="recipe-card">
+<img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop" alt="Chicken Curry">
+<div class="recipe-body">
+<h4>Chicken Curry</h4>
+<div class="tags"><span class="tag">Protein</span><span class="tag">Spicy</span></div>
+<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 40 min</span><span>⭐ 4.8</span></div>
+<a href="recipeDetails.jsp?name=Chicken+Curry" class="cook-btn">Cook Now</a>
+</div>
 </div>
 
-<!-- Inventory -->
-
-<div class="progress-card">
-
-<h2>📦 Inventory Overview</h2>
-
-<div class="progress-item">
-
-<div class="progress-title">
-
-<span>Vegetables</span>
-
-<span>82%</span>
-
+<div class="recipe-card">
+<img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?q=80&w=400&auto=format&fit=crop" alt="Veg Pasta">
+<div class="recipe-body">
+<h4>Veg Pasta</h4>
+<div class="tags"><span class="tag">Vegetarian</span><span class="tag">Italian</span></div>
+<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 25 min</span><span>⭐ 4.3</span></div>
+<a href="recipeDetails.jsp?name=Veg+Pasta" class="cook-btn">Cook Now</a>
+</div>
 </div>
 
-<div class="progress">
+<div class="recipe-card">
+<img src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=400&auto=format&fit=crop" alt="Fruit Bowl">
+<div class="recipe-body">
+<h4>Fruit Bowl</h4>
+<div class="tags"><span class="tag">Healthy</span></div>
+<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 15 min</span><span>⭐ 4.5</span></div>
+<a href="recipeDetails.jsp?name=Fruit+Bowl" class="cook-btn">Cook Now</a>
+</div>
+</div>
 
-<span style="width:82%"></span>
-
+<div class="recipe-card">
+<img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?q=80&w=400&auto=format&fit=crop" alt="Green Smoothie">
+<div class="recipe-body">
+<h4>Green Smoothie</h4>
+<div class="tags"><span class="tag">Healthy</span></div>
+<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 10 min</span><span>⭐ 4.6</span></div>
+<a href="recipeDetails.jsp?name=Green+Smoothie" class="cook-btn">Cook Now</a>
+</div>
 </div>
 
 </div>
+</div>
 
-<div class="progress-item">
+<!-- EXPIRING SOON -->
+<div class="panel">
+<h2><span>⏰ Expiring Soon</span><a href="notifications.jsp">View All</a></h2>
 
-<div class="progress-title">
+<a href="inventory.jsp?item=Milk" class="list-item">
+<div class="list-icon" style="background:rgba(239,68,68,.15);">🥛</div>
+<div><div class="list-name">Milk</div><div class="list-sub">Expires in 2 days</div></div>
+<div class="list-badge badge-red">2 days</div>
+</a>
 
-<span>Dairy</span>
+<a href="inventory.jsp?item=Tomatoes" class="list-item">
+<div class="list-icon" style="background:rgba(239,68,68,.15);">🍅</div>
+<div><div class="list-name">Tomatoes</div><div class="list-sub">Expires in 1 day</div></div>
+<div class="list-badge badge-red">1 day</div>
+</a>
 
-<span>61%</span>
+<a href="inventory.jsp?item=Spinach" class="list-item">
+<div class="list-icon" style="background:rgba(239,68,68,.15);">🥬</div>
+<div><div class="list-name">Spinach</div><div class="list-sub">Expires today</div></div>
+<div class="list-badge badge-red">Today</div>
+</a>
+
+<a href="inventory.jsp?item=Yogurt" class="list-item">
+<div class="list-icon" style="background:rgba(245,158,11,.15);">🍦</div>
+<div><div class="list-name">Yogurt</div><div class="list-sub">Expires in 2 days</div></div>
+<div class="list-badge badge-orange">2 days</div>
+</a>
 
 </div>
 
-<div class="progress">
+<!-- LOW STOCK -->
+<div class="panel">
+<h2><span>📦 Low Stock Items</span><a href="inventory.jsp?filter=low">View All</a></h2>
 
-<span style="width:61%"></span>
+<a href="products.jsp?reorder=Milk" class="list-item">
+<div class="list-icon" style="background:#222;">🥛</div>
+<div><div class="list-name">Milk</div><div class="list-sub">20% left</div></div>
+<div class="stock-bar"><span style="width:20%"></span></div>
+</a>
+
+<a href="products.jsp?reorder=Bread" class="list-item">
+<div class="list-icon" style="background:#222;">🍞</div>
+<div><div class="list-name">Bread</div><div class="list-sub">30% left</div></div>
+<div class="stock-bar"><span style="width:30%"></span></div>
+</a>
+
+<a href="products.jsp?reorder=Eggs" class="list-item">
+<div class="list-icon" style="background:#222;">🥚</div>
+<div><div class="list-name">Eggs</div><div class="list-sub">25% left</div></div>
+<div class="stock-bar"><span style="width:25%"></span></div>
+</a>
+
+<a href="products.jsp?reorder=Rice" class="list-item">
+<div class="list-icon" style="background:#222;">🍚</div>
+<div><div class="list-name">Rice</div><div class="list-sub">15% left</div></div>
+<div class="stock-bar"><span style="width:15%"></span></div>
+</a>
 
 </div>
 
-</div>
+<!-- SHOPPING LIST -->
+<div class="panel">
+<h2><span>🛒 Shopping List</span><a href="cart.jsp">View All</a></h2>
 
-<div class="progress-item">
+<form id="shoppingListForm" action="ShoppingListServlet" method="post">
+<label class="check-item"><input type="checkbox" name="item" value="Milk" onchange="this.form.submit()"><span>Milk</span></label>
+<label class="check-item done"><input type="checkbox" name="item" value="Bread" checked onchange="this.form.submit()"><span>Bread</span></label>
+<label class="check-item"><input type="checkbox" name="item" value="Eggs" onchange="this.form.submit()"><span>Eggs</span></label>
+<label class="check-item"><input type="checkbox" name="item" value="Cheese" onchange="this.form.submit()"><span>Cheese</span></label>
+<label class="check-item done"><input type="checkbox" name="item" value="Apples" checked onchange="this.form.submit()"><span>Apples</span></label>
+<label class="check-item"><input type="checkbox" name="item" value="Bananas" onchange="this.form.submit()"><span>Bananas</span></label>
+</form>
 
-<div class="progress-title">
-
-<span>Fruits</span>
-
-<span>90%</span>
-
-</div>
-
-<div class="progress">
-
-<span style="width:90%"></span>
-
+<a href="cart.jsp" class="add-item-btn">+ Add Item</a>
 </div>
 
 </div>
 
-<div class="progress-item">
+<!-- RECENT ACTIVITY -->
 
-<div class="progress-title">
+<div class="activity-strip">
+<h3><i class="fa-solid fa-chart-line" style="color:var(--green);"></i> Recent Activity</h3>
+<div class="activity-list">
 
-<span>Bakery</span>
-
-<span>45%</span>
-
+<div class="activity-item">
+<i class="fa-solid fa-cart-plus"></i>
+<div>Added Milk<span>10 min ago</span></div>
 </div>
 
-<div class="progress">
-
-<span style="width:45%"></span>
-
+<div class="activity-item">
+<i class="fa-solid fa-utensils"></i>
+<div>Planned Dinner<span>1 hr ago</span></div>
 </div>
 
+<div class="activity-item">
+<i class="fa-solid fa-bag-shopping"></i>
+<div>Purchased Apples<span>3 hrs ago</span></div>
 </div>
 
-</div>
-
-</div>
-<!-- HERO BANNER -->
-
-<div class="hero-banner">
-
-<div>
-
-<h2>Eat Healthy. Waste Less. 🌱</h2>
-
-<p>
-
-Smart Grocery helps you manage your inventory,
-track expiry dates, receive smart notifications,
-and generate healthy meal plans using available ingredients.
-
-</p>
-
-<button>
-
-Explore Features →
-
-</button>
-
-</div>
-
-<div class="hero-icon">
-
-🥗
-
+<div class="activity-item">
+<i class="fa-solid fa-box-open"></i>
+<div>Removed Bread<span>5 hrs ago</span></div>
 </div>
 
 </div>
-
-<!-- ANALYTICS -->
-
-<div class="analytics">
-
-<div class="chart-card">
-
-<h2>📈 Weekly Grocery Activity</h2>
-
-<div class="chart-bars">
-
-<div class="bar bar1"></div>
-
-<div class="bar bar2"></div>
-
-<div class="bar bar3"></div>
-
-<div class="bar bar4"></div>
-
-<div class="bar bar5"></div>
-
-<div class="bar bar6"></div>
-
-<div class="bar bar7"></div>
-
-</div>
-
-</div>
-
-<div class="profile-card">
-
-<div class="profile">
-
-<img src="https://i.pravatar.cc/150?img=12">
-
-<h3>
-
-<%=user.getName()%>
-
-</h3>
-
-<p>
-
-Smart Grocery Member
-
-</p>
-
-<button>
-
-Edit Profile
-
-</button>
-
-</div>
-
-</div>
-
+<a href="orders.jsp" style="color:var(--green);font-size:12.5px;font-weight:700;text-decoration:none;">View All Activity <i class="fa-solid fa-chevron-right"></i></a>
 </div>
 
 <!-- FOOTER -->
 
 <div class="footer">
-
 © 2026 Smart Grocery Management System
-
 <br><br>
-
 Manage Smart • Eat Smart • Live Healthy 🌿
+</div>
 
 </div>
+
+</div>
+
 </body>
 </html>
