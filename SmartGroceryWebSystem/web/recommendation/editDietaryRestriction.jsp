@@ -5,6 +5,7 @@
 --%>
 <%@ include file="/nav.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="page-container">
 
@@ -18,6 +19,12 @@
         </a>
 
         <br><br>
+
+        <c:if test="${not empty formError}">
+            <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+                ${formError}
+            </div>
+        </c:if>
 
         <form action="DietaryRestrictionController" method="post">
 

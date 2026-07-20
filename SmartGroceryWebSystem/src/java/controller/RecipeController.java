@@ -122,37 +122,42 @@ public class RecipeController extends HttpServlet {
 
             case "delete":
 
+    int deleteId;
 
-                int deleteId =
-                        Integer.parseInt(
-                                request.getParameter("id")
-                        );
+    try {
+        deleteId = Integer.parseInt(request.getParameter("id"));
+    } catch (NumberFormatException e) {
+        response.sendRedirect("RecipeController");
+        return;
+    }
 
+    recipeDAO.deleteRecipe(deleteId);
 
-                recipeDAO.deleteRecipe(deleteId);
+    response.sendRedirect("RecipeController");
 
-
-                response.sendRedirect("RecipeController");
-
-                return;
-
+    return;
 
 
 
             case "edit":
 
 
-                int editId =
-                        Integer.parseInt(
-                                request.getParameter("id")
-                        );
+                int editId;
 
+    try {
+        editId = Integer.parseInt(request.getParameter("id"));
+    } catch (NumberFormatException e) {
+        response.sendRedirect("RecipeController");
+        return;
+    }
 
+    Recipe recipe =
+            recipeDAO.getRecipeById(editId);
 
-                Recipe recipe =
-                        recipeDAO.getRecipeById(editId);
-
-
+    if (recipe == null) {
+        response.sendRedirect("RecipeController");
+        return;
+    }
 
                 request.setAttribute("recipe", recipe);
 
@@ -240,12 +245,66 @@ public class RecipeController extends HttpServlet {
 
 
 
+            String recipeName = request.getParameter("name");
+            String cookingTimeParam = request.getParameter("cookingTime");
+            String servingsParam = request.getParameter("servings");
+
+            java.util.List<String> errors = new java.util.ArrayList<>();
+
+            if (recipeName == null || recipeName.trim().isEmpty()) {
+                errors.add("Recipe name is required.");
+            }
+
+            int cookingTime = 0;
+            int servings = 0;
+
+            try {
+                cookingTime = Integer.parseInt(cookingTimeParam);
+                if (cookingTime <= 0) {
+                    errors.add("Cooking time must be a positive number.");
+                }
+            } catch (NumberFormatException e) {
+                errors.add("Cooking time must be a valid number.");
+            }
+
+            try {
+                servings = Integer.parseInt(servingsParam);
+                if (servings <= 0) {
+                    errors.add("Servings must be a positive number.");
+                }
+            } catch (NumberFormatException e) {
+                errors.add("Servings must be a valid number.");
+            }
+
+            if (!errors.isEmpty()) {
+
+                request.setAttribute("formErrors", errors);
+
+                request.getRequestDispatcher("/recipes/addRecipe.jsp")
+                        .forward(request, response);
+
+                return;
+            }
+
+            if (recipeName != null && recipeDAO.getRecipeByName(recipeName.trim()) != null) {
+
+                request.setAttribute("duplicateNameError",
+                        "A recipe named \"" + recipeName.trim() + "\" already exists. Please choose a different name.");
+
+                request.getRequestDispatcher("/recipes/addRecipe.jsp")
+                        .forward(request, response);
+
+                return;
+            }
+
+
+
             Recipe recipe = new Recipe();
 
 
 
             recipe.setName(
-                    request.getParameter("name")
+                    recipeName
             );
 
 
@@ -264,11 +323,7 @@ public class RecipeController extends HttpServlet {
             );
 
 
-            recipe.setCookingTime(
-                    Integer.parseInt(
-                            request.getParameter("cookingTime")
-                    )
-            );
+            recipe.setCookingTime(cookingTime);
 
 
             recipe.setDifficulty(
@@ -276,11 +331,7 @@ public class RecipeController extends HttpServlet {
             );
 
 
-            recipe.setServings(
-                    Integer.parseInt(
-                            request.getParameter("servings")
-                    )
-            );
+            recipe.setServings(servings);
 
 
 
@@ -306,22 +357,78 @@ public class RecipeController extends HttpServlet {
 
 
 
+            int updateRecipeId;
+
+            try {
+                updateRecipeId = Integer.parseInt(request.getParameter("recipeId"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect("RecipeController");
+                return;
+            }
+
+            String recipeName = request.getParameter("name");
+            String cookingTimeParam = request.getParameter("cookingTime");
+            String servingsParam = request.getParameter("servings");
+
+            java.util.List<String> errors = new java.util.ArrayList<>();
+
+            if (recipeName == null || recipeName.trim().isEmpty()) {
+                errors.add("Recipe name is required.");
+            }
+
+            int cookingTime = 0;
+            int servings = 0;
+
+            try {
+                cookingTime = Integer.parseInt(cookingTimeParam);
+                if (cookingTime <= 0) {
+                    errors.add("Cooking time must be a positive number.");
+                }
+            } catch (NumberFormatException e) {
+                errors.add("Cooking time must be a valid number.");
+            }
+
+            try {
+                servings = Integer.parseInt(servingsParam);
+                if (servings <= 0) {
+                    errors.add("Servings must be a positive number.");
+                }
+            } catch (NumberFormatException e) {
+                errors.add("Servings must be a valid number.");
+            }
+
+            if (!errors.isEmpty()) {
+
+                // Redisplay the edit form with what the user submitted so far
+                Recipe attempted = new Recipe();
+                attempted.setRecipeId(updateRecipeId);
+                attempted.setName(recipeName);
+                attempted.setDescription(request.getParameter("description"));
+                attempted.setMealType(request.getParameter("mealType"));
+                attempted.setCuisine(request.getParameter("cuisine"));
+                attempted.setDifficulty(request.getParameter("difficulty"));
+
+                request.setAttribute("recipe", attempted);
+                request.setAttribute("formErrors", errors);
+
+                request.getRequestDispatcher("/recipes/editRecipe.jsp")
+                        .forward(request, response);
+
+                return;
+            }
+
+
+
             Recipe recipe = new Recipe();
 
 
 
-            recipe.setRecipeId(
-                    Integer.parseInt(
-                            request.getParameter("recipeId")
-                    )
-            );
-
+            recipe.setRecipeId(updateRecipeId);
 
 
             recipe.setName(
-                    request.getParameter("name")
+                    recipeName
             );
-
 
 
             recipe.setDescription(
@@ -329,11 +436,9 @@ public class RecipeController extends HttpServlet {
             );
 
 
-
             recipe.setMealType(
                     request.getParameter("mealType")
             );
-
 
 
             recipe.setCuisine(
@@ -341,13 +446,7 @@ public class RecipeController extends HttpServlet {
             );
 
 
-
-            recipe.setCookingTime(
-                    Integer.parseInt(
-                            request.getParameter("cookingTime")
-                    )
-            );
-
+            recipe.setCookingTime(cookingTime);
 
 
             recipe.setDifficulty(
@@ -355,12 +454,7 @@ public class RecipeController extends HttpServlet {
             );
 
 
-
-            recipe.setServings(
-                    Integer.parseInt(
-                            request.getParameter("servings")
-                    )
-            );
+            recipe.setServings(servings);
 
 
 

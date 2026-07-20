@@ -90,14 +90,25 @@ public class DietaryRestrictionController extends HttpServlet {
             case "edit":
 
 
-                int editId =
-                Integer.parseInt(
+                int editId;
+
+                try {
+                    editId = Integer.parseInt(
                         request.getParameter("id")
-                );
+                    );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect(request.getContextPath() + "/DietaryRestrictionController");
+                    return;
+                }
 
 
                 DietaryRestriction restriction =
                         restrictionDAO.getRestrictionById(editId);
+
+                if (restriction == null) {
+                    response.sendRedirect(request.getContextPath() + "/DietaryRestrictionController");
+                    return;
+                }
 
 
 
@@ -126,10 +137,16 @@ public class DietaryRestrictionController extends HttpServlet {
             case "delete":
 
 
-                int deleteId =
-                Integer.parseInt(
+                int deleteId;
+
+                try {
+                    deleteId = Integer.parseInt(
                         request.getParameter("id")
-                );
+                    );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect(request.getContextPath() + "/DietaryRestrictionController");
+                    return;
+                }
 
 
                 restrictionDAO.deleteRestriction(deleteId);
@@ -231,13 +248,26 @@ public class DietaryRestrictionController extends HttpServlet {
         if(action.equals("insert")){
 
 
+            String restrictionName = request.getParameter("restrictionName");
+
+            if (restrictionName == null || restrictionName.trim().isEmpty()) {
+
+                request.setAttribute("formError", "Restriction name is required.");
+
+                request.getRequestDispatcher("/recommendation/addRestriction.jsp")
+                        .forward(request, response);
+
+                return;
+            }
+
+
             DietaryRestriction restriction =
                     new DietaryRestriction();
 
 
 
             restriction.setRestrictionName(
-                    request.getParameter("restrictionName")
+                    restrictionName
             );
 
 
@@ -266,20 +296,43 @@ public class DietaryRestrictionController extends HttpServlet {
         else if(action.equals("update")){
 
 
+            int updateRestrictionId;
+
+            try {
+                updateRestrictionId = Integer.parseInt(request.getParameter("restrictionId"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect(request.getContextPath() + "/DietaryRestrictionController");
+                return;
+            }
+
+            String restrictionName = request.getParameter("restrictionName");
+
+            if (restrictionName == null || restrictionName.trim().isEmpty()) {
+
+                DietaryRestriction attempted = new DietaryRestriction();
+                attempted.setRestrictionId(updateRestrictionId);
+                attempted.setRestrictionName(restrictionName);
+                attempted.setDescription(request.getParameter("description"));
+
+                request.setAttribute("restriction", attempted);
+                request.setAttribute("formError", "Restriction name is required.");
+
+                request.getRequestDispatcher("/recommendation/editDietaryRestriction.jsp")
+                        .forward(request, response);
+
+                return;
+            }
+
+
             DietaryRestriction restriction =
                     new DietaryRestriction();
 
 
-
-            restriction.setRestrictionId(
-                Integer.parseInt(
-                request.getParameter("restrictionId"))
-            );
-
+            restriction.setRestrictionId(updateRestrictionId);
 
 
             restriction.setRestrictionName(
-                    request.getParameter("restrictionName")
+                    restrictionName
             );
 
 

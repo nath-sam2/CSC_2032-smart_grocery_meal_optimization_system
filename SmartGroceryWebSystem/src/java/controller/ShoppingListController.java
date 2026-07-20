@@ -82,9 +82,15 @@ public class ShoppingListController extends HttpServlet {
 
 
 
-                int mealPlanId =
-                        Integer.parseInt(
+                int mealPlanId;
+
+                try {
+                    mealPlanId = Integer.parseInt(
                         request.getParameter("mealPlanId"));
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("ShoppingListController?action=list");
+                    return;
+                }
 
 
 
@@ -112,10 +118,16 @@ public class ShoppingListController extends HttpServlet {
             case "view":
 
 
-                int shoppingListId =
-                        Integer.parseInt(
+                int shoppingListId;
+
+                try {
+                    shoppingListId = Integer.parseInt(
                         request.getParameter("id")
                         );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("ShoppingListController?action=list");
+                    return;
+                }
 
 
 
@@ -147,10 +159,16 @@ public class ShoppingListController extends HttpServlet {
             case "purchase":
 
 
-                int itemId =
-                        Integer.parseInt(
+                int itemId;
+
+                try {
+                    itemId = Integer.parseInt(
                         request.getParameter("id")
                         );
+                } catch (NumberFormatException e) {
+                    response.sendRedirect("ShoppingListController?action=list");
+                    return;
+                }
 
 
 
@@ -159,6 +177,11 @@ public class ShoppingListController extends HttpServlet {
                         .getShoppingListItemById(
                                 itemId
                         );
+
+                if (item == null) {
+                    response.sendRedirect("ShoppingListController?action=list");
+                    return;
+                }
 
 
 
