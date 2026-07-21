@@ -45,7 +45,7 @@ public class MealPlannerDAO {
         System.out.println("Meal Plan inserted successfully!");
         return true;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         System.out.println("Insert failed!");
     }
@@ -72,7 +72,7 @@ public class MealPlannerDAO {
             System.out.println("Meal Plan updated successfully!");
             return true;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Update failed!");
         }
@@ -95,7 +95,7 @@ public class MealPlannerDAO {
             System.out.println("Meal Plan deleted successfully!");
             return true;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Delete failed!");
         }
@@ -128,7 +128,7 @@ public class MealPlannerDAO {
             return mealPlan;
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
             return null;
@@ -161,7 +161,7 @@ public class MealPlannerDAO {
                 mealPlans.add(mealPlan);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

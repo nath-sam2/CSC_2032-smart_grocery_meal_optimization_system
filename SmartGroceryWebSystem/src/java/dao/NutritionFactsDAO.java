@@ -49,7 +49,7 @@ public class NutritionFactsDAO {
 
         return stmt.executeUpdate() > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }
@@ -96,7 +96,7 @@ public class NutritionFactsDAO {
                 return nutrition;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -144,7 +144,7 @@ public class NutritionFactsDAO {
                 nutritionList.add(nutrition);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -184,7 +184,7 @@ public class NutritionFactsDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -203,7 +203,7 @@ public class NutritionFactsDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -251,7 +251,7 @@ public class NutritionFactsDAO {
             return nutrition;
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 

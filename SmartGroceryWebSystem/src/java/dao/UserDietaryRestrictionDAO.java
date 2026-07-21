@@ -63,7 +63,7 @@ public class UserDietaryRestrictionDAO {
 
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
             return false;
@@ -97,7 +97,7 @@ public class UserDietaryRestrictionDAO {
 
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
             return false;
@@ -170,7 +170,7 @@ public class UserDietaryRestrictionDAO {
 
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
 
@@ -244,7 +244,7 @@ public class UserDietaryRestrictionDAO {
 
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
 
@@ -313,7 +313,7 @@ public class UserDietaryRestrictionDAO {
 
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
 
@@ -422,7 +422,7 @@ public class UserDietaryRestrictionDAO {
 
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
 

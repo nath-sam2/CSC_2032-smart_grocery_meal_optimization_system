@@ -38,7 +38,7 @@ public class RecipeDAO {
 
         return true;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
 
         e.printStackTrace();
         return false;
@@ -74,7 +74,7 @@ public class RecipeDAO {
             return recipe;
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
@@ -110,7 +110,7 @@ public class RecipeDAO {
             return recipe;
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
@@ -145,7 +145,7 @@ public class RecipeDAO {
             recipes.add(recipe);
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
@@ -174,7 +174,7 @@ public class RecipeDAO {
 
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }
@@ -194,7 +194,7 @@ public boolean deleteRecipe(int recipeId) {
 
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }

@@ -29,7 +29,7 @@ public class DietaryRestrictionDAO {
             stmt.executeUpdate();
             
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();;
             return false;
         }
@@ -57,7 +57,7 @@ public class DietaryRestrictionDAO {
             return restricrtion;
         }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
 
@@ -87,7 +87,7 @@ public class DietaryRestrictionDAO {
             restrictions.add(restriction);
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
         return restrictions;
@@ -109,7 +109,7 @@ public class DietaryRestrictionDAO {
 
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }
@@ -129,7 +129,7 @@ public class DietaryRestrictionDAO {
 
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }

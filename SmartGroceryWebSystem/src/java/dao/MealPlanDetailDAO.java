@@ -49,7 +49,7 @@ public class MealPlanDetailDAO {
                 return true;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -79,7 +79,7 @@ public class MealPlanDetailDAO {
                 return true;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -105,7 +105,7 @@ public class MealPlanDetailDAO {
                 return true;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -140,7 +140,7 @@ public class MealPlanDetailDAO {
                 return detail;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -176,7 +176,7 @@ public class MealPlanDetailDAO {
                 details.add(detail);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -205,7 +205,7 @@ public class MealPlanDetailDAO {
         return rs.next();
 
 
-    }catch(SQLException e){
+    }catch (Exception e){
 
         e.printStackTrace();
 

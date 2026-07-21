@@ -46,7 +46,7 @@ public class ShoppingListDAO {
             System.out.println("Shopping List inserted successfully!");
             return true;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Insert failed!");
         }
@@ -80,7 +80,7 @@ public class ShoppingListDAO {
                 return shoppingList;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -111,7 +111,7 @@ public class ShoppingListDAO {
                 shoppingLists.add(shoppingList);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -134,7 +134,7 @@ public class ShoppingListDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -153,7 +153,7 @@ public class ShoppingListDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

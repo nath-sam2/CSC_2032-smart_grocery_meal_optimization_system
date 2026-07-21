@@ -25,6 +25,12 @@ InventoryDAO inventoryDAO = new InventoryDAO();
 
     <div class="card">
 
+        <% if (items == null || items.isEmpty()) { %>
+
+            <p>No items in this shopping list ? looks like everything needed was already in stock.</p>
+
+        <% } else { %>
+
         <table>
             <tr>
                 <th>Ingredient</th>
@@ -35,7 +41,6 @@ InventoryDAO inventoryDAO = new InventoryDAO();
             </tr>
 
             <%
-            if(items != null){
                 for(ShoppingListItem item : items){
 
                     Ingredient ingredient =
@@ -85,10 +90,11 @@ InventoryDAO inventoryDAO = new InventoryDAO();
 
             <%
                 }
-            }
             %>
 
         </table>
+
+        <% } %>
 
     </div>
 

@@ -69,7 +69,7 @@ public class RecipeIngredientDAO {
             }
 
 
-        }catch(SQLException e){
+        }catch (Exception e){
 
             e.printStackTrace();
 

@@ -38,7 +38,7 @@ public class IngredientDAO {
 
         return true;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
 
         e.printStackTrace();
         return false;
@@ -70,7 +70,7 @@ public class IngredientDAO {
             return ingredient;
         }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
 
@@ -101,7 +101,7 @@ public class IngredientDAO {
             ingredients.add(ingredient);
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
@@ -126,7 +126,7 @@ public class IngredientDAO {
 
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }
@@ -146,7 +146,7 @@ public class IngredientDAO {
 
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
         return false;
     }
@@ -211,7 +211,7 @@ public class IngredientDAO {
         }
 
 
-    } catch(SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
@@ -249,7 +249,7 @@ public Product getRelatedProduct(int ingredientId) {
             );
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 

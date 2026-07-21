@@ -33,7 +33,7 @@ public class ShoppingListItemDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -66,7 +66,7 @@ public class ShoppingListItemDAO {
                 return item;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -99,7 +99,7 @@ public class ShoppingListItemDAO {
                 items.add(item);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -124,7 +124,7 @@ public class ShoppingListItemDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -143,7 +143,7 @@ public class ShoppingListItemDAO {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -194,7 +194,7 @@ public class ShoppingListItemDAO {
             items.add(item);
         }
 
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
