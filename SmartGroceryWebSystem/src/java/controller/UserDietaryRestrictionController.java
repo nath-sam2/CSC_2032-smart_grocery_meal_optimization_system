@@ -32,81 +32,66 @@ public class UserDietaryRestrictionController extends HttpServlet {
 
 
 
-    // Display user restrictions and delete
     @Override
-    protected void doGet(HttpServletRequest request,
-                        HttpServletResponse response)
-                        throws ServletException, IOException {
+protected void doGet(HttpServletRequest request,
+                    HttpServletResponse response)
+                    throws ServletException, IOException {
 
+    String action = request.getParameter("action");
+    if(action == null){
+        action = "list";
+    }
 
-        String action = request.getParameter("action");
+    // Fall back to the logged-in user when no userId param is passed
+    // (e.g. clicking the sidebar link, which has no query string)
+    Integer sessionUserId = null;
+    model.User sessionUser = (model.User) request.getSession().getAttribute("user");
+    if (sessionUser != null) {
+        sessionUserId = sessionUser.getUserId();
+    }
 
+    if(action.equals("delete")){
+        int userId =
+        Integer.parseInt(
+        request.getParameter("userId"));
+        int restrictionId =
+        Integer.parseInt(
+        request.getParameter("restrictionId"));
+        dao.removeUserRestriction(
+        userId,
+        restrictionId);
+        response.sendRedirect(
+        "UserDietaryRestrictionController?userId="
+        + userId);
+    }
+    else {
+        String userIdParam = request.getParameter("userId");
+        int userId;
 
-        if(action == null){
-            action = "list";
+        if (userIdParam != null && !userIdParam.trim().isEmpty()) {
+            userId = Integer.parseInt(userIdParam);
+        } else if (sessionUserId != null) {
+            userId = sessionUserId;
+        } else {
+            response.sendRedirect("login.jsp");
+            return;
         }
 
+        List<DietaryRestriction> restrictions =
+        dao.getRestrictionsByUserId(userId);
 
+request.setAttribute(
+        "userRestrictions",   // was "restrictions" — must match the JSP
+        restrictions);
 
-        if(action.equals("delete")){
+request.setAttribute(
+        "userId",
+        userId);
 
-
-            int userId =
-            Integer.parseInt(
-            request.getParameter("userId"));
-
-
-
-            int restrictionId =
-            Integer.parseInt(
-            request.getParameter("restrictionId"));
-
-
-
-            dao.removeUserRestriction(
-            userId,
-            restrictionId);
-
-
-
-            response.sendRedirect(
-            "UserDietaryRestrictionController?userId="
-            + userId);
-
-
-
-        }
-        else {
-
-
-            int userId =
-            Integer.parseInt(
-            request.getParameter("userId"));
-
-
-
-            List<DietaryRestriction> restrictions =
-            dao.getRestrictionsByUserId(userId);
-
-
-
-            request.setAttribute(
-            "restrictions",
-            restrictions);
-
-
-
-            request.setAttribute(
-            "userId",
-            userId);
-
-
-
-            request.getRequestDispatcher(
-            "/recommendation/userDietaryRestrictionList.jsp")
-            .forward(request,response);
-
-        }
+request.getRequestDispatcher(
+        "/recommendation/userRestrictionList.jsp")
+        .forward(request,response);
+    }
 
     }
 

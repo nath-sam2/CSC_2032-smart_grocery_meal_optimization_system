@@ -192,9 +192,13 @@ RecommendationEngine engine = new RecommendationEngine();
 
         <div class="card card-highlight">
 
-            <% if (recipe.getImageUrl() != null && !recipe.getImageUrl().trim().isEmpty()) { %>
+            <%
+            String localImg = util.RecipeImageResolver.resolve(application, recipe.getName());
+            String imgSrc = (localImg != null) ? (navCtx + "/" + localImg) : recipe.getImageUrl();
+            %>
+            <% if (imgSrc != null && !imgSrc.trim().isEmpty()) { %>
                 <div class="recipe-thumb">
-                    <img src="<%= recipe.getImageUrl() %>" alt="<%= recipe.getName() %>">
+                    <img src="<%= imgSrc %>" alt="<%= recipe.getName() %>">
                 </div>
             <% } else { %>
                 <div class="recipe-thumb placeholder"><span>No image</span></div>
