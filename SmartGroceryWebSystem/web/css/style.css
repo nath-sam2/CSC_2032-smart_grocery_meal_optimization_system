@@ -235,6 +235,193 @@ select option {
     color: var(--text);
 }
 
+/* ===== Dashboard Cards (mealDashboard, similar summary pages) ===== */
+.dashboard-header {
+    margin-bottom: 24px;
+}
+
+.dashboard-header p {
+    margin-top: 4px;
+}
+
+.card-highlight {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.card-icon {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+}
+
+.icon-green  { background-color: var(--green); }
+.icon-red    { background-color: var(--danger); }
+.icon-blue   { background-color: #38bdf8; }
+.icon-purple { background-color: #c084fc; }
+
+.card-header h3 {
+    margin-bottom: 0;
+}
+
+.card-body {
+    flex: 1;
+}
+
+.list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.list-row:last-child {
+    border-bottom: none;
+}
+
+.list-row .list-title {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.list-row .list-meta {
+    color: var(--soft);
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.card-empty {
+    color: var(--soft);
+    font-size: 0.9em;
+    font-style: italic;
+    padding: 8px 0;
+}
+
+.card-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 16px;
+    flex-wrap: wrap;
+}
+
+.recipe-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.recipe-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: var(--soft);
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.recipe-stats .stat-divider {
+    color: var(--border);
+}
+
+.ingredient-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.progress-track {
+    flex: 1;
+    height: 6px;
+    background-color: var(--card-alt);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--green);
+    border-radius: 3px;
+}
+
+.progress-label {
+    color: var(--soft);
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.recipe-meta {
+    color: var(--soft);
+    font-size: 0.9em;
+}
+
+.recipe-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background-color: var(--card-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipe-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.recipe-thumb.placeholder span {
+    color: var(--soft);
+    font-size: 0.85em;
+}
+
+.recipe-hero {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.recipe-hero-placeholder {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    background-color: var(--card-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--soft);
+    font-size: 0.9em;
+}
+
+.stat-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: var(--soft);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
     .navbar {

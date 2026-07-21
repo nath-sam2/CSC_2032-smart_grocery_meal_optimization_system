@@ -12,7 +12,7 @@ List<String> formErrors = (List<String>) request.getAttribute("formErrors");
     <h2>Edit Recipe</h2>
 
     <% if (formErrors != null && !formErrors.isEmpty()) { %>
-    <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+    <div class="alert alert-error" style="margin-bottom: 10px;">
         <ul style="margin: 0; padding-left: 20px;">
             <% for (String err : formErrors) { %>
             <li><%= err %></li>
@@ -68,6 +68,11 @@ List<String> formErrors = (List<String>) request.getAttribute("formErrors");
             <p>
                 <label>Servings</label><br>
                 <input type="number" name="servings" value="<%= request.getParameter("servings") != null ? request.getParameter("servings") : r.getServings() %>" required style="width:100%; padding:8px;">
+            </p>
+
+            <p>
+                <label>Image URL</label><br>
+                <input type="url" name="imageUrl" value="<%= r.getImageUrl() != null ? r.getImageUrl() : "" %>" placeholder="https://example.com/photo.jpg" style="width:100%; padding:8px;">
             </p>
 
             <br>

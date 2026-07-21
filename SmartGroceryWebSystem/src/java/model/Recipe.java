@@ -17,6 +17,7 @@ public class Recipe {
     private int cookingTime;
     private String difficulty;
     private int servings;
+    private String imageUrl;
 
     public Recipe() {}
     
@@ -131,6 +132,14 @@ public class Recipe {
         }
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +
@@ -142,6 +151,7 @@ public class Recipe {
                ", cookingTime=" + cookingTime +
                ", difficulty='" + difficulty + '\'' +
                ", servings=" + servings +
+               ", imageUrl='" + imageUrl + '\'' +
                '}';
 }
     

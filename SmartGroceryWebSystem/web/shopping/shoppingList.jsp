@@ -12,7 +12,7 @@
     <h2>My Shopping Lists</h2>
 
     <a href="<%=request.getContextPath()%>/shopping/generateShoppingList.jsp" class="btn btn-primary">+ Generate New Shopping List</a>
-    <p style="color:#6b7280; font-size:0.9em;">Select a meal plan to generate a shopping list from.</p>
+    <p style="font-size:0.9em;">Select a meal plan to generate a shopping list from.</p>
 
     <br>
 

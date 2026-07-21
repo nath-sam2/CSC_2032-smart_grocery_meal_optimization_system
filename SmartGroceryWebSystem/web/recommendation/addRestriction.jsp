@@ -21,7 +21,7 @@
         <br><br>
 
         <c:if test="${not empty formError}">
-            <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+            <div class="alert alert-error" style="margin-bottom: 10px;">
                 ${formError}
             </div>
         </c:if>

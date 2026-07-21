@@ -18,7 +18,7 @@ import java.util.List;
 public class RecipeDAO {
     public boolean insertRecipe(Recipe recipe) {
 
-    String sql = "INSERT INTO Recipes(name, description, mealType, cuisine, cookingTime, difficulty, servings) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO Recipes(name, description, mealType, cuisine, cookingTime, difficulty, servings, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -32,6 +32,7 @@ public class RecipeDAO {
         stmt.setInt(5, recipe.getCookingTime());
         stmt.setString(6, recipe.getDifficulty());
         stmt.setInt(7, recipe.getServings());
+        stmt.setString(8, recipe.getImageUrl());
 
         stmt.executeUpdate();
 
@@ -68,6 +69,7 @@ public class RecipeDAO {
             recipe.setCookingTime(rs.getInt("cookingTime"));
             recipe.setDifficulty(rs.getString("difficulty"));
             recipe.setServings(rs.getInt("servings"));
+            recipe.setImageUrl(rs.getString("imageUrl"));
 
             return recipe;
         }
@@ -103,6 +105,7 @@ public class RecipeDAO {
             recipe.setCookingTime(rs.getInt("cookingTime"));
             recipe.setDifficulty(rs.getString("difficulty"));
             recipe.setServings(rs.getInt("servings"));
+            recipe.setImageUrl(rs.getString("imageUrl"));
 
             return recipe;
         }
@@ -137,6 +140,7 @@ public class RecipeDAO {
             recipe.setCookingTime(rs.getInt("cookingTime"));
             recipe.setDifficulty(rs.getString("difficulty"));
             recipe.setServings(rs.getInt("servings"));
+            recipe.setImageUrl(rs.getString("imageUrl"));
 
             recipes.add(recipe);
         }
@@ -149,7 +153,7 @@ public class RecipeDAO {
 }
     public boolean updateRecipe(Recipe recipe) {
 
-    String sql = "UPDATE Recipes SET name=?, description=?, mealType=?, cuisine=?, cookingTime=?, difficulty=?, servings=? WHERE recipeId=?";
+    String sql = "UPDATE Recipes SET name=?, description=?, mealType=?, cuisine=?, cookingTime=?, difficulty=?, servings=?, imageUrl=? WHERE recipeId=?";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -163,7 +167,8 @@ public class RecipeDAO {
         stmt.setInt(5, recipe.getCookingTime());
         stmt.setString(6, recipe.getDifficulty());
         stmt.setInt(7, recipe.getServings());
-        stmt.setInt(8, recipe.getRecipeId());
+        stmt.setString(8, recipe.getImageUrl());
+        stmt.setInt(9, recipe.getRecipeId());
 
         int rowsAffected = stmt.executeUpdate();
 

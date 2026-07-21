@@ -24,7 +24,15 @@
     for(Recipe r : recipes){
     %>
 
-        <div class="card">
+        <div class="card card-highlight">
+            <% if (r.getImageUrl() != null && !r.getImageUrl().trim().isEmpty()) { %>
+                <div class="recipe-thumb">
+                    <img src="<%= r.getImageUrl() %>" alt="<%= r.getName() %>">
+                </div>
+            <% } else { %>
+                <div class="recipe-thumb placeholder"><span>No image</span></div>
+            <% } %>
+
             <h3><%= r.getName() %></h3>
             <p><%= r.getDescription() %></p>
 
@@ -36,13 +44,13 @@
 
             <p> <%= r.getCookingTime() %> mins &nbsp; | &nbsp;  <%= r.getServings() %> servings</p>
 
-            <br>
-
-            <a href="RecipeController?action=view&id=<%=r.getRecipeId()%>" class="btn btn-primary">View Details</a>
-            <a href="RecipeController?action=edit&id=<%=r.getRecipeId()%>" class="btn btn-secondary">Edit</a>
-            <a href="RecipeController?action=delete&id=<%=r.getRecipeId()%>"
-               onclick="return confirm('Delete this recipe?');"
-               class="btn btn-secondary">Delete</a>
+            <div class="card-footer">
+                <a href="RecipeController?action=view&id=<%=r.getRecipeId()%>" class="btn btn-primary">View Details</a>
+                <a href="RecipeController?action=edit&id=<%=r.getRecipeId()%>" class="btn btn-secondary">Edit</a>
+                <a href="RecipeController?action=delete&id=<%=r.getRecipeId()%>"
+                   onclick="return confirm('Delete this recipe?');"
+                   class="btn btn-secondary">Delete</a>
+            </div>
         </div>
 
     <%

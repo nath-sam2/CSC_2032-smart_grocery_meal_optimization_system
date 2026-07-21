@@ -11,7 +11,7 @@
     <h2>Add Recipe</h2>
 
     <c:if test="${not empty formErrors}">
-        <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+        <div class="alert alert-error" style="margin-bottom: 10px;">
             <ul style="margin: 0; padding-left: 20px;">
                 <c:forEach var="err" items="${formErrors}">
                     <li>${err}</li>
@@ -21,7 +21,7 @@
     </c:if>
 
     <c:if test="${not empty duplicateNameError}">
-        <div class="alert alert-error" style="color: #b00020; margin-bottom: 10px;">
+        <div class="alert alert-error" style="margin-bottom: 10px;">
             ${duplicateNameError}
         </div>
     </c:if>
@@ -72,6 +72,11 @@
             <p>
                 <label>Servings</label><br>
                 <input type="number" name="servings" value="${param.servings}" required style="width:100%; padding:8px;">
+            </p>
+
+            <p>
+                <label>Image URL</label><br>
+                <input type="url" name="imageUrl" value="${param.imageUrl}" placeholder="https://example.com/photo.jpg" style="width:100%; padding:8px;">
             </p>
 
             <br>

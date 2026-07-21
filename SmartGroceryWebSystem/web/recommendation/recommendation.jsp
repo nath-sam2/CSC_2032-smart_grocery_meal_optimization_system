@@ -47,46 +47,61 @@ RecommendationEngine engine = new RecommendationEngine();
                     engine.calculateWasteReductionScore(recipe) >= 25;
     %>
 
-        <div class="card">
+        <div class="card card-highlight">
+
+            <% if (recipe.getImageUrl() != null && !recipe.getImageUrl().trim().isEmpty()) { %>
+                <div class="recipe-thumb">
+                    <img src="<%= recipe.getImageUrl() %>" alt="<%= recipe.getName() %>">
+                </div>
+            <% } else { %>
+                <div class="recipe-thumb placeholder"><span>No image</span></div>
+            <% } %>
 
             <h3><%= recipe.getName() %></h3>
 
-            <p>
+            <div class="recipe-badges">
                 <span class="badge badge-grade-<%= Character.toLowerCase(grade) %>">NutriScore <%= grade %></span>
                 <span class="badge badge-grade-b"><%= recipe.getMealType() %></span>
 
                 <% if (usesExpiringIngredient) { %>
                     <span class="badge badge-warning">Uses Expiring Ingredients</span>
                 <% } %>
-            </p>
+            </div>
 
             <%
 int healthScore = (nutrition != null) ? engine.calculateHealthScore(nutrition) : 0;
 %>
 
-<p>
+<div class="recipe-stats">
+    <span>
     <% if (nutrition != null) { %>
         <%= nutrition.getCalories() %> kcal
     <% } else { %>
         Calories: N/A
     <% } %>
-    &nbsp; | &nbsp; Recipe Score: <%= String.format("%.1f", score) %>
-    &nbsp; | &nbsp; Health Score: <%= healthScore %>
-</p>
+    </span>
+    <span class="stat-divider">&bull;</span>
+    <span>Recipe Score: <%= String.format("%.1f", score) %></span>
+    <span class="stat-divider">&bull;</span>
+    <span>Health Score: <%= healthScore %></span>
+</div>
 
-            <p>
-                Ingredients available: <%= availableCount %> / <%= required.size() %>
+            <div class="ingredient-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" style="width:<%= required.isEmpty() ? 0 : (availableCount * 100 / required.size()) %>%"></div>
+                </div>
+                <span class="progress-label"><%= availableCount %> / <%= required.size() %> available</span>
                 <% if (missingCount > 0) { %>
                     <span class="badge badge-warning"><%= missingCount %> missing</span>
                 <% } %>
-            </p>
+            </div>
 
-            <p><%= recipe.getCookingTime() %> mins ...  &nbsp; | &nbsp; <%= recipe.getDifficulty() %></p>
+            <p class="recipe-meta"><%= recipe.getCookingTime() %> mins &nbsp;&bull;&nbsp; <%= recipe.getDifficulty() %></p>
 
-            <br>
-
-            <a href="RecipeController?action=view&id=<%=recipe.getRecipeId()%>" class="btn btn-primary">View Recipe</a>
-            <a href="MealPlannerController?action=quickAdd&recipeId=<%=recipe.getRecipeId()%>" class="btn btn-secondary">Add to Meal Plan</a>
+            <div class="card-footer">
+                <a href="RecipeController?action=view&id=<%=recipe.getRecipeId()%>" class="btn btn-primary">View Recipe</a>
+                <a href="MealPlannerController?action=quickAdd&recipeId=<%=recipe.getRecipeId()%>" class="btn btn-secondary">Add to Meal Plan</a>
+            </div>
 
         </div>
 

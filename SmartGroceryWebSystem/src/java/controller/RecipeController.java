@@ -6,11 +6,9 @@ package controller;
 
 import dao.RecipeDAO;
 import dao.NutritionFactsDAO;
-import dao.RecipeIngredientDAO;
 
 import model.NutritionFacts;
 import model.Recipe;
-import model.Ingredient;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
@@ -66,18 +64,6 @@ public class RecipeController extends HttpServlet {
 
 
 
-            // Get ingredients
-
-            RecipeIngredientDAO recipeIngredientDAO =
-                    new RecipeIngredientDAO();
-
-
-
-            List<Ingredient> ingredients =
-                    recipeIngredientDAO.getIngredientsByRecipeId(recipeId);
-
-
-
             // Get nutrition facts
 
             NutritionFactsDAO nutritionDAO =
@@ -86,13 +72,11 @@ public class RecipeController extends HttpServlet {
 
 
             NutritionFacts nutritionFacts =
-                    nutritionDAO.getNutritionFactsById(recipeId);
+                    nutritionDAO.getNutritionFactsByRecipeId(recipeId);
 
 
 
             request.setAttribute("recipe", recipe);
-
-            request.setAttribute("ingredients", ingredients);
 
             request.setAttribute("nutritionFacts", nutritionFacts);
 
@@ -335,7 +319,15 @@ public class RecipeController extends HttpServlet {
 
 
 
-            recipeDAO.insertRecipe(recipe);
+            boolean insertOk = recipeDAO.insertRecipe(recipe);
+
+            if (!insertOk) {
+                java.util.List<String> saveErrors = new java.util.ArrayList<>();
+                saveErrors.add("Could not save the recipe due to a server error. Please try again.");
+                request.setAttribute("formErrors", saveErrors);
+                request.getRequestDispatcher("/recipes/addRecipe.jsp").forward(request, response);
+                return;
+            }
 
 
 
@@ -458,7 +450,16 @@ public class RecipeController extends HttpServlet {
 
 
 
-            recipeDAO.updateRecipe(recipe);
+            boolean updateOk = recipeDAO.updateRecipe(recipe);
+
+            if (!updateOk) {
+                request.setAttribute("recipe", recipe);
+                java.util.List<String> saveErrors = new java.util.ArrayList<>();
+                saveErrors.add("Could not save the recipe due to a server error. Please try again.");
+                request.setAttribute("formErrors", saveErrors);
+                request.getRequestDispatcher("/recipes/editRecipe.jsp").forward(request, response);
+                return;
+            }
 
 
 

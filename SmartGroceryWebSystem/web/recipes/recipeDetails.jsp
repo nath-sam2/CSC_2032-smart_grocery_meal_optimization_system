@@ -36,6 +36,12 @@ if (nutritionFacts != null) {
 
     <h2><%= recipe.getName() %></h2>
 
+    <% if (recipe.getImageUrl() != null && !recipe.getImageUrl().trim().isEmpty()) { %>
+        <img class="recipe-hero" src="<%= recipe.getImageUrl() %>" alt="<%= recipe.getName() %>">
+    <% } else { %>
+        <div class="recipe-hero-placeholder">No image available</div>
+    <% } %>
+
     <div class="card">
 
         <p>
