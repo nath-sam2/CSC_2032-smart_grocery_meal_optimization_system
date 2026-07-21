@@ -48,6 +48,7 @@ boolean onMealPlanner = navUri.contains("MealPlannerController") || navUri.conta
 boolean onDietary = navUri.contains("DietaryRestrictionController") || navUri.contains("UserDietaryRestrictionController");
 boolean onFoodWaste = navUri.contains("FoodWasteController");
 %>
+<!-- DEBUG navUri = <%= navUri %> -->
 
 <!DOCTYPE html>
 <html>
@@ -79,7 +80,7 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
         </a></li>
-        <li><a href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
+        <li><a class="<%= onRecipes ? "active" : "" %>" href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
         <li><a href="<%=navCtx%>/notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
             <% if (notifCount > 0) { %><span class="menu-count"><%= notifCount %></span><% } %>
         </a></li>
@@ -90,7 +91,7 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
 
     <ul class="menu">
         <li><a class="<%= onRecommendations ? "active" : "" %>" href="<%=navCtx%>/RecommendationController"><i class="fa-solid fa-wand-magic-sparkles"></i> Recommendations</a></li>
-        <li><a class="<%= onShoppingList ? "active" : "" %>" href="<%=navCtx%>/ShoppingListController"><i class="fa-solid fa-basket-shopping"></i> Meal Shopping List</a></li>
+        <li><a class="<%= onShoppingList ? "active" : "" %>" href="<%=navCtx%>/ShoppingListController"><i class="fa-solid fa-basket-shopping"></i> Meal Groceries</a></li>
         <li><a class="<%= onDietary ? "active" : "" %>" href="<%=navCtx%>/UserDietaryRestrictionController"><i class="fa-solid fa-leaf"></i> Dietary Restrictions</a></li>
         <li><a class="<%= onFoodWaste ? "active" : "" %>" href="<%=navCtx%>/FoodWasteController"><i class="fa-solid fa-recycle"></i> Food Waste</a></li>
     </ul>
