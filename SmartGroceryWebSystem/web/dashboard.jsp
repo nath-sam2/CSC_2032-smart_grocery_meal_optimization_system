@@ -965,7 +965,7 @@ My Inventory
 </li>
 
 <li>
-<a href="mealplanner.jsp">
+<a href="MealDashboardController">
 <i class="fa-solid fa-utensils"></i>
 Meal Planner
 </a>
@@ -980,7 +980,7 @@ Shopping List
 </li>
 
 <li>
-<a href="recipes.jsp">
+<a href="RecipeController">
 <i class="fa-solid fa-book-open"></i>
 Recipes
 </a>
@@ -999,6 +999,40 @@ Expiry Alerts
 <i class="fa-solid fa-triangle-exclamation"></i>
 Low Stock
 <% if (lowStockCount > 0) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
+</a>
+</li>
+
+</ul>
+
+<div class="side-label">Meal Optimization</div>
+
+<ul class="menu">
+
+<li>
+<a href="RecommendationController">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+Recommendations
+</a>
+</li>
+
+<li>
+<a href="ShoppingListController">
+<i class="fa-solid fa-basket-shopping"></i>
+Meal Shopping List
+</a>
+</li>
+
+<li>
+<a href="UserDietaryRestrictionController">
+<i class="fa-solid fa-leaf"></i>
+Dietary Restrictions
+</a>
+</li>
+
+<li>
+<a href="FoodWasteController">
+<i class="fa-solid fa-recycle"></i>
+Food Waste
 </a>
 </li>
 
@@ -1083,8 +1117,8 @@ Logout
 <h1>Plan Healthy Meals,<br>Reduce Waste, <span>Save More.</span></h1>
 <p>Organize your meals, track inventory and build a smarter kitchen every day.</p>
 <div class="hero-actions">
-<a href="mealplanner.jsp" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Plan Meals</a>
-<a href="recipes.jsp" class="btn-outline"><i class="fa-solid fa-utensils"></i> Explore Recipes</a>
+<a href="MealDashboardController" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Plan Meals</a>
+<a href="RecipeController" class="btn-outline"><i class="fa-solid fa-utensils"></i> Explore Recipes</a>
 </div>
 </div>
 </div>
@@ -1101,7 +1135,7 @@ Logout
 </div>
 </a>
 
-<a href="mealplanner.jsp" class="stat-card">
+<a href="MealDashboardController" class="stat-card">
 <div class="icon-circle orange"><i class="fa-solid fa-bowl-food"></i></div>
 <div>
 <div class="stat-number">18 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 8%</span></div>
@@ -1131,7 +1165,7 @@ Logout
 
 <h2 class="section-title">
 <span><i class="fa-solid fa-calendar-days" style="color:var(--green);margin-right:8px;"></i>Weekly Meal Planner</span>
-<a href="mealplanner.jsp">View Full Planner <i class="fa-solid fa-chevron-right"></i></a>
+<a href="MealPlannerController?action=list">View Full Planner <i class="fa-solid fa-chevron-right"></i></a>
 </h2>
 
 <div class="planner">
@@ -1197,7 +1231,7 @@ Logout
 
 <!-- AI RECIPES -->
 <div class="panel">
-<h2><span><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--green);margin-right:6px;"></i>AI Suggested Recipes</span><a href="recipes.jsp">View All</a></h2>
+<h2><span><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--green);margin-right:6px;"></i>AI Suggested Recipes</span><a href="RecipeController">View All</a></h2>
 
 <div class="recipe-grid">
 
@@ -1207,7 +1241,7 @@ Logout
 <h4>Chicken Curry</h4>
 <div class="tags"><span class="tag">Protein</span><span class="tag">Spicy</span></div>
 <div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 40 min</span><span>⭐ 4.8</span></div>
-<a href="recipeDetails.jsp?name=Chicken+Curry" class="cook-btn">Cook Now</a>
+<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
 </div>
 </div>
 
@@ -1217,7 +1251,7 @@ Logout
 <h4>Veg Pasta</h4>
 <div class="tags"><span class="tag">Vegetarian</span><span class="tag">Italian</span></div>
 <div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 25 min</span><span>⭐ 4.3</span></div>
-<a href="recipeDetails.jsp?name=Veg+Pasta" class="cook-btn">Cook Now</a>
+<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
 </div>
 </div>
 
@@ -1227,7 +1261,7 @@ Logout
 <h4>Fruit Bowl</h4>
 <div class="tags"><span class="tag">Healthy</span></div>
 <div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 15 min</span><span>⭐ 4.5</span></div>
-<a href="recipeDetails.jsp?name=Fruit+Bowl" class="cook-btn">Cook Now</a>
+<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
 </div>
 </div>
 
@@ -1237,7 +1271,7 @@ Logout
 <h4>Green Smoothie</h4>
 <div class="tags"><span class="tag">Healthy</span></div>
 <div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 10 min</span><span>⭐ 4.6</span></div>
-<a href="recipeDetails.jsp?name=Green+Smoothie" class="cook-btn">Cook Now</a>
+<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
 </div>
 </div>
 

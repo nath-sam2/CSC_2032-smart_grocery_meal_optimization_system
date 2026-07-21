@@ -229,7 +229,7 @@ My Inventory
 </li>
 
 <li>
-<a href="mealplanner.jsp">
+<a href="MealPlannerController">
 <i class="fa-solid fa-utensils"></i>
 Meal Planner
 </a>
@@ -251,7 +251,7 @@ My Orders
 </li>
 
 <li>
-<a href="recipes.jsp">
+<a href="RecipeController">
 <i class="fa-solid fa-book-open"></i>
 Recipes
 </a>
@@ -270,6 +270,40 @@ Expiry Alerts
 <i class="fa-solid fa-triangle-exclamation"></i>
 Low Stock
 <% if (lowStockCount > 0) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
+</a>
+</li>
+
+</ul>
+
+<div class="side-label">Meal Optimization</div>
+
+<ul class="menu">
+
+<li>
+<a href="RecommendationController">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+Recommendations
+</a>
+</li>
+
+<li>
+<a href="ShoppingListController">
+<i class="fa-solid fa-basket-shopping"></i>
+Meal Shopping List
+</a>
+</li>
+
+<li>
+<a href="UserDietaryRestrictionController">
+<i class="fa-solid fa-leaf"></i>
+Dietary Restrictions
+</a>
+</li>
+
+<li>
+<a href="FoodWasteController">
+<i class="fa-solid fa-recycle"></i>
+Food Waste
 </a>
 </li>
 

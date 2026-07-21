@@ -141,11 +141,45 @@ display:flex; flex-direction:column; overflow-y:auto;
 <li><a href="dashboard.jsp"><i class="fa-solid fa-house"></i> Dashboard</a></li>
 <li><a href="products.jsp"><i class="fa-solid fa-cart-shopping"></i> Shop Groceries</a></li>
 <li><a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory</a></li>
-<li><a href="mealplanner.jsp"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
+<li><a href="MealPlannerController.jsp"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
 <li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
-<li><a href="recipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
+<li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts</a></li>
 <li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+</ul>
+
+<div class="side-label">Meal Optimization</div>
+
+<ul class="menu">
+
+<li>
+<a href="RecommendationController">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+Recommendations
+</a>
+</li>
+
+<li>
+<a href="ShoppingListController">
+<i class="fa-solid fa-basket-shopping"></i>
+Meal Shopping List
+</a>
+</li>
+
+<li>
+<a href="UserDietaryRestrictionController">
+<i class="fa-solid fa-leaf"></i>
+Dietary Restrictions
+</a>
+</li>
+
+<li>
+<a href="FoodWasteController">
+<i class="fa-solid fa-recycle"></i>
+Food Waste
+</a>
+</li>
+
 </ul>
 
 <div class="side-label">Account</div>

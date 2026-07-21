@@ -170,6 +170,40 @@ Shopping List
 <li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
 </ul>
 
+<div class="side-label">Meal Optimization</div>
+
+<ul class="menu">
+
+<li>
+<a href="RecommendationController">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+Recommendations
+</a>
+</li>
+
+<li>
+<a href="ShoppingListController">
+<i class="fa-solid fa-basket-shopping"></i>
+Meal Shopping List
+</a>
+</li>
+
+<li>
+<a href="UserDietaryRestrictionController">
+<i class="fa-solid fa-leaf"></i>
+Dietary Restrictions
+</a>
+</li>
+
+<li>
+<a href="FoodWasteController">
+<i class="fa-solid fa-recycle"></i>
+Food Waste
+</a>
+</li>
+
+</ul>
+
 <div class="side-label">Account</div>
 <ul class="menu">
 <li><a href="profile.jsp"><i class="fa-solid fa-user"></i> Profile</a></li>

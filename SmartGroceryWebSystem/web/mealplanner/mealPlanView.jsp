@@ -66,7 +66,7 @@ for (MealPlanDetail detail : details) {
             <tr>
                 <td data-label="Meal Type"><span class="badge badge-grade-b"><%= detail.getMealType() %></span></td>
                 <td data-label="Recipe">
-                    <a href="RecipeController?action=view&id=<%=detail.getRecipeId()%>"><%= recipeName %></a>
+                    <a href="RecipeController?action=view&id=<%=detail.getRecipeId()%>" style="color: var(--green);"><%= recipeName %></a>
                 </td>
                 <td data-label="Action">
                     <a href="MealPlannerController?action=deleteMeal&id=<%=detail.getMealPlanDetailId()%>"
