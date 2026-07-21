@@ -34,13 +34,7 @@ public class FoodWasteController extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        /*
-         * Temporary until Member 1 login integration.
-         */
-        int userId = 6;
-if (session != null && session.getAttribute("userId") != null) {
-    userId = (Integer) session.getAttribute("userId");
-}
+        int userId = util.SessionUtil.getLoggedInUserId(session);
 
         String action = request.getParameter("action");
 

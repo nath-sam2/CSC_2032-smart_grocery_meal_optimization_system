@@ -39,24 +39,10 @@ public class RecommendationController extends HttpServlet {
 
         /*
           Get logged user id
-          (Member 1 login module will provide this)
         */
 
-        Integer userId =
-                (Integer) session.getAttribute("userId");
-
-
-
-        /*
-          Temporary testing user
-          Remove after login integration
-        */
-
-        if(userId == null){
-
-            userId = 6;
-
-        }
+        int userId =
+                util.SessionUtil.getLoggedInUserId(session);
 
 
 

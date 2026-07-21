@@ -171,10 +171,7 @@ public class DietaryRestrictionController extends HttpServlet {
                         request.getSession();
 
 
-                Integer userId = (Integer) session.getAttribute("userId");
-                if (userId == null) {
-                    userId = 6;
-                }
+                int userId = util.SessionUtil.getLoggedInUserId(session);
 
 
 
@@ -365,16 +362,18 @@ public class DietaryRestrictionController extends HttpServlet {
 
 
 
-            Integer userId = (Integer) session.getAttribute("userId");
-            if (userId == null) {
-                userId = 6;
+            int userId = util.SessionUtil.getLoggedInUserId(session);
+
+
+
+            int restrictionId;
+
+            try {
+                restrictionId = Integer.parseInt(request.getParameter("restrictionId"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect(request.getContextPath() + "/DietaryRestrictionController?action=userRestrictions");
+                return;
             }
-
-
-
-            int restrictionId =
-            Integer.parseInt(
-            request.getParameter("restrictionId"));
 
 
 
@@ -406,16 +405,17 @@ public class DietaryRestrictionController extends HttpServlet {
             request.getSession();
 
 
-    Integer userId = (Integer) session.getAttribute("userId");
-    if (userId == null) {
-        userId = 6;
+    int userId = util.SessionUtil.getLoggedInUserId(session);
+
+
+    int restrictionId;
+
+    try {
+        restrictionId = Integer.parseInt(request.getParameter("restrictionId"));
+    } catch (NumberFormatException e) {
+        response.sendRedirect(request.getContextPath() + "/DietaryRestrictionController?action=userRestrictions");
+        return;
     }
-
-
-    int restrictionId =
-            Integer.parseInt(
-                    request.getParameter("restrictionId")
-            );
 
 
     userRestrictionDAO.removeUserRestriction(

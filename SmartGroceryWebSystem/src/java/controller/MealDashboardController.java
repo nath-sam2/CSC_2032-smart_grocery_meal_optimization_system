@@ -31,10 +31,7 @@ public class MealDashboardController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) {
-            userId = 6;
-        }
+        Integer userId = util.SessionUtil.getLoggedInUserId(session);
 
         // Today's top recommendations (first 3 from the scored list)
         List<Recipe> allRecommendations = recommendationEngine.recommendRecipes(userId);

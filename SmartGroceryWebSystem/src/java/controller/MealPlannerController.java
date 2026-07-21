@@ -67,10 +67,7 @@ public class MealPlannerController extends HttpServlet {
 
                 HttpSession session = request.getSession();
 
-Integer userId = (Integer) session.getAttribute("userId");
-if(userId == null){
-    userId = 6;
-}
+int userId = util.SessionUtil.getLoggedInUserId(session);
 
 List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
 
@@ -253,12 +250,7 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
 
     HttpSession quickAddSession = request.getSession();
 
-    Integer quickAddUserId =
-            (Integer) quickAddSession.getAttribute("userId");
-
-    if (quickAddUserId == null) {
-        quickAddUserId = 6;
-    }
+    int quickAddUserId = util.SessionUtil.getLoggedInUserId(quickAddSession);
 
     List<MealPlanner> existingPlans =
             mealPlannerDAO.getMealPlansByUser(quickAddUserId);
@@ -298,12 +290,7 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
 
     HttpSession generateSession = request.getSession();
 
-    Integer generateUserId =
-            (Integer) generateSession.getAttribute("userId");
-
-    if (generateUserId == null) {
-        generateUserId = 6;
-    }
+    int generateUserId = util.SessionUtil.getLoggedInUserId(generateSession);
 
     RecommendationEngine engine = new RecommendationEngine();
 
@@ -350,10 +337,7 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
 
             HttpSession session = request.getSession();
 
-Integer userId = (Integer) session.getAttribute("userId");
-if(userId == null){
-    userId = 6;
-}
+int userId = util.SessionUtil.getLoggedInUserId(session);
 
 MealPlanner mealPlan = new MealPlanner();
 mealPlan.setUserId(userId);
@@ -361,42 +345,55 @@ mealPlan.setUserId(userId);
 
 
             String planName = request.getParameter("planName");
+            String startDateParam = request.getParameter("startDate");
+            String endDateParam = request.getParameter("endDate");
+
+            java.util.List<String> createPlanErrors = new java.util.ArrayList<>();
 
             if (planName == null || planName.trim().isEmpty()) {
-                response.sendRedirect("MealPlannerController?action=create");
+                createPlanErrors.add("Plan name is required.");
+            }
+
+            if (startDateParam == null || startDateParam.isBlank()
+                    || endDateParam == null || endDateParam.isBlank()) {
+                createPlanErrors.add("Start date and end date are both required.");
+            }
+
+            LocalDate startDate = null;
+            LocalDate endDate = null;
+
+            if (startDateParam != null && !startDateParam.isBlank()
+                    && endDateParam != null && !endDateParam.isBlank()) {
+
+                try {
+                    startDate = LocalDate.parse(startDateParam);
+                    endDate = LocalDate.parse(endDateParam);
+
+                    if (startDate.isAfter(endDate)) {
+                        createPlanErrors.add("Start date must be on or before the end date.");
+                    }
+
+                } catch (java.time.format.DateTimeParseException e) {
+                    createPlanErrors.add("Start date and end date must be valid dates.");
+                }
+            }
+
+            if (!createPlanErrors.isEmpty()) {
+
+                request.setAttribute("formErrors", createPlanErrors);
+                request.setAttribute("planName", planName);
+                request.setAttribute("startDate", startDateParam);
+                request.setAttribute("endDate", endDateParam);
+
+                request.getRequestDispatcher("/mealplanner/createMealPlan.jsp")
+                        .forward(request, response);
+
                 return;
             }
 
             mealPlan.setPlanName(
             planName
             );
-
-
-
-            String startDateParam = request.getParameter("startDate");
-            String endDateParam = request.getParameter("endDate");
-
-            if (startDateParam == null || startDateParam.isBlank()
-                    || endDateParam == null || endDateParam.isBlank()) {
-                response.sendRedirect("MealPlannerController?action=create");
-                return;
-            }
-
-            LocalDate startDate;
-            LocalDate endDate;
-
-            try {
-                startDate = LocalDate.parse(startDateParam);
-                endDate = LocalDate.parse(endDateParam);
-            } catch (java.time.format.DateTimeParseException e) {
-                response.sendRedirect("MealPlannerController?action=create");
-                return;
-            }
-
-            if (startDate.isAfter(endDate)) {
-                response.sendRedirect("MealPlannerController?action=create");
-                return;
-            }
 
             mealPlan.setStartDate(startDate);
             mealPlan.setEndDate(endDate);

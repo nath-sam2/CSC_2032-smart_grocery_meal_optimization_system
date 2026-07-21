@@ -63,10 +63,7 @@ public class ShoppingListController extends HttpServlet {
             // View shopping lists
             case "list":
     HttpSession session = request.getSession();
-    Integer userId = (Integer)session.getAttribute("userId");
-    if(userId == null){
-        userId = 6;
-    }
+    Integer userId = util.SessionUtil.getLoggedInUserId(session);
 
     List<ShoppingList> lists = shoppingListDAO.getAllShoppingLists();
     request.setAttribute("shoppingLists", lists);
