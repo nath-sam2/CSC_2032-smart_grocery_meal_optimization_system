@@ -981,6 +981,13 @@ Shopping List
 </li>
 
 <li>
+<a href="orders.jsp">
+<i class="fa-solid fa-receipt"></i>
+My Orders
+</a>
+</li>
+
+<li>
 <a href="RecipeController">
 <i class="fa-solid fa-book-open"></i>
 Recipes

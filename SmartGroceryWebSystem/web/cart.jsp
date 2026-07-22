@@ -189,6 +189,7 @@ Shopping List
 <% if (!items.isEmpty()) { %><span class="menu-count"><%= items.size() %></span><% } %>
 </a>
 </li>
+<li><a href="orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders</a></li>
 <li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
 <% if (sidebarExpiryCount > 0) { %><span class="menu-count"><%= sidebarExpiryCount %></span><% } %>
