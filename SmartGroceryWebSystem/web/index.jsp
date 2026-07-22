@@ -1,4 +1,82 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="dao.InventoryDAO"%>
+<%@page import="dao.ProductDAO"%>
+<%@page import="dao.CategoryDAO"%>
+<%@page import="model.Inventory"%>
+<%@page import="model.Product"%>
+<%@page import="model.Category"%>
+<%@page import="java.util.*"%>
+<%
+    // ---- LIVE DASHBOARD PREVIEW DATA (real data pulled from the DB) ----
+    InventoryDAO inventoryDAO = new InventoryDAO();
+    ProductDAO productDAO = new ProductDAO();
+    CategoryDAO categoryDAO = new CategoryDAO();
+
+    List<Inventory> allInventory   = inventoryDAO.getAllInventory();
+    List<Inventory> lowStockList   = inventoryDAO.getLowStockItems();
+    List<Product> expiringList     = inventoryDAO.getExpiringItems(3); // next 3 days
+    List<Product> allProducts      = productDAO.getAllProducts();
+    List<Category> allCategories   = categoryDAO.getAllCategories();
+
+    int totalItems     = allInventory.size();
+    int lowStockCount  = lowStockList.size();
+    int expiringCount  = expiringList.size();
+
+    // Nearest expiring product (smallest days-left)
+    String expiringName = null;
+    long expiringDays = 0;
+    for (Product p : expiringList) {
+        if (p.getExpiryDate() == null) continue;
+        long diff = p.getExpiryDate().getTime() - System.currentTimeMillis();
+        long daysLeft = Math.max(0, diff / (1000 * 60 * 60 * 24));
+        if (expiringName == null || daysLeft < expiringDays) {
+            expiringName = p.getName();
+            expiringDays = daysLeft;
+        }
+    }
+
+    // Lowest-stock product (biggest shortfall vs its reorder level)
+    String lowStockName = null;
+    Integer lowestQty = null;
+    for (Inventory inv : lowStockList) {
+        if (lowestQty == null || inv.getQuantity() < lowestQty) {
+            lowestQty = inv.getQuantity();
+            Product lp = productDAO.getProductById(inv.getProductId());
+            lowStockName = (lp != null) ? lp.getName() : "An item";
+        }
+    }
+
+    // Category-wise stock health (top 4 categories by product count)
+    Map<Integer, Integer> catProductCount = new LinkedHashMap<Integer, Integer>();
+    Map<Integer, Integer> catStockSum     = new LinkedHashMap<Integer, Integer>();
+    Map<Integer, Integer> catCapacitySum  = new LinkedHashMap<Integer, Integer>();
+    for (Product p : allProducts) {
+        int cid = p.getCategoryId();
+        Inventory inv = inventoryDAO.getInventoryByProduct(p.getProductId());
+        int qty      = (inv != null) ? inv.getQuantity()     : p.getQuantity();
+        int reorder  = (inv != null) ? inv.getReorderLevel() : 5;
+        int capacity = Math.max(reorder * 3, 10); // assume "full stock" = 3x reorder level
+
+        catProductCount.put(cid, (catProductCount.containsKey(cid) ? catProductCount.get(cid) : 0) + 1);
+        catStockSum.put(cid, (catStockSum.containsKey(cid) ? catStockSum.get(cid) : 0) + qty);
+        catCapacitySum.put(cid, (catCapacitySum.containsKey(cid) ? catCapacitySum.get(cid) : 0) + capacity);
+    }
+
+    List<Integer> topCategoryIds = new ArrayList<Integer>(catProductCount.keySet());
+    Collections.sort(topCategoryIds, new Comparator<Integer>() {
+        public int compare(Integer a, Integer b) {
+            return catProductCount.get(b) - catProductCount.get(a);
+        }
+    });
+    if (topCategoryIds.size() > 4) {
+        topCategoryIds = topCategoryIds.subList(0, 4);
+    }
+
+    Map<Integer, String> categoryNames = new HashMap<Integer, String>();
+    for (Category c : allCategories) {
+        categoryNames.put(c.getCategoryId(), c.getName());
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,9 +215,21 @@ nav {
 .carousel-item .ci-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity 1.2s ease-in-out;
+  opacity: 0; transform: scale(1.08);
+  transition: opacity 1.4s ease-in-out, transform 6s ease-out;
 }
-.carousel-item .ci-img.active { opacity: 1; }
+.carousel-item .ci-img.active { opacity: 1; transform: scale(1); }
+.carousel-item .ci-fallback {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px;
+  background: linear-gradient(135deg, #dff3e4, #f0f0f0);
+  opacity: 0; transition: opacity 1.4s ease-in-out;
+}
+.carousel-item .ci-fallback.active { opacity: 1; }
+.carousel-dots { display: flex; justify-content: center; gap: 7px; margin-top: 20px; }
+.carousel-dots .cdot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; transition: all 0.3s; }
+.carousel-dots .cdot.active { background: var(--green, #22c55e); width: 18px; border-radius: 3px; }
 
 /* FEATURES */
 .section-features { background: var(--black2); padding: 96px 48px; }
@@ -288,6 +378,7 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
     <div class="carousel-item main" id="carouselMain"></div>
     <div class="carousel-item side" id="carouselSideRight"></div>
   </div>
+  <div class="carousel-dots" id="carouselDots"></div>
 </section>
 
 <!-- FEATURES -->
@@ -356,17 +447,39 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
   <div class="how-right">
     <div class="dash-preview-title">LIVE DASHBOARD PREVIEW</div>
     <div class="dash-stat-row">
-      <div class="dash-stat"><div class="ds-val">132</div><div class="ds-lbl">Items in Inventory</div></div>
-      <div class="dash-stat"><div class="ds-val" style="color:#f59e0b">8</div><div class="ds-lbl">Low Stock</div></div>
-      <div class="dash-stat"><div class="ds-val" style="color:#ef4444">5</div><div class="ds-lbl">Expiring Soon</div></div>
+      <div class="dash-stat"><div class="ds-val"><%= totalItems %></div><div class="ds-lbl">Items in Inventory</div></div>
+      <div class="dash-stat"><div class="ds-val" style="color:#f59e0b"><%= lowStockCount %></div><div class="ds-lbl">Low Stock</div></div>
+      <div class="dash-stat"><div class="ds-val" style="color:#ef4444"><%= expiringCount %></div><div class="ds-lbl">Expiring Soon</div></div>
     </div>
-    <div class="dash-alert-row"><div class="dash-alert-dot"></div>Yogurt expires in 2 days · Use in a recipe today</div>
-    <div class="dash-alert-row" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.15)"><div class="dash-alert-dot" style="background:#f59e0b"></div>Rice is running low · Reorder level reached</div>
+    <div class="dash-alert-row">
+      <div class="dash-alert-dot"></div>
+      <% if (expiringName != null) { %>
+        <%= expiringName %> expires in <%= expiringDays %> day<%= expiringDays == 1 ? "" : "s" %> · Use in a recipe today
+      <% } else { %>
+        Nothing is expiring soon · You're all good
+      <% } %>
+    </div>
+    <div class="dash-alert-row" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.15)">
+      <div class="dash-alert-dot" style="background:#f59e0b"></div>
+      <% if (lowStockName != null) { %>
+        <%= lowStockName %> is running low · Reorder level reached
+      <% } else { %>
+        All items are well stocked right now
+      <% } %>
+    </div>
     <div class="dash-bar-row">
-      <div class="dash-bar"><div class="dash-bar-label">Vegetables</div><div class="dash-bar-track"><div class="dash-bar-fill" style="width:78%"></div></div><div class="dash-bar-val">78%</div></div>
-      <div class="dash-bar"><div class="dash-bar-label">Dairy</div><div class="dash-bar-track"><div class="dash-bar-fill" style="width:45%"></div></div><div class="dash-bar-val">45%</div></div>
-      <div class="dash-bar"><div class="dash-bar-label">Grains</div><div class="dash-bar-track"><div class="dash-bar-fill" style="width:30%"></div></div><div class="dash-bar-val">30%</div></div>
-      <div class="dash-bar"><div class="dash-bar-label">Proteins</div><div class="dash-bar-track"><div class="dash-bar-fill" style="width:62%"></div></div><div class="dash-bar-val">62%</div></div>
+      <% for (Integer cid : topCategoryIds) {
+           int stock = catStockSum.get(cid);
+           int capacity = catCapacitySum.get(cid);
+           int pct = capacity > 0 ? Math.min(100, Math.round(stock * 100.0f / capacity)) : 0;
+           String cname = categoryNames.containsKey(cid) ? categoryNames.get(cid) : "Category";
+      %>
+      <div class="dash-bar">
+        <div class="dash-bar-label"><%= cname %></div>
+        <div class="dash-bar-track"><div class="dash-bar-fill" style="width:<%= pct %>%"></div></div>
+        <div class="dash-bar-val"><%= pct %>%</div>
+      </div>
+      <% } %>
     </div>
     <button class="btn-sign-in" onclick="openModal()" style="margin:0">Sign In to Dashboard →</button>
   </div>
@@ -498,26 +611,47 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
   window.addEventListener('load', openModal);
   <% } %>
 
-  /* Auto-rotating carousel photos - each box shows a DIFFERENT photo at the same time */
+  /* Auto-rotating carousel photos - each box shows a DIFFERENT photo at the same time.
+     Every photo has a backup URL, and if BOTH fail to load, a gradient + icon is shown
+     instead so a box is never left blank. */
   const carouselPhotos = [
-    'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80',
-    'https://images.unsplash.com/photo-1506617420156-8e4536971650?w=900&q=80',
-    'https://images.unsplash.com/photo-1518843875459-f738682238a6?w=900&q=80',
-    'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=900&q=80',
-    'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=900&q=80',
-    'https://images.unsplash.com/photo-1580913428735-bce91382018c?w=900&q=80'
+    { url: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=80', fallback: 'https://images.unsplash.com/photo-1543168256-418811576931?w=900&q=80', icon: '🥦' },
+    { url: 'https://images.unsplash.com/photo-1506617420156-8e4536971650?w=900&q=80', fallback: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=900&q=80', icon: '🛒' },
+    { url: 'https://images.unsplash.com/photo-1518843875459-f738682238a6?w=900&q=80', fallback: 'https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?w=900&q=80', icon: '🥗' },
+    { url: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=900&q=80', fallback: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=900&q=80', icon: '🍎' },
+    { url: 'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=900&q=80', fallback: 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=900&q=80', icon: '🥕' },
+    { url: 'https://images.unsplash.com/photo-1580913428735-bce91382018c?w=900&q=80', fallback: 'https://images.unsplash.com/photo-1534483509719-3feaee7c30da?w=900&q=80', icon: '🍇' }
   ];
   const numPhotos = carouselPhotos.length;
 
   function buildCarouselSlot(containerId, startIndex) {
     const container = document.getElementById(containerId);
-    carouselPhotos.forEach((url, i) => {
+    const slides = [];
+    carouselPhotos.forEach((photo, i) => {
+      // Gradient + icon layer sits underneath - shows through if the photo fails
+      const fallbackDiv = document.createElement('div');
+      fallbackDiv.className = 'ci-fallback' + (i === startIndex ? ' active' : '');
+      fallbackDiv.textContent = photo.icon;
+      container.appendChild(fallbackDiv);
+
       const img = document.createElement('img');
-      img.src = url;
       img.className = 'ci-img' + (i === startIndex ? ' active' : '');
+      img.alt = '';
+      let triedFallback = false;
+      img.onerror = function () {
+        if (!triedFallback) {
+          triedFallback = true;
+          img.src = photo.fallback;       // try the backup photo first
+        } else {
+          img.style.display = 'none';     // both failed, let the gradient + icon show
+        }
+      };
+      img.src = photo.url;
       container.appendChild(img);
+
+      slides.push({ img, fallbackDiv });
     });
-    return { slides: container.querySelectorAll('.ci-img'), index: startIndex };
+    return { slides, index: startIndex };
   }
 
   /* Offset each box by 1 photo so all 3 show different images at once */
@@ -525,16 +659,34 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
   const boxMain  = buildCarouselSlot('carouselMain', 1);
   const boxRight = buildCarouselSlot('carouselSideRight', 2);
 
+  /* Dots track the main (center) box */
+  const dotsContainer = document.getElementById('carouselDots');
+  carouselPhotos.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'cdot' + (i === boxMain.index ? ' active' : '');
+    dotsContainer.appendChild(dot);
+  });
+  function updateDots() {
+    Array.prototype.forEach.call(dotsContainer.children, function (d, i) {
+      d.classList.toggle('active', i === boxMain.index);
+    });
+  }
+
   function advanceBox(box) {
-    box.slides[box.index].classList.remove('active');
+    const cur = box.slides[box.index];
+    cur.img.classList.remove('active');
+    cur.fallbackDiv.classList.remove('active');
     box.index = (box.index + 1) % numPhotos;
-    box.slides[box.index].classList.add('active');
+    const next = box.slides[box.index];
+    next.img.classList.add('active');
+    next.fallbackDiv.classList.add('active');
   }
 
   setInterval(() => {
     advanceBox(boxLeft);
     advanceBox(boxMain);
     advanceBox(boxRight);
+    updateDots();
   }, 3000);
 </script>
 </body>
