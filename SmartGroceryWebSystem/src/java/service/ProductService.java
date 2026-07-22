@@ -12,10 +12,10 @@ public class ProductService {
 
     public boolean addProduct(String name, double price,
                               int quantity, Date expiryDate,
-                              String unit, int categoryId) {
+                              String unit, int categoryId, String photoUrl) {
         int id = IDGenerator.generateId("products");
         Product p = new Product(id, name, price,
-                                quantity, expiryDate, unit, categoryId);
+                                quantity, expiryDate, unit, categoryId, photoUrl);
         return productDAO.insertProduct(p);
     }
 

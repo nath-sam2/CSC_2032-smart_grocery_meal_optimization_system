@@ -160,6 +160,10 @@ tr:hover td{ background:#1e1e1e; }
 <input type="date" name="expiryDate">
 </div>
 <div class="form-group">
+<label>Photo URL</label>
+<input type="text" name="photoUrl" placeholder="https://... (optional)">
+</div>
+<div class="form-group">
 <label>Category</label>
 <select name="categoryId" required>
 <option value="">Select category</option>
@@ -182,6 +186,7 @@ for (Category c : categories) {
 <thead>
 <tr>
 <th>ID</th>
+<th>Photo</th>
 <th>Name</th>
 <th>Category</th>
 <th>Price</th>
@@ -194,7 +199,7 @@ for (Category c : categories) {
 <%
 if (products.isEmpty()) {
 %>
-<tr><td colspan="7" class="empty-row">No products yet. Add your first product using the form.</td></tr>
+<tr><td colspan="8" class="empty-row">No products yet. Add your first product using the form.</td></tr>
 <%
 } else {
     for (Product p : products) {
@@ -204,9 +209,18 @@ if (products.isEmpty()) {
         if (p.getQuantity() <= 0) { stockClass="stock-out"; stockLabel="Out of Stock"; }
         else if (p.getQuantity() < 10) { stockClass="stock-low"; stockLabel="Low"; }
         else { stockClass="stock-in"; stockLabel="In Stock"; }
+        String thumb = (p.getPhotoUrl() != null && !p.getPhotoUrl().trim().isEmpty())
+                        ? p.getPhotoUrl().trim() : null;
 %>
 <tr>
 <td>#<%= p.getProductId() %></td>
+<td>
+<% if (thumb != null) { %>
+<img src="<%= thumb %>" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" onerror="this.style.display='none';">
+<% } else { %>
+<span style="color:var(--soft); font-size:11px;">—</span>
+<% } %>
+</td>
 <td style="font-weight:600;"><%= p.getName() %></td>
 <td><%= catName %></td>
 <td>Rs. <%= String.format("%.2f", p.getPrice()) %></td>

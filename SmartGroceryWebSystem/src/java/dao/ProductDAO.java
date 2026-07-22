@@ -12,7 +12,7 @@ public class ProductDAO {
     // Add new product
     public boolean insertProduct(Product p) {
         String sql = "INSERT INTO products (productId, name, price, " +
-                     "quantity, expiryDate, unit, categoryId) VALUES (?,?,?,?,?,?,?)";
+                     "quantity, expiryDate, unit, categoryId, photo) VALUES (?,?,?,?,?,?,?,?)";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, p.getProductId());
@@ -23,6 +23,7 @@ public class ProductDAO {
                 new java.sql.Date(p.getExpiryDate().getTime()) : null);
             ps.setString(6, p.getUnit());
             ps.setInt(7, p.getCategoryId());
+            ps.setString(8, p.getPhotoUrl());
             return ps.executeUpdate() > 0;
         } catch (Exception e) { e.printStackTrace(); return false; }
     }
@@ -76,7 +77,7 @@ public class ProductDAO {
     // Update product
     public boolean updateProduct(Product p) {
         String sql = "UPDATE products SET name=?, price=?, quantity=?, " +
-                     "unit=?, categoryId=? WHERE productId=?";
+                     "unit=?, categoryId=?, photo=? WHERE productId=?";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, p.getName());
@@ -84,7 +85,8 @@ public class ProductDAO {
             ps.setInt(3, p.getQuantity());
             ps.setString(4, p.getUnit());
             ps.setInt(5, p.getCategoryId());
-            ps.setInt(6, p.getProductId());
+            ps.setString(6, p.getPhotoUrl());
+            ps.setInt(7, p.getProductId());
             return ps.executeUpdate() > 0;
         } catch (Exception e) { e.printStackTrace(); return false; }
     }

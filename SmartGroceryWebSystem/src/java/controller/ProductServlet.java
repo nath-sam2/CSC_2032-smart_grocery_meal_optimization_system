@@ -34,6 +34,7 @@ public class ProductServlet extends HttpServlet {
             String expiry   = request.getParameter("expiryDate");
             int categoryId  = Integer.parseInt(
                               request.getParameter("categoryId"));
+            String photoUrl = request.getParameter("photoUrl");
 
             Date expiryDate = null;
             if (expiry != null && !expiry.isEmpty()) {
@@ -44,7 +45,7 @@ public class ProductServlet extends HttpServlet {
             }
 
             boolean added = productService.addProduct(
-                name, price, quantity, expiryDate, unit, categoryId
+                name, price, quantity, expiryDate, unit, categoryId, photoUrl
             );
 
             if (added) {
