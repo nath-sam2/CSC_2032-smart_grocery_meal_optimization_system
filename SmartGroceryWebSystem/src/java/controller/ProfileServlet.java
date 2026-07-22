@@ -36,44 +36,53 @@ public class ProfileServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("uploadPhoto".equals(action)) {
-            Part filePart = request.getPart("photo");
+            try {
+                Part filePart = request.getPart("photo");
 
-            if (filePart == null || filePart.getSize() == 0) {
-                response.sendRedirect("profile.jsp?error=nophoto");
-                return;
-            }
+                if (filePart == null || filePart.getSize() == 0) {
+                    response.sendRedirect("profile.jsp?error=nophoto");
+                    return;
+                }
 
-            String contentType = filePart.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
-                response.sendRedirect("profile.jsp?error=badtype");
-                return;
-            }
+                String contentType = filePart.getContentType();
+                if (contentType == null || !contentType.startsWith("image/")) {
+                    response.sendRedirect("profile.jsp?error=badtype");
+                    return;
+                }
 
-            String submittedName = filePart.getSubmittedFileName();
-            String extension = "";
-            if (submittedName != null && submittedName.contains(".")) {
-                extension = submittedName.substring(submittedName.lastIndexOf('.'));
-            }
+                String submittedName = filePart.getSubmittedFileName();
+                String extension = "";
+                if (submittedName != null && submittedName.contains(".")) {
+                    extension = submittedName.substring(submittedName.lastIndexOf('.'));
+                }
 
-            String fileName = "user_" + user.getUserId() + "_" +
-                               UUID.randomUUID().toString().substring(0, 8) + extension;
+                String fileName = "user_" + user.getUserId() + "_" +
+                                   UUID.randomUUID().toString().substring(0, 8) + extension;
 
-            String uploadPath = getServletContext().getRealPath("/" + UPLOAD_DIR);
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+                String uploadPath = getServletContext().getRealPath("/" + UPLOAD_DIR);
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
 
-            filePart.write(uploadPath + File.separator + fileName);
+                filePart.write(uploadPath + File.separator + fileName);
 
-            String relativePath = UPLOAD_DIR + "/" + fileName;
-            boolean success = authService.updateProfilePhoto(user.getUserId(), relativePath);
+                String relativePath = UPLOAD_DIR + "/" + fileName;
+                boolean success = authService.updateProfilePhoto(user.getUserId(), relativePath);
 
-            if (success) {
-                User refreshed = authService.getUserById(user.getUserId());
-                session.setAttribute("user", refreshed);
-                response.sendRedirect("profile.jsp?success=photo");
-            } else {
+                if (success) {
+                    User refreshed = authService.getUserById(user.getUserId());
+                    session.setAttribute("user", refreshed);
+                    response.sendRedirect("profile.jsp?success=photo");
+                } else {
+                    response.sendRedirect("profile.jsp?error=1");
+                }
+            } catch (IllegalStateException tooLarge) {
+                // Thrown when the file exceeds @MultipartConfig maxFileSize/maxRequestSize
+                response.sendRedirect("profile.jsp?error=toolarge");
+            } catch (Exception ex) {
+                // Any unexpected I/O or DB failure - fail gracefully instead of a raw 500 page
+                ex.printStackTrace();
                 response.sendRedirect("profile.jsp?error=1");
             }
             return;

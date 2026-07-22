@@ -246,6 +246,9 @@ Food Waste
 <% if ("nophoto".equals(error)) { %>
 <div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> Please choose a photo before uploading.</div>
 <% } %>
+<% if ("toolarge".equals(error)) { %>
+<div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> That photo is too large. Please choose an image under 5MB.</div>
+<% } %>
 
 <!-- PROFILE HERO -->
 <div class="profile-hero">

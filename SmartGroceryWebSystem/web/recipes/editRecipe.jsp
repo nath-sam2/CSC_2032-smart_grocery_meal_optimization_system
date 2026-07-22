@@ -119,7 +119,7 @@ String navCtx = request.getContextPath();
                 <a href="<%=navCtx%>/profile.jsp" class="profile-chip">
                     <div class="avatar">
                         <% if (navUser.hasProfilePhoto()) { %>
-                            <img src="<%= navUser.getProfilePhoto() %>" alt="Profile photo">
+                            <img src="<%=navCtx%>/<%= navUser.getProfilePhoto() %>" alt="Profile photo">
                         <% } else { %>
                             <%= navUser.getName().substring(0,1).toUpperCase() %>
                         <% } %>
