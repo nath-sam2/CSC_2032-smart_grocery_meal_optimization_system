@@ -8,6 +8,18 @@
 <%@page import="service.CartService"%>
 <%@page import="dao.ProductDAO"%>
 <%@page import="dao.NotificationDAO"%>
+<%@page import="model.Recipe"%>
+<%@page import="dao.RecipeDAO"%>
+<%@page import="model.MealPlanner"%>
+<%@page import="model.MealPlanDetail"%>
+<%@page import="dao.MealPlannerDAO"%>
+<%@page import="dao.MealPlanDetailDAO"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.time.DayOfWeek"%>
+<%@page import="java.time.format.TextStyle"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 
 <%
@@ -1133,6 +1145,47 @@ Logout
 
 <!-- STATS -->
 
+<%
+MealPlannerDAO mealPlannerDAO2 = new MealPlannerDAO();
+MealPlanDetailDAO mealPlanDetailDAO2 = new MealPlanDetailDAO();
+RecipeDAO recipeDAO2 = new RecipeDAO();
+
+LocalDate today2 = LocalDate.now();
+LocalDate weekStart = today2.with(DayOfWeek.MONDAY);
+
+List<MealPlanner> userPlans = mealPlannerDAO2.getMealPlansByUser(user.getUserId());
+MealPlanner currentWeekPlan = null;
+
+for (MealPlanner mp : userPlans) {
+    if (mp.getStartDate() != null && mp.getEndDate() != null
+            && !weekStart.isAfter(mp.getEndDate())
+            && !weekStart.plusDays(6).isBefore(mp.getStartDate())) {
+        currentWeekPlan = mp;
+        break;
+    }
+}
+
+Map<String, MealPlanDetail> plannedMeals = new HashMap<>();
+if (currentWeekPlan != null) {
+    List<MealPlanDetail> weekDetails = mealPlanDetailDAO2.getMealDetailsByPlanId(currentWeekPlan.getMealPlanId());
+    for (MealPlanDetail d : weekDetails) {
+        if (d.getMealDate() != null && d.getMealType() != null) {
+            plannedMeals.put(d.getMealDate() + "|" + d.getMealType(), d);
+        }
+    }
+}
+
+String addMealHref = (currentWeekPlan != null)
+        ? ("MealPlannerController?action=addMeal&id=" + currentWeekPlan.getMealPlanId())
+        : "MealPlannerController?action=list";
+
+String[] planSlots = { "Breakfast", "Lunch", "Dinner" };
+Map<String, String> slotIcons = new HashMap<>();
+slotIcons.put("Breakfast", "🌅");
+slotIcons.put("Lunch", "☀️");
+slotIcons.put("Dinner", "🌙");
+%>
+
 <div class="stats">
 
 <a href="inventory.jsp" class="stat-card">
@@ -1146,7 +1199,7 @@ Logout
 <a href="MealDashboardController" class="stat-card">
 <div class="icon-circle orange"><i class="fa-solid fa-bowl-food"></i></div>
 <div>
-<div class="stat-number">18 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 8%</span></div>
+<div class="stat-number"><%= plannedMeals.size() %></div>
 <div class="stat-title">Meals Planned This Week</div>
 </div>
 </a>
@@ -1178,58 +1231,27 @@ Logout
 
 <div class="planner">
 
-<div class="day-col">
-<div class="day-head">MON 19</div>
-<div class="meal-row"><div class="meal-emoji">🥣</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Oats &amp; Banana</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🍚</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Dal Rice</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🥦</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Veg Stir Fry</div></div></div>
-<a href="addMeal.jsp?day=Monday" class="add-meal">+ Add Meal</a>
-</div>
+<% for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
+    LocalDate colDate = weekStart.plusDays(dayOffset);
+    boolean isToday = colDate.equals(today2);
+    String dayLabel = colDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase() + " " + colDate.getDayOfMonth();
+%>
+<div class="day-col<%= isToday ? " today" : "" %>">
+<div class="day-head"><% if (isToday) { %><i class="fa-solid fa-star"></i> <% } %><%= dayLabel %></div>
 
-<div class="day-col">
-<div class="day-head">TUE 20</div>
-<div class="meal-row"><div class="meal-emoji">🍳</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Bread &amp; Eggs</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🍛</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Chicken Curry</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🍜</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Rice &amp; Dahl</div></div></div>
-<a href="addMeal.jsp?day=Tuesday" class="add-meal">+ Add Meal</a>
-</div>
+<% for (String slot : planSlots) {
+    MealPlanDetail planned = plannedMeals.get(colDate + "|" + slot);
+    if (planned != null) {
+        Recipe plannedRecipe = recipeDAO2.getRecipeById(planned.getRecipeId());
+        String plannedName = (plannedRecipe != null) ? plannedRecipe.getName() : "Recipe";
+%>
+<div class="meal-row"><div class="meal-emoji"><%= slotIcons.get(slot) %></div><div><div class="meal-slot"><%= slot %></div><div class="meal-name"><%= plannedName %></div></div></div>
+<% } else { %>
+<a href="<%= addMealHref %>" class="add-empty">+ Add <%= slot %></a>
+<% } } %>
 
-<div class="day-col today">
-<div class="day-head"><i class="fa-solid fa-star"></i> WED 21</div>
-<div class="meal-row"><div class="meal-emoji">🍹</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Smoothie Bowl</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🥙</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Veg Wrap</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🥗</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Grilled Veggies</div></div></div>
-<a href="addMeal.jsp?day=Wednesday" class="add-meal">+ Add Meal</a>
 </div>
-
-<div class="day-col">
-<div class="day-head">THU 22</div>
-<div class="meal-row"><div class="meal-emoji">🍓</div><div><div class="meal-slot">Breakfast</div><div class="meal-name">Yogurt &amp; Fruit</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🥪</div><div><div class="meal-slot">Lunch</div><div class="meal-name">Veg Sandwich</div></div></div>
-<div class="meal-row"><div class="meal-emoji">🍲</div><div><div class="meal-slot">Dinner</div><div class="meal-name">Veg Soup</div></div></div>
-<a href="addMeal.jsp?day=Thursday" class="add-meal">+ Add Meal</a>
-</div>
-
-<div class="day-col">
-<div class="day-head">FRI 23</div>
-<a href="addMeal.jsp?day=Friday&amp;slot=Breakfast" class="add-empty">+ Add Breakfast</a>
-<a href="addMeal.jsp?day=Friday&amp;slot=Lunch" class="add-empty">+ Add Lunch</a>
-<a href="addMeal.jsp?day=Friday&amp;slot=Dinner" class="add-empty">+ Add Dinner</a>
-</div>
-
-<div class="day-col">
-<div class="day-head">SAT 24</div>
-<a href="addMeal.jsp?day=Saturday&amp;slot=Breakfast" class="add-empty">+ Add Breakfast</a>
-<a href="addMeal.jsp?day=Saturday&amp;slot=Lunch" class="add-empty">+ Add Lunch</a>
-<a href="addMeal.jsp?day=Saturday&amp;slot=Dinner" class="add-empty">+ Add Dinner</a>
-</div>
-
-<div class="day-col">
-<div class="day-head">SUN 25</div>
-<a href="addMeal.jsp?day=Sunday&amp;slot=Breakfast" class="add-empty">+ Add Breakfast</a>
-<a href="addMeal.jsp?day=Sunday&amp;slot=Lunch" class="add-empty">+ Add Lunch</a>
-<a href="addMeal.jsp?day=Sunday&amp;slot=Dinner" class="add-empty">+ Add Dinner</a>
-</div>
+<% } %>
 
 </div>
 
@@ -1237,51 +1259,37 @@ Logout
 
 <div class="bottom-grid">
 
-<!-- AI RECIPES -->
+<!-- RECOMMENDED RECIPES -->
 <div class="panel">
-<h2><span><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--green);margin-right:6px;"></i>AI Suggested Recipes</span><a href="RecipeController">View All</a></h2>
+<h2><span><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--green);margin-right:6px;"></i>Recommended Recipes</span><a href="RecipeController">View All</a></h2>
 
 <div class="recipe-grid">
 
+<%
+List<Recipe> aiRecipes = new RecipeDAO().getAllRecipes();
+int aiRecipeLimit = Math.min(4, aiRecipes.size());
+for (int aiIdx = 0; aiIdx < aiRecipeLimit; aiIdx++) {
+    Recipe ar = aiRecipes.get(aiIdx);
+    String arLocalImg = util.RecipeImageResolver.resolve(application, ar.getName());
+    String arImgSrc = (arLocalImg != null) ? (request.getContextPath() + "/" + arLocalImg) : ar.getImageUrl();
+    if (arImgSrc == null || arImgSrc.trim().isEmpty()) {
+        arImgSrc = "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=400&auto=format&fit=crop";
+    }
+%>
 <div class="recipe-card">
-<img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop" alt="Chicken Curry">
+<img src="<%= arImgSrc %>" alt="<%= ar.getName() %>">
 <div class="recipe-body">
-<h4>Chicken Curry</h4>
-<div class="tags"><span class="tag">Protein</span><span class="tag">Spicy</span></div>
-<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 40 min</span><span>⭐ 4.8</span></div>
-<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
+<h4><%= ar.getName() %></h4>
+<div class="tags"><span class="tag"><%= ar.getMealType() %></span><span class="tag"><%= ar.getDifficulty() %></span></div>
+<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> <%= ar.getCookingTime() %> min</span></div>
+<a href="RecipeController?action=view&id=<%= ar.getRecipeId() %>" class="cook-btn">Cook Now</a>
 </div>
 </div>
+<% } %>
 
-<div class="recipe-card">
-<img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?q=80&w=400&auto=format&fit=crop" alt="Veg Pasta">
-<div class="recipe-body">
-<h4>Veg Pasta</h4>
-<div class="tags"><span class="tag">Vegetarian</span><span class="tag">Italian</span></div>
-<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 25 min</span><span>⭐ 4.3</span></div>
-<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
-</div>
-</div>
-
-<div class="recipe-card">
-<img src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=400&auto=format&fit=crop" alt="Fruit Bowl">
-<div class="recipe-body">
-<h4>Fruit Bowl</h4>
-<div class="tags"><span class="tag">Healthy</span></div>
-<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 15 min</span><span>⭐ 4.5</span></div>
-<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
-</div>
-</div>
-
-<div class="recipe-card">
-<img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?q=80&w=400&auto=format&fit=crop" alt="Green Smoothie">
-<div class="recipe-body">
-<h4>Green Smoothie</h4>
-<div class="tags"><span class="tag">Healthy</span></div>
-<div class="recipe-meta"><span><i class="fa-regular fa-clock"></i> 10 min</span><span>⭐ 4.6</span></div>
-<a href="RecipeController?action=view&id=<realRecipeId>" class="cook-btn">Cook Now</a>
-</div>
-</div>
+<% if (aiRecipes.isEmpty()) { %>
+    <p style="color:var(--soft);">No recipes available yet.</p>
+<% } %>
 
 </div>
 </div>
