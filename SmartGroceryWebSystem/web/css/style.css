@@ -163,7 +163,7 @@ p {
 }
 
 .help-card {
-    margin-top: auto;
+    margin-top: 24px;
     background: linear-gradient(135deg, #16a34a, #22c55e);
     border-radius: 16px;
     padding: 18px;
@@ -174,6 +174,10 @@ p {
     color: white;
     text-decoration: none;
     display: block;
+
+    /* Scrolls with the rest of the sidebar content, right after Logout,
+       instead of staying pinned to the bottom of the viewport */
+    position: static;
 }
 
 .help-card i {

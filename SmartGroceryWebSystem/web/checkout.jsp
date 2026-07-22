@@ -77,7 +77,7 @@ display:flex; flex-direction:column; overflow-y:auto;
 .menu-count{ margin-left:auto; background:#ef4444; color:white; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; }
 .menu a.active .menu-count{ background:rgba(255,255,255,.25); }
 .side-label{ font-size:11px; letter-spacing:.08em; color:#666; text-transform:uppercase; margin:22px 0 10px 16px; font-weight:700; }
-.help-card{ margin-top:auto; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; text-decoration:none; display:block; color:white; }
+.help-card{ margin-top:auto; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; text-decoration:none; display:block; color:white; position:sticky;bottom:0;z-index:5;box-shadow:0 -12px 12px -6px #111; }
 .help-card i{ font-size:22px; margin-bottom:8px; display:block; }
 .help-card b{ display:block; font-size:14px; }
 .help-card span{ font-size:12px; opacity:.85; }

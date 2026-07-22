@@ -6,9 +6,8 @@
 
 <%@ page import="model.User" %>
 <%@ page import="model.CartItem" %>
-<%@ page import="model.NotificationService" %>
 <%@ page import="service.CartService" %>
-<%@ page import="dao.NotificationDAO" %>
+<%@ page import="service.InventoryService" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -24,8 +23,7 @@ if (navUser != null) {
     } catch (Exception e) { /* best-effort only */ }
 
     try {
-        List<NotificationService> navUnread = new NotificationDAO().getUnreadNotifications();
-        notifCount = navUnread.size();
+        notifCount = new InventoryService().getExpiringItems(7).size();
     } catch (Exception e) { /* best-effort only */ }
 }
 
@@ -66,6 +64,8 @@ String navCtx = request.getContextPath();
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
         </a></li>
+        <li><a href="<%=navCtx%>/orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders
+        </a></li>
         <li><a href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes
         </a></li>
         <li><a href="<%=navCtx%>/notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
@@ -91,6 +91,12 @@ String navCtx = request.getContextPath();
         <li><a href="<%=navCtx%>/settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
         <li><a href="<%=navCtx%>/LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
     </ul>
+
+    <a href="tel:+94112345678" class="help-card">
+        <i class="fa-solid fa-phone"></i>
+        <b>Need Help?</b>
+        <span>Emergency Call</span>
+    </a>
 
 </div>
 

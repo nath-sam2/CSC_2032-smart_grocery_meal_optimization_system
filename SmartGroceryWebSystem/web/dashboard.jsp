@@ -210,6 +210,7 @@ border:none;
 text-align:left;
 width:100%;
 color:white;
+position:sticky;bottom:0;z-index:5;box-shadow:0 -12px 12px -6px #111;
 }
 
 .help-card i{
@@ -989,6 +990,13 @@ Meal Planner
 <i class="fa-solid fa-list-check"></i>
 Shopping List
 <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
+</a>
+</li>
+
+<li>
+<a href="orders.jsp">
+<i class="fa-solid fa-receipt"></i>
+My Orders
 </a>
 </li>
 
