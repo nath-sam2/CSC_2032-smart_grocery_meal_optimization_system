@@ -42,7 +42,8 @@ public class ProductDAO {
                     rs.getInt("quantity"),
                     rs.getDate("expiryDate"),
                     rs.getString("unit"),
-                    rs.getInt("categoryId")
+                    rs.getInt("categoryId"),
+                    rs.getString("photo")
                 ));
             }
         } catch (Exception e) { e.printStackTrace(); }
@@ -64,7 +65,8 @@ public class ProductDAO {
                     rs.getInt("quantity"),
                     rs.getDate("expiryDate"),
                     rs.getString("unit"),
-                    rs.getInt("categoryId")
+                    rs.getInt("categoryId"),
+                    rs.getString("photo")
                 );
             }
         } catch (Exception e) { e.printStackTrace(); }
@@ -113,7 +115,8 @@ public class ProductDAO {
                     rs.getInt("quantity"),
                     rs.getDate("expiryDate"),
                     rs.getString("unit"),
-                    rs.getInt("categoryId")
+                    rs.getInt("categoryId"),
+                    rs.getString("photo")
                 ));
             }
         } catch (Exception e) { e.printStackTrace(); }

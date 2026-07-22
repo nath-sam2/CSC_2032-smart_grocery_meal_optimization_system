@@ -11,11 +11,19 @@ public class Product {
     private Date expiryDate;
     private String unit;
     private int categoryId;
+    private String photoUrl;
 
-    // Constructor
+    // Original constructor (kept so existing code that doesn't pass a photo still compiles)
     public Product(int productId, String name, double price,
                    int quantity, Date expiryDate,
                    String unit, int categoryId) {
+        this(productId, name, price, quantity, expiryDate, unit, categoryId, null);
+    }
+
+    // Constructor with photoUrl
+    public Product(int productId, String name, double price,
+                   int quantity, Date expiryDate,
+                   String unit, int categoryId, String photoUrl) {
         this.productId  = productId;
         this.name       = name;
         this.price      = price;
@@ -23,6 +31,7 @@ public class Product {
         this.expiryDate = expiryDate;
         this.unit       = unit;
         this.categoryId = categoryId;
+        this.photoUrl   = photoUrl;
     }
 
    
@@ -40,6 +49,8 @@ public class Product {
         { return unit; }
     public int getCategoryId()  
         { return categoryId; }
+    public String getPhotoUrl()
+        { return photoUrl; }
 
     
     public void setName(String name)       
@@ -52,6 +63,8 @@ public class Product {
         { this.unit = unit; }
     public void setCategoryId(int id)      
         { this.categoryId = id; }
+    public void setPhotoUrl(String photoUrl)
+        { this.photoUrl = photoUrl; }
 
     
     public void addProduct()    
