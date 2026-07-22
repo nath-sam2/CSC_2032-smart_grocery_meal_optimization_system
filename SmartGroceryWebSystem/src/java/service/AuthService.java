@@ -38,6 +38,13 @@ public class AuthService {
         return userDAO.updateProfilePhoto(userId, photoPath);
     }
 
+    // Used by ProfileServlet (settings.jsp) to save the notification toggles
+    public boolean updateNotificationPreferences(int userId, boolean notifyExpiry,
+            boolean notifyLowStock, boolean notifyMealPlanner) {
+        return userDAO.updateNotificationPreferences(userId, notifyExpiry,
+                notifyLowStock, notifyMealPlanner);
+    }
+
     // Used by ProfileServlet after a successful profile update,
     // to refresh the session with the latest user data
     public User getUserById(int userId) {

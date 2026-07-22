@@ -23,8 +23,8 @@ if (user == null) {
 InventoryService inventoryService = new InventoryService();
 ProductDAO productDAO = new ProductDAO();
 
-List<Inventory> lowStockInv = inventoryService.getLowStockItems();
-List<Product> expiringProducts = inventoryService.getExpiringItems(7);
+List<Inventory> lowStockInv = user.isNotifyLowStock() ? inventoryService.getLowStockItems() : new ArrayList<Inventory>();
+List<Product> expiringProducts = user.isNotifyExpiry() ? inventoryService.getExpiringItems(7) : new ArrayList<Product>();
 
 int sidebarLowStockCount = lowStockInv.size();
 int sidebarExpiryCount = expiringProducts.size();

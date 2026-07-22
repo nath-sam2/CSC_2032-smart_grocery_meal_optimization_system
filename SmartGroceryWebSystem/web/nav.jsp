@@ -25,7 +25,7 @@ if (navUser != null) {
     } catch (Exception e) { /* best-effort only */ }
 
     try {
-        notifCount = new InventoryService().getExpiringItems(7).size();
+        notifCount = navUser.isNotifyExpiry() ? new InventoryService().getExpiringItems(7).size() : 0;
     } catch (Exception e) { /* best-effort only */ }
 }
 

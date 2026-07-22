@@ -8,6 +8,9 @@ public class User {
     private String password;
     private String role;
     private String profilePhoto;
+    private boolean notifyExpiry = true;
+    private boolean notifyLowStock = true;
+    private boolean notifyMealPlanner = false;
 
     public User(int userId, String name, String email,
                 String password, String role) {
@@ -39,6 +42,20 @@ public class User {
         { this.password = password; }
     public void setProfilePhoto(String profilePhoto)
         { this.profilePhoto = profilePhoto; }
+
+    public boolean isNotifyExpiry()      
+        { return notifyExpiry; }
+    public boolean isNotifyLowStock()    
+        { return notifyLowStock; }
+    public boolean isNotifyMealPlanner() 
+        { return notifyMealPlanner; }
+
+    public void setNotifyExpiry(boolean notifyExpiry)           
+        { this.notifyExpiry = notifyExpiry; }
+    public void setNotifyLowStock(boolean notifyLowStock)       
+        { this.notifyLowStock = notifyLowStock; }
+    public void setNotifyMealPlanner(boolean notifyMealPlanner) 
+        { this.notifyMealPlanner = notifyMealPlanner; }
 
     // True when the user has uploaded a real photo (used by JSPs to decide
     // whether to show the <img> or fall back to the initial-letter avatar)

@@ -126,6 +126,25 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
+        if ("updatePreferences".equals(action)) {
+            boolean notifyExpiry = "true".equals(request.getParameter("notifyExpiry"));
+            boolean notifyLowStock = "true".equals(request.getParameter("notifyLowStock"));
+            boolean notifyMealPlanner = "true".equals(request.getParameter("notifyMealPlanner"));
+
+            boolean success = authService.updateNotificationPreferences(
+                    user.getUserId(), notifyExpiry, notifyLowStock, notifyMealPlanner);
+
+            if (success) {
+                User refreshed = authService.getUserById(user.getUserId());
+                session.setAttribute("user", refreshed);
+            }
+
+            // Called via fetch() from settings.jsp - plain text response, no redirect
+            response.setContentType("text/plain");
+            response.getWriter().write(success ? "ok" : "error");
+            return;
+        }
+
         response.sendRedirect("profile.jsp");
     }
 }

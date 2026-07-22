@@ -14,8 +14,8 @@ String error = request.getParameter("error");
 
 // Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / notifications.jsp
 InventoryService inventoryService = new InventoryService();
-int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
-int sidebarLowStockCount = inventoryService.getLowStockItems().size();
+int sidebarExpiryCount = user.isNotifyExpiry() ? inventoryService.getExpiringItems(7).size() : 0;
+int sidebarLowStockCount = user.isNotifyLowStock() ? inventoryService.getLowStockItems().size() : 0;
 %>
 
 <!DOCTYPE html>

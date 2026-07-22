@@ -1011,7 +1011,7 @@ Recipes
 <a href="notifications.jsp">
 <i class="fa-solid fa-bell"></i>
 Expiry Alerts
-<% if (notifCount > 0) { %><span class="menu-count"><%= notifCount %></span><% } %>
+<% if (notifCount > 0 && user.isNotifyExpiry()) { %><span class="menu-count"><%= notifCount %></span><% } %>
 </a>
 </li>
 
@@ -1019,7 +1019,7 @@ Expiry Alerts
 <a href="lowstock.jsp">
 <i class="fa-solid fa-triangle-exclamation"></i>
 Low Stock
-<% if (lowStockCount > 0) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
+<% if (lowStockCount > 0 && user.isNotifyLowStock()) { %><span class="menu-count"><%= lowStockCount %></span><% } %>
 </a>
 </li>
 
@@ -1115,7 +1115,7 @@ Logout
 
 <a href="notifications.jsp" class="icon-btn">
 <i class="fa-regular fa-bell"></i>
-<% if (notifCount > 0) { %><span class="dot"><%= notifCount %></span><% } %>
+<% if (notifCount > 0 && user.isNotifyExpiry()) { %><span class="dot"><%= notifCount %></span><% } %>
 </a>
 
 <a href="profile.jsp" class="profile-chip">

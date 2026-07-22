@@ -40,6 +40,9 @@ public class UserDAO {
                     rs.getString("role")
                 );
                 u.setProfilePhoto(rs.getString("profilePhoto"));
+                u.setNotifyExpiry(rs.getBoolean("notifyExpiry"));
+                u.setNotifyLowStock(rs.getBoolean("notifyLowStock"));
+                u.setNotifyMealPlanner(rs.getBoolean("notifyMealPlanner"));
                 return u;
             }
         } catch (Exception e) {
@@ -64,6 +67,9 @@ public class UserDAO {
                     rs.getString("role")
                 );
                 u.setProfilePhoto(rs.getString("profilePhoto"));
+                u.setNotifyExpiry(rs.getBoolean("notifyExpiry"));
+                u.setNotifyLowStock(rs.getBoolean("notifyLowStock"));
+                u.setNotifyMealPlanner(rs.getBoolean("notifyMealPlanner"));
                 return u;
             }
         } catch (Exception e) {
@@ -117,6 +123,9 @@ public class UserDAO {
                     rs.getString("role")
                 );
                 u.setProfilePhoto(rs.getString("profilePhoto"));
+                u.setNotifyExpiry(rs.getBoolean("notifyExpiry"));
+                u.setNotifyLowStock(rs.getBoolean("notifyLowStock"));
+                u.setNotifyMealPlanner(rs.getBoolean("notifyMealPlanner"));
                 list.add(u);
             }
         } catch (Exception e) {
@@ -132,6 +141,24 @@ public class UserDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, photoPath);
             ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Used by ProfileServlet (settings.jsp) to persist per-user notification toggles
+    public boolean updateNotificationPreferences(int userId, boolean notifyExpiry,
+            boolean notifyLowStock, boolean notifyMealPlanner) {
+        String sql = "UPDATE users SET notifyExpiry = ?, notifyLowStock = ?, " +
+                     "notifyMealPlanner = ? WHERE userId = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBoolean(1, notifyExpiry);
+            ps.setBoolean(2, notifyLowStock);
+            ps.setBoolean(3, notifyMealPlanner);
+            ps.setInt(4, userId);
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,8 +14,8 @@ String error = request.getParameter("error");
 
 // Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / notifications.jsp
 InventoryService inventoryService = new InventoryService();
-int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
-int sidebarLowStockCount = inventoryService.getLowStockItems().size();
+int sidebarExpiryCount = user.isNotifyExpiry() ? inventoryService.getExpiringItems(7).size() : 0;
+int sidebarLowStockCount = user.isNotifyLowStock() ? inventoryService.getLowStockItems().size() : 0;
 %>
 
 <!DOCTYPE html>
@@ -284,17 +284,17 @@ Food Waste
 
 <div class="pref-row">
 <div><b>Expiry Alerts</b><span>Get notified when items are about to expire.</span></div>
-<label class="switch"><input type="checkbox" id="pref-expiry" data-pref="expiry" checked><span class="slider"></span></label>
+<label class="switch"><input type="checkbox" id="pref-expiry" data-pref="expiry" <%= user.isNotifyExpiry() ? "checked" : "" %>><span class="slider"></span></label>
 </div>
 
 <div class="pref-row">
 <div><b>Low Stock Alerts</b><span>Get notified when inventory runs low.</span></div>
-<label class="switch"><input type="checkbox" id="pref-lowstock" data-pref="lowstock" checked><span class="slider"></span></label>
+<label class="switch"><input type="checkbox" id="pref-lowstock" data-pref="lowstock" <%= user.isNotifyLowStock() ? "checked" : "" %>><span class="slider"></span></label>
 </div>
 
 <div class="pref-row">
 <div><b>Meal Planner Reminders</b><span>Daily reminders to plan your meals.</span></div>
-<label class="switch"><input type="checkbox" id="pref-mealplanner" data-pref="mealplanner"><span class="slider"></span></label>
+<label class="switch"><input type="checkbox" id="pref-mealplanner" data-pref="mealplanner" <%= user.isNotifyMealPlanner() ? "checked" : "" %>><span class="slider"></span></label>
 </div>
 
 <div id="pref-saved-msg" style="display:none; margin-top:14px; font-size:12.5px; color:var(--green); font-weight:600;">
@@ -324,35 +324,36 @@ Food Waste
 <script>
 (function(){
   var prefKeys = ['expiry','lowstock','mealplanner'];
-  var storageKey = 'sg_notif_prefs';
-
-  function loadPrefs(){
-    try{
-      var saved = JSON.parse(localStorage.getItem(storageKey));
-      if(saved){
-        prefKeys.forEach(function(k){
-          if(typeof saved[k] === 'boolean'){
-            document.getElementById('pref-' + k).checked = saved[k];
-          }
-        });
-      }
-    }catch(e){ /* ignore corrupt storage */ }
-  }
 
   function savePrefs(){
     var data = {};
     prefKeys.forEach(function(k){
       data[k] = document.getElementById('pref-' + k).checked;
     });
-    localStorage.setItem(storageKey, JSON.stringify(data));
 
     var msg = document.getElementById('pref-saved-msg');
-    msg.style.display = 'block';
-    clearTimeout(msg._hideTimer);
-    msg._hideTimer = setTimeout(function(){ msg.style.display = 'none'; }, 1800);
-  }
 
-  loadPrefs();
+    fetch('ProfileServlet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'action=updatePreferences' +
+            '&notifyExpiry=' + data.expiry +
+            '&notifyLowStock=' + data.lowstock +
+            '&notifyMealPlanner=' + data.mealplanner
+    }).then(function(res){ return res.text(); })
+      .then(function(text){
+        if (text.trim() === 'ok') {
+          msg.style.display = 'block';
+          clearTimeout(msg._hideTimer);
+          msg._hideTimer = setTimeout(function(){ msg.style.display = 'none'; }, 1800);
+        } else {
+          alert('Could not save preference, please try again.');
+        }
+      })
+      .catch(function(){
+        alert('Could not save preference - check your connection and try again.');
+      });
+  }
 
   prefKeys.forEach(function(k){
     document.getElementById('pref-' + k).addEventListener('change', savePrefs);

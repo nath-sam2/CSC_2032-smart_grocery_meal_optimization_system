@@ -36,8 +36,8 @@ if (search != null && !search.trim().isEmpty()) {
 List<Category> categories = categoryService.getAllCategories();
 
 // Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / notifications.jsp
-int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
-int sidebarLowStockCount = inventoryService.getLowStockItems().size();
+int sidebarExpiryCount = user.isNotifyExpiry() ? inventoryService.getExpiringItems(7).size() : 0;
+int sidebarLowStockCount = user.isNotifyLowStock() ? inventoryService.getLowStockItems().size() : 0;
 
 // Real live stock levels + per-product reorder level, keyed by productId.
 // (Product.quantity is only the initial seed value and never changes after
