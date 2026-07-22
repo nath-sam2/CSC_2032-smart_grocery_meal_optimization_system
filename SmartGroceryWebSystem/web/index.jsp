@@ -2,9 +2,11 @@
 <%@page import="dao.InventoryDAO"%>
 <%@page import="dao.ProductDAO"%>
 <%@page import="dao.CategoryDAO"%>
+<%@page import="dao.UserDAO"%>
 <%@page import="model.Inventory"%>
 <%@page import="model.Product"%>
 <%@page import="model.Category"%>
+<%@page import="model.User"%>
 <%@page import="java.util.*"%>
 <%
     // ---- LIVE DASHBOARD PREVIEW DATA (real data pulled from the DB) ----
@@ -75,6 +77,31 @@
     Map<Integer, String> categoryNames = new HashMap<Integer, String>();
     for (Category c : allCategories) {
         categoryNames.put(c.getCategoryId(), c.getName());
+    }
+
+    // ---- HERO STATS (real data) ----
+    UserDAO userDAO = new UserDAO();
+    int householdCount = userDAO.getAllUsers().size();
+
+    // No historical "waste" table exists, so this is a live proxy metric:
+    // the % of tracked items that are currently NOT at risk of expiring soon.
+    int wastePreventedPct = 0;
+    if (totalItems > 0) {
+        wastePreventedPct = Math.round((totalItems - expiringCount) * 100.0f / totalItems);
+    }
+
+    // Format big numbers like "12k" once past 1000 (number + unit shown separately in markup)
+    String householdNumber;
+    String householdSuffix;
+    if (householdCount >= 1000) {
+        double kValue = householdCount / 1000.0;
+        householdNumber = (kValue == Math.floor(kValue))
+                ? String.valueOf((int) kValue)
+                : String.format("%.1f", kValue);
+        householdSuffix = "k";
+    } else {
+        householdNumber = String.valueOf(householdCount);
+        householdSuffix = "";
     }
 %>
 <!DOCTYPE html>
@@ -362,9 +389,9 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="num">132<span>+</span></div><div class="lbl">Items tracked</div></div>
-    <div class="hero-stat"><div class="num">40<span>%</span></div><div class="lbl">Less food wasted</div></div>
-    <div class="hero-stat"><div class="num">12<span>k</span></div><div class="lbl">Households using it</div></div>
+    <div class="hero-stat"><div class="num"><%= totalItems %><span>+</span></div><div class="lbl">Items tracked</div></div>
+    <div class="hero-stat"><div class="num"><%= wastePreventedPct %><span>%</span></div><div class="lbl">Less food wasted</div></div>
+    <div class="hero-stat"><div class="num"><%= householdNumber %><span><%= householdSuffix %></span></div><div class="lbl">Households using it</div></div>
   </div>
 </section>
 
