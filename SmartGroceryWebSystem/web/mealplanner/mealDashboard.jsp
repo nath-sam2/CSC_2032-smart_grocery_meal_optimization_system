@@ -212,7 +212,7 @@ ShoppingList latestList = (ShoppingList) request.getAttribute("latestShoppingLis
                 <% } %>
             </div>
             <div class="card-footer">
-                <a href="../inventory.jsp?filter=expiring" class="btn btn-secondary">View Expiring Items</a>
+                <a href="inventory.jsp?filter=expiring" class="btn btn-secondary">View Expiring Items</a>
             </div>
         </div>
 
