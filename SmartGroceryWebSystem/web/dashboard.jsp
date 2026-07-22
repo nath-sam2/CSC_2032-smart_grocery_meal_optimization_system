@@ -201,7 +201,7 @@ font-weight:700;
 }
 
 .help-card{
-margin-top:auto;
+margin-top:24px;
 background:linear-gradient(135deg,#16a34a,#22c55e);
 border-radius:16px;
 padding:18px;
@@ -210,7 +210,7 @@ border:none;
 text-align:left;
 width:100%;
 color:white;
-position:sticky;bottom:0;z-index:5;box-shadow:0 -12px 12px -6px #111;
+position:static;
 }
 
 .help-card i{

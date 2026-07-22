@@ -119,7 +119,7 @@ if (selectedCatId != null) {
         .menu-count{ margin-left:auto; background:#ef4444; color:white; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; }
         .menu a.active .menu-count{ background:rgba(255,255,255,.25); }
         .side-label{ font-size:11px; letter-spacing:.08em; color:#666; text-transform:uppercase; margin:22px 0 10px 16px; font-weight:700; }
-        .help-card{ margin-top:auto; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; text-decoration:none; display:block; color:white; position:sticky;bottom:0;z-index:5;box-shadow:0 -12px 12px -6px #111; }
+        .help-card{ margin-top:24px; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; text-decoration:none; display:block; color:white; position:static; }
         .help-card i{ font-size:22px; margin-bottom:8px; display:block; }
         .help-card b{ display:block; font-size:14px; }
         .help-card span{ font-size:12px; opacity:.85; }
@@ -182,7 +182,7 @@ if (selectedCatId != null) {
         .stock-in{ background:rgba(34,197,94,.15); color:var(--green); }
         .stock-low{ background:rgba(245,158,11,.15); color:#f59e0b; }
         .stock-out{ background:rgba(239,68,68,.15); color:#ef4444; }
-        .product-footer{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+        .product-footer{ margin-top:24px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
         .product-price{ font-size:17px; font-weight:800; color:white; }
         .product-price span{ font-size:11px; color:var(--soft); font-weight:500; }
         .add-cart-btn{ background:var(--green); border:none; color:white; width:38px; height:38px; border-radius:10px; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; }
