@@ -92,6 +92,12 @@ String navCtx = request.getContextPath();
         <li><a href="<%=navCtx%>/LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
     </ul>
 
+    <a href="tel:+94112345678" class="help-card">
+        <i class="fa-solid fa-phone"></i>
+        <b>Need Help?</b>
+        <span>Emergency Call</span>
+    </a>
+
 </div>
 
 <!-- Main -->

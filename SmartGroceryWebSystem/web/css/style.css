@@ -174,6 +174,12 @@ p {
     color: white;
     text-decoration: none;
     display: block;
+
+    /* Keep the button pinned at the bottom of the sidebar while it scrolls */
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    box-shadow: 0 -12px 12px -6px #111;
 }
 
 .help-card i {

@@ -210,6 +210,7 @@ border:none;
 text-align:left;
 width:100%;
 color:white;
+position:sticky;bottom:0;z-index:5;box-shadow:0 -12px 12px -6px #111;
 }
 
 .help-card i{
