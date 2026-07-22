@@ -163,7 +163,7 @@ p {
 }
 
 .help-card {
-    margin-top: auto;
+    margin-top: 24px;
     background: linear-gradient(135deg, #16a34a, #22c55e);
     border-radius: 16px;
     padding: 18px;
@@ -175,11 +175,9 @@ p {
     text-decoration: none;
     display: block;
 
-    /* Keep the button pinned at the bottom of the sidebar while it scrolls */
-    position: sticky;
-    bottom: 0;
-    z-index: 5;
-    box-shadow: 0 -12px 12px -6px #111;
+    /* Scrolls with the rest of the sidebar content, right after Logout,
+       instead of staying pinned to the bottom of the viewport */
+    position: static;
 }
 
 .help-card i {
