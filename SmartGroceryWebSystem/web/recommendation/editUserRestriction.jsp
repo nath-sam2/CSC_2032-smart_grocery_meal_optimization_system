@@ -65,6 +65,8 @@ String navCtx = request.getContextPath();
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
         </a></li>
+        <li><a href="<%=navCtx%>/orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders
+        </a></li>
         <li><a href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes
         </a></li>
         <li><a href="<%=navCtx%>/notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts

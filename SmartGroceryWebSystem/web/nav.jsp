@@ -79,6 +79,8 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
         </a></li>
+        <li><a href="<%=navCtx%>/orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders
+        </a></li>
         <li><a href="<%=navCtx%>/notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
             <% if (notifCount > 0) { %><span class="menu-count"><%= notifCount %></span><% } %>
         </a></li>
