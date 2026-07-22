@@ -106,6 +106,7 @@ tr:hover td{ background:#1e1e1e; }
 <a href="../dashboard.jsp" class="logo"><i class="fa-solid fa-shield-halved"></i><span>Admin Panel</span></a>
 <div class="logo-sub">Smart Grocery</div>
 <ul class="menu">
+<li><a href="adminDashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
 <li><a class="active" href="manageProducts.jsp"><i class="fa-solid fa-box"></i> Products</a></li>
 <li><a href="manageCategories.jsp"><i class="fa-solid fa-tags"></i> Categories</a></li>
 <li><a href="manageOrders.jsp"><i class="fa-solid fa-receipt"></i> Orders</a></li>
