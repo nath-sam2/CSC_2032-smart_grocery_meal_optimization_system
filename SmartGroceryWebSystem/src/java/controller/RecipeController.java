@@ -44,9 +44,14 @@ public class RecipeController extends HttpServlet {
         if(action.equals("view")){
 
 
-            int recipeId = Integer.parseInt(
-                    request.getParameter("id")
-            );
+            int recipeId;
+
+            try {
+                recipeId = Integer.parseInt(request.getParameter("id"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect("RecipeController");
+                return;
+            }
 
 
 

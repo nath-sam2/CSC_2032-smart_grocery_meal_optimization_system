@@ -369,7 +369,7 @@ for (CartItem item : items) {
 
 <div class="promo-note">
 <i class="fa-solid fa-leaf"></i>
-<span>Plan your meals and reduce food waste — check your <a href="mealplanner.jsp" style="color:var(--green);font-weight:700;">Meal Planner</a> before checking out.</span>
+<span>Plan your meals and reduce food waste — check your <a href="MealDashboardController" style="color:var(--green);font-weight:700;">Meal Planner</a> before checking out.</span>
 </div>
 
 </div>
