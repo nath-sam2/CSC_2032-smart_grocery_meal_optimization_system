@@ -230,7 +230,7 @@ My Inventory
 </li>
 
 <li>
-<a href="MealPlannerController">
+<a href="MealDashboardController">
 <i class="fa-solid fa-utensils"></i>
 Meal Planner
 </a>

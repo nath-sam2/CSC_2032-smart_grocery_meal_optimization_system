@@ -1,7 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.User"%>
 <%@page import="model.NotificationService"%>
-<%@page import="service.NotificationAlertService"%>
+<%@page import="model.Inventory"%>
+<%@page import="model.Product"%>
+<%@page import="service.InventoryService"%>
+<%@page import="dao.ProductDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -13,25 +16,47 @@ if (user == null) {
     return;
 }
 
-NotificationAlertService notifService = new NotificationAlertService();
-List<NotificationService> allNotifs = notifService.getAllNotifications();
-int unreadCount = notifService.getUnreadNotifications().size();
+// Alerts are built live from the current inventory data (same source as
+// dashboard.jsp / lowstock.jsp / inventory.jsp) so the counts and messages
+// on this page always match what's actually in My Inventory - no separate
+// alert log to fall out of sync.
+InventoryService inventoryService = new InventoryService();
+ProductDAO productDAO = new ProductDAO();
 
-// Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / inventory.jsp
-service.InventoryService inventoryService = new service.InventoryService();
-int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
-int sidebarLowStockCount = inventoryService.getLowStockItems().size();
+List<Inventory> lowStockInv = inventoryService.getLowStockItems();
+List<Product> expiringProducts = inventoryService.getExpiringItems(7);
+
+int sidebarLowStockCount = lowStockInv.size();
+int sidebarExpiryCount = expiringProducts.size();
+
+SimpleDateFormat expFmt = new SimpleDateFormat("MMM d, yyyy");
+
+List<NotificationService> allNotifs = new ArrayList<NotificationService>();
+int lowStockCount = 0;
+int expiryCount = 0;
+
+for (Inventory inv : lowStockInv) {
+    Product p = productDAO.getProductById(inv.getProductId());
+    String pName = (p != null) ? p.getName() : ("Product #" + inv.getProductId());
+    String msg = pName + " is running low - only " + inv.getQuantity()
+            + " left (reorder at " + inv.getReorderLevel() + ").";
+    allNotifs.add(new NotificationService(inv.getProductId(), msg, "LOW_STOCK", null));
+    lowStockCount++;
+}
+
+for (Product p : expiringProducts) {
+    String whenStr = p.getExpiryDate() != null ? expFmt.format(p.getExpiryDate()) : "soon";
+    String msg = p.getName() + " is expiring soon - expires " + whenStr + ".";
+    allNotifs.add(new NotificationService(p.getProductId(), msg, "EXPIRY", null));
+    expiryCount++;
+}
+
+int unreadCount = allNotifs.size();
 
 String filter = request.getParameter("filter");
 if (filter == null) filter = "all";
 
 List<NotificationService> notifs = new ArrayList<NotificationService>();
-int lowStockCount = 0;
-int expiryCount = 0;
-for (NotificationService n : allNotifs) {
-    if ("LOW_STOCK".equals(n.getType())) lowStockCount++;
-    if ("EXPIRY".equals(n.getType())) expiryCount++;
-}
 for (NotificationService n : allNotifs) {
     if ("all".equals(filter)
         || ("low".equals(filter) && "LOW_STOCK".equals(n.getType()))
@@ -187,7 +212,7 @@ display:flex; flex-direction:column; overflow-y:auto;
 <li><a href="dashboard.jsp"><i class="fa-solid fa-house"></i> Dashboard</a></li>
 <li><a href="products.jsp"><i class="fa-solid fa-cart-shopping"></i> Shop Groceries</a></li>
 <li><a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory</a></li>
-<li><a href="MealPlannerController"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
+<li><a href="MealDashboardController"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
 <li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
 <li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 <li>
@@ -281,13 +306,8 @@ Food Waste
 <div class="page-header">
 <div>
 <h1>Expiry &amp; Stock Alerts</h1>
-<p><%= unreadCount %> unread notification<%= unreadCount == 1 ? "" : "s" %></p>
+<p><%= unreadCount %> active alert<%= unreadCount == 1 ? "" : "s" %> right now</p>
 </div>
-<% if (unreadCount > 0) { %>
-<a href="NotificationServlet?action=markAllRead" class="mark-all-btn">
-<i class="fa-solid fa-check-double"></i> Mark All as Read
-</a>
-<% } %>
 </div>
 
 <!-- STATS -->
@@ -357,10 +377,6 @@ Food Waste
 <span class="notif-time"><%= n.getTimestamp() != null ? sdf.format(n.getTimestamp()) : "" %></span>
 </div>
 </div>
-
-<a href="NotificationServlet?action=markRead&notifId=<%= n.getNotifId() %>" class="mark-read-btn">
-<i class="fa-solid fa-check"></i> Mark Read
-</a>
 
 </div>
 <% } } %>

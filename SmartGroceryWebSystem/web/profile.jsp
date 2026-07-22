@@ -143,7 +143,7 @@ display:flex; flex-direction:column; overflow-y:auto;
 <li><a href="dashboard.jsp"><i class="fa-solid fa-house"></i> Dashboard</a></li>
 <li><a href="products.jsp"><i class="fa-solid fa-cart-shopping"></i> Shop Groceries</a></li>
 <li><a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory</a></li>
-<li><a href="MealPlannerController.jsp"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
+<li><a href="MealDashboardController"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
 <li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
 <li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
