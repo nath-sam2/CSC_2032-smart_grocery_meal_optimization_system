@@ -1,8 +1,7 @@
 <%@ page import="model.User" %>
 <%@ page import="model.CartItem" %>
-<%@ page import="model.NotificationService" %>
 <%@ page import="service.CartService" %>
-<%@ page import="dao.NotificationDAO" %>
+<%@ page import="service.InventoryService" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -18,8 +17,7 @@ if (navUser != null) {
     } catch (Exception e) { /* best-effort only */ }
 
     try {
-        List<NotificationService> navUnread = new NotificationDAO().getUnreadNotifications();
-        notifCount = navUnread.size();
+        notifCount = new InventoryService().getExpiringItems(7).size();
     } catch (Exception e) { /* best-effort only */ }
 }
 
