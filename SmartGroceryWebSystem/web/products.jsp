@@ -35,6 +35,10 @@ if (search != null && !search.trim().isEmpty()) {
 
 List<Category> categories = categoryService.getAllCategories();
 
+// Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / notifications.jsp
+int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
+int sidebarLowStockCount = inventoryService.getLowStockItems().size();
+
 // Real live stock levels + per-product reorder level, keyed by productId.
 // (Product.quantity is only the initial seed value and never changes after
 // checkout — the inventory table is what actually tracks live stock, so
@@ -170,6 +174,8 @@ if (selectedCatId != null) {
         .menu a{ display:flex; align-items:center; gap:15px; padding:12px 16px; text-decoration:none; color:#cbd5e1; border-radius:12px; transition:.25s; font-size:14.5px; font-weight:500; position:relative; }
         .menu a:hover{ background:#1c1c1c; color:white; }
         .menu a.active{ background:var(--green); color:white; }
+        .menu-count{ margin-left:auto; background:#ef4444; color:white; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; }
+        .menu a.active .menu-count{ background:rgba(255,255,255,.25); }
         .side-label{ font-size:11px; letter-spacing:.08em; color:#666; text-transform:uppercase; margin:22px 0 10px 16px; font-weight:700; }
         .help-card{ margin-top:auto; background:linear-gradient(135deg,#16a34a,#22c55e); border-radius:16px; padding:18px; text-decoration:none; display:block; color:white; }
         .help-card i{ font-size:22px; margin-bottom:8px; display:block; }
@@ -265,8 +271,12 @@ if (selectedCatId != null) {
         <li><a href="MealPlannerController"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
         <li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
         <li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
-        <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts</a></li>
-        <li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+        <li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
+        <% if (sidebarExpiryCount > 0) { %><span class="menu-count"><%= sidebarExpiryCount %></span><% } %>
+        </a></li>
+        <li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock
+        <% if (sidebarLowStockCount > 0) { %><span class="menu-count"><%= sidebarLowStockCount %></span><% } %>
+        </a></li>
     </ul>
 
     <div class="side-label">Meal Optimization</div>

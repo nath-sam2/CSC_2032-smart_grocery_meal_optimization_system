@@ -3,6 +3,7 @@
 <%@page import="model.CartItem"%>
 <%@page import="model.Product"%>
 <%@page import="service.CartService"%>
+<%@page import="service.InventoryService"%>
 <%@page import="dao.ProductDAO"%>
 <%@page import="java.util.List"%>
 
@@ -15,6 +16,11 @@ if (user == null) {
 
 CartService cartService = new CartService();
 ProductDAO productDAO = new ProductDAO();
+InventoryService inventoryService = new InventoryService();
+
+// Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / notifications.jsp
+int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
+int sidebarLowStockCount = inventoryService.getLowStockItems().size();
 
 List<CartItem> items = cartService.getCartItems(user.getUserId());
 double subtotal = cartService.getCartTotal(items);
@@ -184,8 +190,12 @@ Shopping List
 </a>
 </li>
 <li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
-<li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts</a></li>
-<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+<li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
+<% if (sidebarExpiryCount > 0) { %><span class="menu-count"><%= sidebarExpiryCount %></span><% } %>
+</a></li>
+<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock
+<% if (sidebarLowStockCount > 0) { %><span class="menu-count"><%= sidebarLowStockCount %></span><% } %>
+</a></li>
 </ul>
 
 <div class="side-label">Meal Optimization</div>

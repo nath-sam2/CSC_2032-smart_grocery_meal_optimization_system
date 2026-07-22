@@ -17,6 +17,11 @@ NotificationAlertService notifService = new NotificationAlertService();
 List<NotificationService> allNotifs = notifService.getAllNotifications();
 int unreadCount = notifService.getUnreadNotifications().size();
 
+// Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / inventory.jsp
+service.InventoryService inventoryService = new service.InventoryService();
+int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
+int sidebarLowStockCount = inventoryService.getLowStockItems().size();
+
 String filter = request.getParameter("filter");
 if (filter == null) filter = "all";
 
@@ -189,10 +194,12 @@ display:flex; flex-direction:column; overflow-y:auto;
 <a class="active" href="notifications.jsp">
 <i class="fa-solid fa-bell"></i>
 Expiry Alerts
-<% if (unreadCount > 0) { %><span class="menu-count"><%= unreadCount %></span><% } %>
+<% if (sidebarExpiryCount > 0) { %><span class="menu-count"><%= sidebarExpiryCount %></span><% } %>
 </a>
 </li>
-<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock
+<% if (sidebarLowStockCount > 0) { %><span class="menu-count"><%= sidebarLowStockCount %></span><% } %>
+</a></li>
 </ul>
 
 <div class="side-label">Meal Optimization</div>

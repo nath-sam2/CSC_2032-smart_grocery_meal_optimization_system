@@ -33,8 +33,9 @@ NotificationDAO notificationDAO = new NotificationDAO();
 int lowStockCount = inventoryService.getLowStockItems().size();
 List<CartItem> cartItems = cartService.getCartItems(user.getUserId());
 int cartCount = cartItems.size();
-List<NotificationService> unreadNotifications = notificationDAO.getUnreadNotifications();
-int notifCount = unreadNotifications.size();
+// Real expiry alerts count (items expiring within 7 days) - same source used
+// on notifications.jsp / lowstock.jsp / inventory.jsp / dashboard.jsp
+int notifCount = inventoryService.getExpiringItems(7).size();
 
 List<Order> orders;
 if (isAdmin) {

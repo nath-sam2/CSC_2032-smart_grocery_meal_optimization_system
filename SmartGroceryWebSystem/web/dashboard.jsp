@@ -31,9 +31,10 @@ int lowStockCount = lowStockList.size();
 List<CartItem> cartItems = cartService.getCartItems(user.getUserId());
 int cartCount = cartItems.size();
 
-// Real unread notifications count
-List<NotificationService> unreadNotifications = notificationDAO.getUnreadNotifications();
-int notifCount = unreadNotifications.size();
+// Real expiry alerts count (items expiring within 7 days) - same source used
+// on notifications.jsp / lowstock.jsp / inventory.jsp so the badge matches everywhere
+List<Product> expiringItems = inventoryService.getExpiringItems(7);
+int notifCount = expiringItems.size();
 %>
 
 <!DOCTYPE html>

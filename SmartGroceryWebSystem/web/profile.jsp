@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.User"%>
+<%@page import="service.InventoryService"%>
 
 <%
 User user = (User) session.getAttribute("user");
@@ -10,6 +11,11 @@ if (user == null) {
 
 String success = request.getParameter("success");
 String error = request.getParameter("error");
+
+// Real sidebar badge counts - same source used on dashboard.jsp / lowstock.jsp / notifications.jsp
+InventoryService inventoryService = new InventoryService();
+int sidebarExpiryCount = inventoryService.getExpiringItems(7).size();
+int sidebarLowStockCount = inventoryService.getLowStockItems().size();
 %>
 
 <!DOCTYPE html>
@@ -140,8 +146,12 @@ display:flex; flex-direction:column; overflow-y:auto;
 <li><a href="MealPlannerController.jsp"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
 <li><a href="cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List</a></li>
 <li><a href="RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
-<li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts</a></li>
-<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock</a></li>
+<li><a href="notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
+<% if (sidebarExpiryCount > 0) { %><span class="menu-count"><%= sidebarExpiryCount %></span><% } %>
+</a></li>
+<li><a href="lowstock.jsp"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock
+<% if (sidebarLowStockCount > 0) { %><span class="menu-count"><%= sidebarLowStockCount %></span><% } %>
+</a></li>
 </ul>
 
 <div class="side-label">Meal Optimization</div>
