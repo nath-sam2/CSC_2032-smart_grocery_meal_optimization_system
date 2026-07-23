@@ -120,7 +120,12 @@ public class RecipeController extends HttpServlet {
         return;
     }
 
-    recipeDAO.deleteRecipe(deleteId);
+    boolean deleted = recipeDAO.deleteRecipe(deleteId);
+
+    if (!deleted) {
+        response.sendRedirect("RecipeController?deleteError=true");
+        return;
+    }
 
     response.sendRedirect("RecipeController");
 

@@ -18,7 +18,7 @@ import java.util.List;
 public class RecipeDAO {
     public boolean insertRecipe(Recipe recipe) {
 
-    String sql = "INSERT INTO Recipes(name, description, mealType, cuisine, cookingTime, difficulty, servings, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO recipes(name, description, mealType, cuisine, cookingTime, difficulty, servings, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -46,7 +46,7 @@ public class RecipeDAO {
 }
     public Recipe getRecipeById(int recipeId) {
 
-    String sql = "SELECT * FROM Recipes WHERE recipeId = ?";
+    String sql = "SELECT * FROM recipes WHERE recipeId = ?";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -82,7 +82,7 @@ public class RecipeDAO {
 }
     public Recipe getRecipeByName(String name) {
 
-    String sql = "SELECT * FROM Recipes WHERE LOWER(name) = LOWER(?)";
+    String sql = "SELECT * FROM recipes WHERE LOWER(name) = LOWER(?)";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -120,7 +120,7 @@ public class RecipeDAO {
 
     List<Recipe> recipes = new ArrayList<>();
 
-    String sql = "SELECT * FROM Recipes";
+    String sql = "SELECT * FROM recipes";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -153,7 +153,7 @@ public class RecipeDAO {
 }
     public boolean updateRecipe(Recipe recipe) {
 
-    String sql = "UPDATE Recipes SET name=?, description=?, mealType=?, cuisine=?, cookingTime=?, difficulty=?, servings=?, imageUrl=? WHERE recipeId=?";
+    String sql = "UPDATE recipes SET name=?, description=?, mealType=?, cuisine=?, cookingTime=?, difficulty=?, servings=?, imageUrl=? WHERE recipeId=?";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -181,18 +181,47 @@ public class RecipeDAO {
 }
 public boolean deleteRecipe(int recipeId) {
 
-    String sql = "DELETE FROM Recipes WHERE recipeId = ?";
+    String deleteMealPlanDetails = "DELETE FROM mealplandetails WHERE recipeId = ?";
+    String deleteRecipeIngredients = "DELETE FROM recipeingredients WHERE recipeId = ?";
+    String deleteRecipe = "DELETE FROM recipes WHERE recipeId = ?";
 
-    try (
-        Connection conn = DBConnection.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)
-    ) {
+    try (Connection conn = DBConnection.getConnection()) {
 
-        stmt.setInt(1, recipeId);
+        if (conn == null) {
+            return false;
+        }
 
-        int rowsAffected = stmt.executeUpdate();
+        conn.setAutoCommit(false);
 
-        return rowsAffected > 0;
+        try {
+
+            try (PreparedStatement stmt1 = conn.prepareStatement(deleteMealPlanDetails)) {
+                stmt1.setInt(1, recipeId);
+                stmt1.executeUpdate();
+            }
+
+            try (PreparedStatement stmt2 = conn.prepareStatement(deleteRecipeIngredients)) {
+                stmt2.setInt(1, recipeId);
+                stmt2.executeUpdate();
+            }
+
+            int rowsAffected;
+
+            try (PreparedStatement stmt3 = conn.prepareStatement(deleteRecipe)) {
+                stmt3.setInt(1, recipeId);
+                rowsAffected = stmt3.executeUpdate();
+            }
+
+            conn.commit();
+
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+        }
 
     } catch (Exception e) {
         e.printStackTrace();

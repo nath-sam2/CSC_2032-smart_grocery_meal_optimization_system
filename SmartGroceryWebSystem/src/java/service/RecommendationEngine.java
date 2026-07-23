@@ -83,28 +83,95 @@ public class RecommendationEngine {
     }
     return cachedExpiringProducts;
 }
+/*
+    Shared helper: resolves a recipe's RecipeIngredient rows
+    into their full Ingredient objects (used by containsIngredient,
+    countExpiringIngredients, and containsProduct to avoid
+    repeating the same fetch-and-resolve loop three times)
+*/
+private List<Ingredient> getResolvedIngredients(Recipe recipe) {
 
-    /*
+    List<RecipeIngredient> recipeIngredients =
+            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+
+    List<Ingredient> resolved = new ArrayList<>();
+
+    for (RecipeIngredient ri : recipeIngredients) {
+        Ingredient ingredient = ingredientDAO.getIngredientById(ri.getIngredientId());
+        if (ingredient != null) {
+            resolved.add(ingredient);
+        }
+    }
+
+    return resolved;
+}
+
+/*
+    Maps a dietary restriction (matched by keyword in its name)
+    to the list of ingredient keywords it forbids.
+*/
+private static final java.util.Map<String, List<String>> RESTRICTION_FORBIDDEN_KEYWORDS = new java.util.LinkedHashMap<>();
+
+static {
+    RESTRICTION_FORBIDDEN_KEYWORDS.put("vegetarian", java.util.Arrays.asList(
+            "chicken", "beef", "pork", "fish", "meat", "shrimp", "eggs",
+            "salmon", "tuna", "bacon", "ham", "turkey", "mutton",
+            "prawn", "breast", "fillet", "thigs"
+    ));
+
+    RESTRICTION_FORBIDDEN_KEYWORDS.put("gluten", java.util.Arrays.asList(
+            "wheat", "bread", "flour", "pasta", "bun", "crust", "tortilla", "dough"
+    ));
+
+    RESTRICTION_FORBIDDEN_KEYWORDS.put("peanut", java.util.Arrays.asList(
+            "nut", "peanut", "almond", "cashew"
+    ));
+
+    RESTRICTION_FORBIDDEN_KEYWORDS.put("lactose", java.util.Arrays.asList(
+            "milk", "cheese", "butter", "cream", "feta"
+    ));
+
+    RESTRICTION_FORBIDDEN_KEYWORDS.put("egg allergy", java.util.Arrays.asList(
+            "egg"
+    ));
+
+    RESTRICTION_FORBIDDEN_KEYWORDS.put("seafood allergy", java.util.Arrays.asList(
+            "fish", "shrimp", "seafood", "prawn", "crab",
+            "salmon", "tuna", "lobster", "squid", "calamari"
+    ));
+}
+
+/*
+    Checks whether a single recipe violates a single restriction,
+    by looking up that restriction's forbidden ingredient keywords
+*/
+private boolean recipeViolatesRestriction(Recipe recipe, String restrictionName) {
+
+    String type = restrictionName.toLowerCase();
+
+    for (java.util.Map.Entry<String, List<String>> entry : RESTRICTION_FORBIDDEN_KEYWORDS.entrySet()) {
+
+        if (type.contains(entry.getKey())) {
+
+            for (String forbiddenKeyword : entry.getValue()) {
+                if (containsIngredient(recipe, forbiddenKeyword)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+/*
         Check if recipe contains an ingredient keyword
     */
     private boolean containsIngredient(Recipe recipe, String keyword) {
 
-    List<RecipeIngredient> ingredients =
-            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+    for (Ingredient ingredient : getResolvedIngredients(recipe)) {
 
-    for (RecipeIngredient ri : ingredients) {
-
-        Ingredient ingredient =
-                ingredientDAO.getIngredientById(ri.getIngredientId());
-
-        if (ingredient != null) {
-
-            String ingredientName =
-                    ingredient.getName().toLowerCase();
-
-            if (ingredientName.contains(keyword.toLowerCase())) {
-                return true;
-            }
+        if (ingredient.getName().toLowerCase().contains(keyword.toLowerCase())) {
+            return true;
         }
     }
 
@@ -202,202 +269,40 @@ public double calculateShortfall(int ingredientId, double totalRequiredQty) {
     /*
         Filter recipes using user restrictions
     */
-    public List<Recipe> filterByDietaryRestrictions(
-            List<Recipe> recipes,
-            int userId){
+    /*
+    Filter recipes using user restrictions
+*/
+public List<Recipe> filterByDietaryRestrictions(
+        List<Recipe> recipes,
+        int userId){
 
+    UserDietaryRestrictionDAO userDAO =
+            new UserDietaryRestrictionDAO();
 
+    List<DietaryRestriction> restrictions =
+            userDAO.getRestrictionsByUserId(userId);
 
-        UserDietaryRestrictionDAO userDAO =
-                new UserDietaryRestrictionDAO();
+    List<Recipe> result = new ArrayList<>();
 
+    for (Recipe recipe : recipes) {
 
+        boolean allowed = true;
 
-        List<DietaryRestriction> restrictions =
-                userDAO.getRestrictionsByUserId(userId);
+        for (DietaryRestriction restriction : restrictions) {
 
-
-        System.out.println("User ID = " + userId);
-System.out.println("Restriction Count = " + restrictions.size());
-
-for (DietaryRestriction restriction : restrictions) {
-    System.out.println("Restriction -> " + restriction.getRestrictionName());
-}
-
-        List<Recipe> result =
-                new ArrayList<>();
-
-
-
-
-        for(Recipe recipe : recipes){
-
-
-            boolean allowed = true;
-
-
-
-            for(DietaryRestriction restriction : restrictions){
-
-
-
-                String type =
-                        restriction.getRestrictionName();
-
-
-
-
-                if(type.toLowerCase().contains("vegetarian")){
-
-
-                    if(containsIngredient(recipe,"chicken")
-                    || containsIngredient(recipe,"beef")
-                    || containsIngredient(recipe,"pork")
-                    || containsIngredient(recipe,"fish")
-                    || containsIngredient(recipe,"meat")
-                    || containsIngredient(recipe,"shrimp")
-                    || containsIngredient(recipe,"eggs")
-                    || containsIngredient(recipe, "salmon")  
-                    || containsIngredient(recipe, "tuna")    
-                    || containsIngredient(recipe, "bacon")   
-                    || containsIngredient(recipe, "ham")     
-                    || containsIngredient(recipe, "turkey")  
-                    || containsIngredient(recipe, "mutton")  
-                    || containsIngredient(recipe, "prawn")
-                    || containsIngredient(recipe, "breast")
-                    || containsIngredient(recipe, "fillet")
-                    || containsIngredient(recipe, "thigs")        ){
-
-
-                        allowed=false;
-
-                    }
-
-                }
-
-
-
-
-                else if(type.toLowerCase().contains("gluten")){
-
-
-                    if(containsIngredient(recipe,"wheat")
-                    || containsIngredient(recipe,"bread")
-                    || containsIngredient(recipe,"flour")
-                    || containsIngredient(recipe,"pasta")
-                    || containsIngredient(recipe,"bun")
-                    || containsIngredient(recipe,"crust")
-                    || containsIngredient(recipe,"tortilla")
-                    || containsIngredient(recipe,"dough")        ){
-
-
-                        allowed=false;
-
-                    }
-
-                }
-
-
-
-
-
-                else if(type.toLowerCase().contains("peanut")){
-
-
-                    if(containsIngredient(recipe,"nut")
-                    || containsIngredient(recipe,"peanut")
-                    || containsIngredient(recipe,"almond")
-                    || containsIngredient(recipe,"cashew")){
-
-
-                        allowed=false;
-
-                    }
-
-                }
-
-
-
-
-
-                else if(type.toLowerCase().contains("lactose")){
-
-
-                    if(containsIngredient(recipe,"milk")
-                    || containsIngredient(recipe,"cheese")
-                    || containsIngredient(recipe,"butter")
-                    || containsIngredient(recipe,"cream")
-                    || containsIngredient(recipe,"feta")        ){
-
-
-                        allowed=false;
-
-                    }
-
-                }
-
-
-
-
-
-                else if(type.equalsIgnoreCase("Egg Allergy")){
-
-
-                    if(containsIngredient(recipe,"egg")){
-
-
-                        allowed=false;
-
-                    }
-
-                }
-
-
-
-
-
-                else if(type.equalsIgnoreCase("Seafood Allergy")){
-
-
-                    if(containsIngredient(recipe,"fish")
-                    || containsIngredient(recipe,"shrimp")
-                    || containsIngredient(recipe,"seafood")
-                    || containsIngredient(recipe,"prawn")
-                    || containsIngredient(recipe,"crab")
-                    || containsIngredient(recipe, "salmon")  // FIXED: Catches Salmon Fillet
-                    || containsIngredient(recipe, "tuna")    // FIXED: Catches Tuna Chunks
-                    || containsIngredient(recipe, "lobster") // FIXED: Catches Lobster Tail
-                    || containsIngredient(recipe, "squid")   // FIXED: Catches Squid Rings
-                    || containsIngredient(recipe, "calamari")        ){
-
-
-                        allowed=false;
-
-                    }
-
-                }
-
-
-
+            if (recipeViolatesRestriction(recipe, restriction.getRestrictionName())) {
+                allowed = false;
+                break;
             }
-
-
-
-            if (allowed) {
-    System.out.println("ALLOWED : " + recipe.getName());
-    result.add(recipe);
-} else {
-    System.out.println("BLOCKED : " + recipe.getName());
-}
-
-
         }
 
-
-
-        return result;
-
+        if (allowed) {
+            result.add(recipe);
+        }
     }
+
+    return result;
+}
 
 
 
@@ -888,53 +793,27 @@ for (Product product : expiringProducts) {
     return recipes;
 }
     
-    private int countExpiringIngredients(
-        Recipe recipe,
-        Set<Integer> expiringProductIds) {
+    private int countExpiringIngredients(Recipe recipe, Set<Integer> expiringProductIds) {
 
     int count = 0;
 
-    List<RecipeIngredient> ingredients =
-            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+    for (Ingredient ingredient : getResolvedIngredients(recipe)) {
 
-    for (RecipeIngredient ri : ingredients) {
-
-        Ingredient ingredient =
-                ingredientDAO.getIngredientById(
-                        ri.getIngredientId());
-
-        if (ingredient != null &&
-                expiringProductIds.contains(
-                        ingredient.getProductId())) {
-
+        if (expiringProductIds.contains(ingredient.getProductId())) {
             count++;
         }
-
     }
 
     return count;
 }
     
-    private boolean containsProduct(
-        Recipe recipe,
-        int productId) {
+    private boolean containsProduct(Recipe recipe, int productId) {
 
-    List<RecipeIngredient> ingredients =
-            IngredientDAO.getIngredientsByRecipe(recipe.getRecipeId());
+    for (Ingredient ingredient : getResolvedIngredients(recipe)) {
 
-    for (RecipeIngredient ri : ingredients) {
-
-        Ingredient ingredient =
-                ingredientDAO.getIngredientById(
-                        ri.getIngredientId());
-
-        if (ingredient != null &&
-                ingredient.getProductId() == productId) {
-
+        if (ingredient.getProductId() == productId) {
             return true;
-
         }
-
     }
 
     return false;

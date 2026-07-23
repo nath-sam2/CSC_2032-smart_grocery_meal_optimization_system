@@ -187,10 +187,11 @@ if (nutritionFacts != null) {
 
     <%
     String detailsLocalImg = util.RecipeImageResolver.resolve(application, recipe.getName());
-    String detailsImgSrc = (detailsLocalImg != null) ? (navCtx + "/" + detailsLocalImg) : recipe.getImageUrl();
+    boolean detailsHasStoredUrl = recipe.getImageUrl() != null && !recipe.getImageUrl().trim().isEmpty();
+    String detailsImgSrc = detailsHasStoredUrl ? recipe.getImageUrl() : (detailsLocalImg != null ? (navCtx + "/" + detailsLocalImg) : null);
     %>
 
-    <% if (detailsImgSrc != null && !detailsImgSrc.trim().isEmpty()) { %>
+    <% if (detailsImgSrc != null) { %>
         <img class="recipe-hero" src="<%= detailsImgSrc %>" alt="<%= recipe.getName() %>">
     <% } else { %>
         <div class="recipe-hero-placeholder">No image available</div>

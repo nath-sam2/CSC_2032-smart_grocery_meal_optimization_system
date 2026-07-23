@@ -8,8 +8,9 @@
 --%>
 <%@ page import="model.User" %>
 <%@ page import="model.CartItem" %>
+<%@ page import="model.NotificationService" %>
 <%@ page import="service.CartService" %>
-<%@ page import="service.InventoryService" %>
+<%@ page import="dao.NotificationDAO" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -25,7 +26,8 @@ if (navUser != null) {
     } catch (Exception e) { /* best-effort only */ }
 
     try {
-        notifCount = navUser.isNotifyExpiry() ? new InventoryService().getExpiringItems(7).size() : 0;
+        List<NotificationService> navUnread = new NotificationDAO().getUnreadNotifications();
+        notifCount = navUnread.size();
     } catch (Exception e) { /* best-effort only */ }
 }
 
@@ -74,11 +76,11 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
         <li><a href="<%=navCtx%>/dashboard.jsp"><i class="fa-solid fa-house"></i> Dashboard</a></li>
         <li><a href="<%=navCtx%>/products.jsp"><i class="fa-solid fa-cart-shopping"></i> Shop Groceries</a></li>
         <li><a href="<%=navCtx%>/inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory</a></li>
+        <li><a class="<%= onMealSection ? "active" : "" %>" href="<%=navCtx%>/MealPlannerController?action=list"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
         </a></li>
-        <li><a href="<%=navCtx%>/orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders
-        </a></li>
+        <li><a class="<%= onRecipes ? "active" : "" %>" href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
         <li><a href="<%=navCtx%>/notifications.jsp"><i class="fa-solid fa-bell"></i> Expiry Alerts
             <% if (notifCount > 0) { %><span class="menu-count"><%= notifCount %></span><% } %>
         </a></li>
@@ -88,10 +90,8 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
     <div class="side-label">Meal Optimization</div>
 
     <ul class="menu">
-        <li><a class="<%= onMealSection ? "active" : "" %>" href="<%=navCtx%>/MealDashboardController"><i class="fa-solid fa-utensils"></i> Meal Planner</a></li>
-        <li><a class="<%= onRecipes ? "active" : "" %>" href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
         <li><a class="<%= onRecommendations ? "active" : "" %>" href="<%=navCtx%>/RecommendationController"><i class="fa-solid fa-wand-magic-sparkles"></i> Recommendations</a></li>
-        <li><a class="<%= onShoppingList ? "active" : "" %>" href="<%=navCtx%>/ShoppingListController"><i class="fa-solid fa-basket-shopping"></i> Meal Shopping List</a></li>
+        <li><a class="<%= onShoppingList ? "active" : "" %>" href="<%=navCtx%>/ShoppingListController"><i class="fa-solid fa-basket-shopping"></i> Meal Groceries</a></li>
         <li><a class="<%= onDietary ? "active" : "" %>" href="<%=navCtx%>/UserDietaryRestrictionController"><i class="fa-solid fa-leaf"></i> Dietary Restrictions</a></li>
         <li><a class="<%= onFoodWaste ? "active" : "" %>" href="<%=navCtx%>/FoodWasteController"><i class="fa-solid fa-recycle"></i> Food Waste</a></li>
     </ul>
@@ -103,12 +103,6 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
         <li><a href="<%=navCtx%>/settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
         <li><a href="<%=navCtx%>/LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
     </ul>
-
-    <a href="tel:+94112345678" class="help-card">
-        <i class="fa-solid fa-phone"></i>
-        <b>Need Help?</b>
-        <span>Emergency Call</span>
-    </a>
 
 </div>
 
@@ -137,7 +131,7 @@ boolean onFoodWaste = navUri.contains("FoodWasteController");
                 <a href="<%=navCtx%>/profile.jsp" class="profile-chip">
                     <div class="avatar">
                         <% if (navUser.hasProfilePhoto()) { %>
-                            <img src="<%=navCtx%>/<%= navUser.getProfilePhoto() %>" alt="Profile photo">
+                            <img src="<%= navUser.getProfilePhoto() %>" alt="Profile photo">
                         <% } else { %>
                             <%= navUser.getName().substring(0,1).toUpperCase() %>
                         <% } %>

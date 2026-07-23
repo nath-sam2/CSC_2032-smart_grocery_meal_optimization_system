@@ -17,13 +17,10 @@ public class RecommendationEngineTest {
     public static void main(String[] args) {
 
         RecommendationEngine engine = new RecommendationEngine();
+List<Recipe> recipes = engine.recommendRecipes(6); // user 6 has Gluten intolerance
 
-Recipe r4 = engine.recipeDAO.getRecipeById(4); // adjust if method name differs
-Recipe r7 = engine.recipeDAO.getRecipeById(7);
-Recipe r3 = engine.recipeDAO.getRecipeById(3);
-
-System.out.println("Vegetable Fried Rice (broccoli, expires today): " + engine.calculateRecipeScore(r4));
-System.out.println("Oatmeal with Fruits (milk, expires tomorrow): " + engine.calculateRecipeScore(r7));
-System.out.println("Chicken Curry (chicken, expires in 5 days): " + engine.calculateRecipeScore(r3));
+for (Recipe r : recipes) {
+    System.out.println(r.getName());
+}
     }
 }

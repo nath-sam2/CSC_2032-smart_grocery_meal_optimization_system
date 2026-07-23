@@ -160,6 +160,12 @@ String navCtx = request.getContextPath();
 
     <h2>Recipe List</h2>
 
+    <% if ("true".equals(request.getParameter("deleteError"))) { %>
+    <div class="alert alert-error" style="margin-bottom: 10px;">
+        Couldn't delete that recipe. Please try again in a moment ? if this keeps happening, check that the database connection is working.
+    </div>
+    <% } %>
+
     <a href="RecipeController?action=create" class="btn btn-primary">+ Add New Recipe</a>
 
     <br><br>
@@ -176,9 +182,10 @@ String navCtx = request.getContextPath();
         <div class="card card-highlight">
             <%
             String localImg = util.RecipeImageResolver.resolve(application, r.getName());
-            String imgSrc = (localImg != null) ? (navCtx + "/" + localImg) : r.getImageUrl();
+            boolean hasStoredUrl = r.getImageUrl() != null && !r.getImageUrl().trim().isEmpty();
+            String imgSrc = hasStoredUrl ? r.getImageUrl() : (localImg != null ? (navCtx + "/" + localImg) : null);
             %>
-            <% if (imgSrc != null && !imgSrc.trim().isEmpty()) { %>
+            <% if (imgSrc != null) { %>
                 <div class="recipe-thumb">
                     <img src="<%= imgSrc %>" alt="<%= r.getName() %>">
                 </div>

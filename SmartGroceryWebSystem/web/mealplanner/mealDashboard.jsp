@@ -6,8 +6,9 @@
 
 <%@ page import="model.User" %>
 <%@ page import="model.CartItem" %>
+<%@ page import="model.NotificationService" %>
 <%@ page import="service.CartService" %>
-<%@ page import="service.InventoryService" %>
+<%@ page import="dao.NotificationDAO" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -23,7 +24,8 @@ if (navUser != null) {
     } catch (Exception e) { /* best-effort only */ }
 
     try {
-        notifCount = navUser.isNotifyExpiry() ? new InventoryService().getExpiringItems(7).size() : 0;
+        List<NotificationService> navUnread = new NotificationDAO().getUnreadNotifications();
+        notifCount = navUnread.size();
     } catch (Exception e) { /* best-effort only */ }
 }
 
@@ -59,12 +61,10 @@ String navCtx = request.getContextPath();
         </a></li>
         <li><a href="<%=navCtx%>/inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory
         </a></li>
-        <li><a class="active" href="<%=navCtx%>/MealDashboardController"><i class="fa-solid fa-utensils"></i> Meal Planner
+        <li><a class="active" href="<%=navCtx%>/MealPlannerController?action=list"><i class="fa-solid fa-utensils"></i> Meal Planner
         </a></li>
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
-        </a></li>
-        <li><a href="<%=navCtx%>/orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders
         </a></li>
         <li><a href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes
         </a></li>
@@ -91,12 +91,6 @@ String navCtx = request.getContextPath();
         <li><a href="<%=navCtx%>/settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
         <li><a href="<%=navCtx%>/LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
     </ul>
-
-    <a href="tel:+94112345678" class="help-card">
-        <i class="fa-solid fa-phone"></i>
-        <b>Need Help?</b>
-        <span>Emergency Call</span>
-    </a>
 
 </div>
 
@@ -125,7 +119,7 @@ String navCtx = request.getContextPath();
                 <a href="<%=navCtx%>/profile.jsp" class="profile-chip">
                     <div class="avatar">
                         <% if (navUser.hasProfilePhoto()) { %>
-                            <img src="<%=navCtx%>/<%= navUser.getProfilePhoto() %>" alt="Profile photo">
+                            <img src="<%= navUser.getProfilePhoto() %>" alt="Profile photo">
                         <% } else { %>
                             <%= navUser.getName().substring(0,1).toUpperCase() %>
                         <% } %>
@@ -158,11 +152,15 @@ String navCtx = request.getContextPath();
 <%@ page import="model.Recipe" %>
 <%@ page import="model.Product" %>
 <%@ page import="model.ShoppingList" %>
+<%@ page import="model.MealPlanner" %>
 
 <%
 List<Recipe> topRecommendations = (List<Recipe>) request.getAttribute("topRecommendations");
 List<Product> expiringItems = (List<Product>) request.getAttribute("expiringItems");
 ShoppingList latestList = (ShoppingList) request.getAttribute("latestShoppingList");
+MealPlanner latestMealPlan = (MealPlanner) request.getAttribute("latestMealPlan");
+Integer mealPlanCount = (Integer) request.getAttribute("mealPlanCount");
+if (mealPlanCount == null) { mealPlanCount = 0; }
 %>
 
 <div class="page-container">
@@ -218,7 +216,7 @@ ShoppingList latestList = (ShoppingList) request.getAttribute("latestShoppingLis
                 <% } %>
             </div>
             <div class="card-footer">
-                <a href="inventory.jsp?filter=expiring" class="btn btn-secondary">View Expiring Items</a>
+                <a href="../inventory.jsp?filter=expiring" class="btn btn-secondary">View Expiring Items</a>
             </div>
         </div>
 
@@ -261,6 +259,31 @@ ShoppingList latestList = (ShoppingList) request.getAttribute("latestShoppingLis
                     <a href="RecipeController?action=view&id=<%=topRecommendations.get(0).getRecipeId()%>" class="btn btn-secondary">View Recipe</a>
                 </div>
             <% } %>
+        </div>
+
+        <!-- Meal Plans -->
+        <div class="card card-highlight">
+            <div class="card-header">
+                <div class="card-icon icon-orange"></div>
+                <h3>Meal Plans</h3>
+            </div>
+            <div class="card-body">
+                <% if (latestMealPlan != null) { %>
+                    <div class="stat-line">
+                        <span><%= latestMealPlan.getPlanName() %></span>
+                        <span class="badge badge-grade-a"><%= mealPlanCount %> total</span>
+                    </div>
+                    <p class="list-meta"><%= latestMealPlan.getStartDate() %> &ndash; <%= latestMealPlan.getEndDate() %></p>
+                <% } else { %>
+                    <p class="card-empty">No meal plans yet.</p>
+                <% } %>
+            </div>
+            <div class="card-footer">
+                <% if (latestMealPlan != null) { %>
+                    <a href="MealPlannerController?action=view&id=<%=latestMealPlan.getMealPlanId()%>" class="btn btn-primary">View Plan</a>
+                <% } %>
+                <a href="MealPlannerController?action=list" class="btn btn-secondary">All Meal Plans</a>
+            </div>
         </div>
 
     </div>
