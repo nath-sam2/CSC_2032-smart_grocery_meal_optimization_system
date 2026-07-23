@@ -1,12 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.User"%>
-<%@page import="model.Product"%>
-<%@page import="model.Category"%>
-<%@page import="service.ProductService"%>
-<%@page import="service.CategoryService"%>
+<%@page import="model.Recipe"%>
+<%@page import="dao.RecipeDAO"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.Map"%>
 
 <%
 User user = (User) session.getAttribute("user");
@@ -19,22 +15,15 @@ if (!"admin".equalsIgnoreCase(user.getRole())) {
     return;
 }
 
-ProductService productService = new ProductService();
-CategoryService categoryService = new CategoryService();
+RecipeDAO recipeDAO = new RecipeDAO();
+List<Recipe> recipes = recipeDAO.getAllRecipes();
 
-List<Product> products = productService.getAllProducts();
-List<Category> categories = categoryService.getAllCategories();
-
-Map<Integer, String> categoryNames = new HashMap<Integer, String>();
-for (Category c : categories) {
-    categoryNames.put(c.getCategoryId(), c.getName());
-}
-
-String success = request.getParameter("success") != null ? "Product added successfully!"
-                : (request.getAttribute("success") != null ? (String) request.getAttribute("success") : null);
-String error = request.getParameter("error") != null ? "Failed to add product!"
-              : (request.getAttribute("error") != null ? (String) request.getAttribute("error") : null);
+String success = request.getParameter("success") != null ? "Recipe added successfully!" : null;
 String deleted = request.getParameter("deleted");
+String deleteError = request.getParameter("deleteError");
+
+List<String> formErrors = (List<String>) request.getAttribute("formErrors");
+String duplicateNameError = (String) request.getAttribute("duplicateNameError");
 %>
 
 <!DOCTYPE html>
@@ -42,7 +31,7 @@ String deleted = request.getParameter("deleted");
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage Products | Admin</title>
+<title>Manage Recipes | Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
@@ -72,6 +61,7 @@ a{ color:inherit; }
 .banner{ padding:12px 18px; border-radius:12px; margin-bottom:20px; font-size:13.5px; font-weight:600; }
 .banner-ok{ background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:var(--green); }
 .banner-err{ background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.35); color:#ef4444; }
+.banner-err ul{ margin:6px 0 0 18px; }
 
 .layout{ display:grid; grid-template-columns:340px 1fr; gap:24px; align-items:start; }
 
@@ -79,8 +69,8 @@ a{ color:inherit; }
 .form-panel h3{ font-size:15px; margin-bottom:18px; display:flex; align-items:center; gap:8px; }
 .form-group{ margin-bottom:14px; }
 .form-group label{ display:block; font-size:12px; font-weight:600; color:var(--soft); margin-bottom:6px; }
-.form-group input, .form-group select{ width:100%; padding:10px 12px; background:#0f0f0f; border:1px solid var(--border); border-radius:9px; color:white; font-size:13.5px; font-family:'Inter',sans-serif; outline:none; }
-.form-group input:focus, .form-group select:focus{ border-color:var(--green); }
+.form-group input, .form-group select, .form-group textarea{ width:100%; padding:10px 12px; background:#0f0f0f; border:1px solid var(--border); border-radius:9px; color:white; font-size:13.5px; font-family:'Inter',sans-serif; outline:none; resize:vertical; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{ border-color:var(--green); }
 .btn-submit{ width:100%; background:var(--green); color:white; border:none; padding:12px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; margin-top:6px; }
 .btn-submit:hover{ background:var(--greenDark); }
 
@@ -89,10 +79,7 @@ table{ width:100%; border-collapse:collapse; }
 th{ background:#141414; color:var(--soft); text-transform:uppercase; font-size:11px; font-weight:700; padding:12px 16px; text-align:left; border-bottom:1px solid var(--border); }
 td{ padding:12px 16px; border-bottom:1px solid #202020; font-size:13px; }
 tr:hover td{ background:#1e1e1e; }
-.badge{ font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:20px; }
-.stock-in{ background:rgba(34,197,94,.15); color:var(--green); }
-.stock-low{ background:rgba(245,158,11,.15); color:#f59e0b; }
-.stock-out{ background:rgba(239,68,68,.15); color:#ef4444; }
+.badge{ font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:20px; background:rgba(34,197,94,.15); color:var(--green); }
 .action-link{ color:#ef4444; font-size:12px; font-weight:700; text-decoration:none; }
 .action-link:hover{ text-decoration:underline; }
 .empty-row{ text-align:center; padding:34px; color:var(--soft); }
@@ -107,11 +94,11 @@ tr:hover td{ background:#1e1e1e; }
 <div class="logo-sub">Smart Grocery</div>
 <ul class="menu">
 <li><a href="adminDashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-<li><a class="active" href="manageProducts.jsp"><i class="fa-solid fa-box"></i> Products</a></li>
+<li><a href="manageProducts.jsp"><i class="fa-solid fa-box"></i> Products</a></li>
 <li><a href="manageCategories.jsp"><i class="fa-solid fa-tags"></i> Categories</a></li>
 <li><a href="manageOrders.jsp"><i class="fa-solid fa-receipt"></i> Orders</a></li>
 <li><a href="manageUsers.jsp"><i class="fa-solid fa-users"></i> Users</a></li>
-<li><a href="manageRecipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
+<li><a class="active" href="manageRecipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 </ul>
 <div class="side-label">Account</div>
 <ul class="menu">
@@ -124,64 +111,79 @@ tr:hover td{ background:#1e1e1e; }
 
 <div class="page-header">
 <div>
-<h1>📦 Manage Products</h1>
-<p><%= products.size() %> products in catalog</p>
+<h1>📖 Manage Recipes</h1>
+<p><%= recipes.size() %> recipes available</p>
 </div>
 </div>
 
 <% if (success != null) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> <%= success %></div><% } %>
-<% if (error != null) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> <%= error %></div><% } %>
-<% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Product deleted successfully.</div><% } %>
+<% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Recipe deleted successfully.</div><% } %>
+<% if ("true".equals(deleteError)) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> Failed to delete recipe.</div><% } %>
+<% if (duplicateNameError != null) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> <%= duplicateNameError %></div><% } %>
+<% if (formErrors != null && !formErrors.isEmpty()) { %>
+<div class="banner banner-err">
+<i class="fa-solid fa-circle-exclamation"></i> Please fix the following:
+<ul>
+<% for (String err : formErrors) { %>
+<li><%= err %></li>
+<% } %>
+</ul>
+</div>
+<% } %>
 
 <div class="layout">
 
-<!-- Add Product Form -->
+<!-- Add Recipe Form -->
 <div class="form-panel">
-<h3><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Product</h3>
-<form action="../ProductServlet" method="post">
-<input type="hidden" name="action" value="add">
+<h3><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Recipe</h3>
+<form action="../RecipeController" method="post">
+<input type="hidden" name="action" value="insert">
+<input type="hidden" name="source" value="admin">
 <div class="form-group">
-<label>Product Name</label>
-<input type="text" name="name" placeholder="e.g. Basmati Rice" required>
+<label>Recipe Name</label>
+<input type="text" name="name" placeholder="e.g. Chicken Fried Rice" required>
 </div>
 <div class="form-group">
-<label>Price (Rs.)</label>
-<input type="number" step="0.01" name="price" placeholder="0.00" required>
+<label>Description</label>
+<textarea name="description" rows="3" placeholder="Short description (optional)"></textarea>
 </div>
 <div class="form-group">
-<label>Quantity</label>
-<input type="number" name="quantity" placeholder="0" required>
-</div>
-<div class="form-group">
-<label>Unit</label>
-<input type="text" name="unit" placeholder="kg / pcs / L" required>
-</div>
-<div class="form-group">
-<label>Expiry Date</label>
-<input type="date" name="expiryDate">
-</div>
-<div class="form-group">
-<label>Photo URL</label>
-<input type="text" name="photoUrl" placeholder="https://... (optional)">
-</div>
-<div class="form-group">
-<label>Category</label>
-<select name="categoryId" required>
-<option value="">Select category</option>
-<%
-for (Category c : categories) {
-%>
-<option value="<%= c.getCategoryId() %>"><%= c.getName() %></option>
-<%
-}
-%>
+<label>Meal Type</label>
+<select name="mealType">
+<option value="Breakfast">Breakfast</option>
+<option value="Lunch">Lunch</option>
+<option value="Dinner">Dinner</option>
 </select>
 </div>
-<button type="submit" class="btn-submit">Add Product</button>
+<div class="form-group">
+<label>Cuisine</label>
+<input type="text" name="cuisine" placeholder="e.g. Sri Lankan, Chinese">
+</div>
+<div class="form-group">
+<label>Cooking Time (minutes)</label>
+<input type="number" name="cookingTime" placeholder="30" required>
+</div>
+<div class="form-group">
+<label>Difficulty</label>
+<select name="difficulty">
+<option value="Easy">Easy</option>
+<option value="Medium">Medium</option>
+<option value="Hard">Hard</option>
+</select>
+</div>
+<div class="form-group">
+<label>Servings</label>
+<input type="number" name="servings" placeholder="4" required>
+</div>
+<div class="form-group">
+<label>Image URL</label>
+<input type="text" name="imageUrl" placeholder="https://... (optional)">
+</div>
+<button type="submit" class="btn-submit">Add Recipe</button>
 </form>
 </div>
 
-<!-- Product List -->
+<!-- Recipe List -->
 <div class="panel">
 <table>
 <thead>
@@ -189,32 +191,27 @@ for (Category c : categories) {
 <th>ID</th>
 <th>Photo</th>
 <th>Name</th>
-<th>Category</th>
-<th>Price</th>
-<th>Stock</th>
-<th>Status</th>
+<th>Meal Type</th>
+<th>Cuisine</th>
+<th>Time</th>
+<th>Difficulty</th>
+<th>Servings</th>
 <th></th>
 </tr>
 </thead>
 <tbody>
 <%
-if (products.isEmpty()) {
+if (recipes.isEmpty()) {
 %>
-<tr><td colspan="8" class="empty-row">No products yet. Add your first product using the form.</td></tr>
+<tr><td colspan="9" class="empty-row">No recipes yet. Add your first recipe using the form.</td></tr>
 <%
 } else {
-    for (Product p : products) {
-        String catName = categoryNames.get(p.getCategoryId());
-        if (catName == null) catName = "—";
-        String stockClass, stockLabel;
-        if (p.getQuantity() <= 0) { stockClass="stock-out"; stockLabel="Out of Stock"; }
-        else if (p.getQuantity() < 10) { stockClass="stock-low"; stockLabel="Low"; }
-        else { stockClass="stock-in"; stockLabel="In Stock"; }
-        String thumb = (p.getPhotoUrl() != null && !p.getPhotoUrl().trim().isEmpty())
-                        ? p.getPhotoUrl().trim() : null;
+    for (Recipe r : recipes) {
+        String thumb = (r.getImageUrl() != null && !r.getImageUrl().trim().isEmpty())
+                        ? r.getImageUrl().trim() : null;
 %>
 <tr>
-<td>#<%= p.getProductId() %></td>
+<td>#<%= r.getRecipeId() %></td>
 <td>
 <% if (thumb != null) { %>
 <img src="<%= thumb %>" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" onerror="this.style.display='none';">
@@ -222,12 +219,13 @@ if (products.isEmpty()) {
 <span style="color:var(--soft); font-size:11px;">—</span>
 <% } %>
 </td>
-<td style="font-weight:600;"><%= p.getName() %></td>
-<td><%= catName %></td>
-<td>Rs. <%= String.format("%.2f", p.getPrice()) %></td>
-<td><%= p.getQuantity() %> <%= p.getUnit() %></td>
-<td><span class="badge <%= stockClass %>"><%= stockLabel %></span></td>
-<td><a href="../ProductServlet?action=delete&id=<%= p.getProductId() %>" class="action-link" onclick="return confirm('Delete this product?')"><i class="fa-solid fa-trash"></i> Delete</a></td>
+<td style="font-weight:600;"><%= r.getName() %></td>
+<td><span class="badge"><%= r.getMealType() != null ? r.getMealType() : "—" %></span></td>
+<td><%= r.getCuisine() != null && !r.getCuisine().isEmpty() ? r.getCuisine() : "—" %></td>
+<td><%= r.getCookingTime() %> min</td>
+<td><%= r.getDifficulty() != null ? r.getDifficulty() : "—" %></td>
+<td><%= r.getServings() %></td>
+<td><a href="../RecipeController?action=delete&source=admin&id=<%= r.getRecipeId() %>" class="action-link" onclick="return confirm('Delete this recipe?')"><i class="fa-solid fa-trash"></i> Delete</a></td>
 </tr>
 <%
     }

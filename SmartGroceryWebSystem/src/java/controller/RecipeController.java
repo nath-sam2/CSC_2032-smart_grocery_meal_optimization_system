@@ -111,23 +111,26 @@ public class RecipeController extends HttpServlet {
 
             case "delete":
 
+    String deleteSource = request.getParameter("source");
+    String deleteRedirect = "admin".equals(deleteSource) ? "admin/manageRecipes.jsp" : "RecipeController";
+
     int deleteId;
 
     try {
         deleteId = Integer.parseInt(request.getParameter("id"));
     } catch (NumberFormatException e) {
-        response.sendRedirect("RecipeController");
+        response.sendRedirect(deleteRedirect);
         return;
     }
 
     boolean deleted = recipeDAO.deleteRecipe(deleteId);
 
     if (!deleted) {
-        response.sendRedirect("RecipeController?deleteError=true");
+        response.sendRedirect(deleteRedirect + "?deleteError=true");
         return;
     }
 
-    response.sendRedirect("RecipeController");
+    response.sendRedirect(deleteRedirect + "?deleted=1");
 
     return;
 
@@ -242,6 +245,8 @@ public class RecipeController extends HttpServlet {
             String recipeName = request.getParameter("name");
             String cookingTimeParam = request.getParameter("cookingTime");
             String servingsParam = request.getParameter("servings");
+            String source = request.getParameter("source");
+            String formPage = "admin".equals(source) ? "/admin/manageRecipes.jsp" : "/recipes/addRecipe.jsp";
 
             java.util.List<String> errors = new java.util.ArrayList<>();
 
@@ -274,7 +279,7 @@ public class RecipeController extends HttpServlet {
 
                 request.setAttribute("formErrors", errors);
 
-                request.getRequestDispatcher("/recipes/addRecipe.jsp")
+                request.getRequestDispatcher(formPage)
                         .forward(request, response);
 
                 return;
@@ -285,7 +290,7 @@ public class RecipeController extends HttpServlet {
                 request.setAttribute("duplicateNameError",
                         "A recipe named \"" + recipeName.trim() + "\" already exists. Please choose a different name.");
 
-                request.getRequestDispatcher("/recipes/addRecipe.jsp")
+                request.getRequestDispatcher(formPage)
                         .forward(request, response);
 
                 return;
@@ -328,6 +333,9 @@ public class RecipeController extends HttpServlet {
             recipe.setServings(servings);
 
 
+            recipe.setImageUrl(
+                    request.getParameter("imageUrl")
+            );
 
             boolean insertOk = recipeDAO.insertRecipe(recipe);
 
@@ -335,13 +343,17 @@ public class RecipeController extends HttpServlet {
                 java.util.List<String> saveErrors = new java.util.ArrayList<>();
                 saveErrors.add("Could not save the recipe due to a server error. Please try again.");
                 request.setAttribute("formErrors", saveErrors);
-                request.getRequestDispatcher("/recipes/addRecipe.jsp").forward(request, response);
+                request.getRequestDispatcher(formPage).forward(request, response);
                 return;
             }
 
 
 
-            response.sendRedirect("RecipeController");
+            if ("admin".equals(source)) {
+                response.sendRedirect("admin/manageRecipes.jsp?success=1");
+            } else {
+                response.sendRedirect("RecipeController");
+            }
 
             return;
 
@@ -457,6 +469,11 @@ public class RecipeController extends HttpServlet {
 
 
             recipe.setServings(servings);
+
+
+            recipe.setImageUrl(
+                    request.getParameter("imageUrl")
+            );
 
 
 

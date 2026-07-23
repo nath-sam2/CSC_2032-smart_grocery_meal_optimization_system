@@ -91,6 +91,7 @@ tr:hover td{ background:#1e1e1e; }
 <li><a href="manageCategories.jsp"><i class="fa-solid fa-tags"></i> Categories</a></li>
 <li><a href="manageOrders.jsp"><i class="fa-solid fa-receipt"></i> Orders</a></li>
 <li><a class="active" href="manageUsers.jsp"><i class="fa-solid fa-users"></i> Users</a></li>
+<li><a href="manageRecipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 </ul>
 <div class="side-label">Account</div>
 <ul class="menu">

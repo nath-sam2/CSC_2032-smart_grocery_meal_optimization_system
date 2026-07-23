@@ -91,6 +91,7 @@ a{ color:inherit; }
 <li><a href="manageCategories.jsp"><i class="fa-solid fa-tags"></i> Categories</a></li>
 <li><a href="manageOrders.jsp"><i class="fa-solid fa-receipt"></i> Orders</a></li>
 <li><a href="manageUsers.jsp"><i class="fa-solid fa-users"></i> Users</a></li>
+<li><a href="manageRecipes.jsp"><i class="fa-solid fa-book-open"></i> Recipes</a></li>
 </ul>
 <div class="side-label">Account</div>
 <ul class="menu">
@@ -119,6 +120,7 @@ a{ color:inherit; }
 <a href="manageCategories.jsp" class="link-card"><i class="fa-solid fa-tags"></i><b>Manage Categories</b><span>Organize product categories</span></a>
 <a href="manageOrders.jsp" class="link-card"><i class="fa-solid fa-receipt"></i><b>Manage Orders</b><span>Track and update orders</span></a>
 <a href="manageUsers.jsp" class="link-card"><i class="fa-solid fa-users"></i><b>Manage Users</b><span>View and manage accounts</span></a>
+<a href="manageRecipes.jsp" class="link-card"><i class="fa-solid fa-book-open"></i><b>Manage Recipes</b><span>Add or remove recipes</span></a>
 </div>
 
 </div>
