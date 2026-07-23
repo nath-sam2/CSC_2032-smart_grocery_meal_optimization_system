@@ -7,6 +7,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
+<%@page import="java.text.SimpleDateFormat"%>
 
 <%
 User user = (User) session.getAttribute("user");
@@ -35,6 +36,7 @@ String success = request.getParameter("success") != null ? "Product added succes
 String error = request.getParameter("error") != null ? "Failed to add product!"
               : (request.getAttribute("error") != null ? (String) request.getAttribute("error") : null);
 String deleted = request.getParameter("deleted");
+String updated = request.getParameter("updated") != null ? "Product updated successfully!" : null;
 %>
 
 <!DOCTYPE html>
@@ -132,41 +134,43 @@ tr:hover td{ background:#1e1e1e; }
 <% if (success != null) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> <%= success %></div><% } %>
 <% if (error != null) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> <%= error %></div><% } %>
 <% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Product deleted successfully.</div><% } %>
+<% if (updated != null) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> <%= updated %></div><% } %>
 
 <div class="layout">
 
-<!-- Add Product Form -->
+<!-- Add / Edit Product Form -->
 <div class="form-panel">
-<h3><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Product</h3>
-<form action="../ProductServlet" method="post">
-<input type="hidden" name="action" value="add">
+<h3 id="formTitle"><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Product</h3>
+<form id="productForm" action="../ProductServlet" method="post">
+<input type="hidden" name="action" id="formAction" value="add">
+<input type="hidden" name="id" id="productIdField" value="">
 <div class="form-group">
 <label>Product Name</label>
-<input type="text" name="name" placeholder="e.g. Basmati Rice" required>
+<input type="text" name="name" id="nameField" placeholder="e.g. Basmati Rice" required>
 </div>
 <div class="form-group">
 <label>Price (Rs.)</label>
-<input type="number" step="0.01" name="price" placeholder="0.00" required>
+<input type="number" step="0.01" name="price" id="priceField" placeholder="0.00" required>
 </div>
 <div class="form-group">
 <label>Quantity</label>
-<input type="number" name="quantity" placeholder="0" required>
+<input type="number" name="quantity" id="quantityField" placeholder="0" required>
 </div>
 <div class="form-group">
 <label>Unit</label>
-<input type="text" name="unit" placeholder="kg / pcs / L" required>
+<input type="text" name="unit" id="unitField" placeholder="kg / pcs / L" required>
 </div>
 <div class="form-group">
 <label>Expiry Date</label>
-<input type="date" name="expiryDate">
+<input type="date" name="expiryDate" id="expiryField">
 </div>
 <div class="form-group">
 <label>Photo URL</label>
-<input type="text" name="photoUrl" placeholder="https://... (optional)">
+<input type="text" name="photoUrl" id="photoField" placeholder="https://... (optional)">
 </div>
 <div class="form-group">
 <label>Category</label>
-<select name="categoryId" required>
+<select name="categoryId" id="categoryField" required>
 <option value="">Select category</option>
 <%
 for (Category c : categories) {
@@ -177,7 +181,8 @@ for (Category c : categories) {
 %>
 </select>
 </div>
-<button type="submit" class="btn-submit">Add Product</button>
+<button type="submit" class="btn-submit" id="submitBtn">Add Product</button>
+<button type="button" class="btn-submit" id="cancelBtn" style="display:none; background:#2b2b2b; margin-top:8px;" onclick="resetForm()">Cancel Edit</button>
 </form>
 </div>
 
@@ -227,7 +232,12 @@ if (products.isEmpty()) {
 <td>Rs. <%= String.format("%.2f", p.getPrice()) %></td>
 <td><%= p.getQuantity() %> <%= p.getUnit() %></td>
 <td><span class="badge <%= stockClass %>"><%= stockLabel %></span></td>
-<td><a href="../ProductServlet?action=delete&id=<%= p.getProductId() %>" class="action-link" onclick="return confirm('Delete this product?')"><i class="fa-solid fa-trash"></i> Delete</a></td>
+<td style="white-space:nowrap;">
+<button type="button" class="action-link" style="color:var(--green); background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif; margin-right:14px;"
+    onclick="editProduct('<%= p.getProductId() %>', '<%= p.getName().replace("'", "\\'") %>', '<%= p.getPrice() %>', '<%= p.getQuantity() %>', '<%= p.getUnit() != null ? p.getUnit().replace("'", "\\'") : "" %>', '<%= p.getExpiryDate() != null ? new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) : "" %>', '<%= p.getPhotoUrl() != null ? p.getPhotoUrl().replace("'", "\\'") : "" %>', '<%= p.getCategoryId() %>')">
+<i class="fa-solid fa-pen"></i> Edit</button>
+<a href="../ProductServlet?action=delete&id=<%= p.getProductId() %>" class="action-link" onclick="return confirm('Delete this product?')"><i class="fa-solid fa-trash"></i> Delete</a>
+</td>
 </tr>
 <%
     }
@@ -240,5 +250,36 @@ if (products.isEmpty()) {
 </div>
 </div>
 
+<script>
+function editProduct(id, name, price, quantity, unit, expiryDate, photoUrl, categoryId) {
+    document.getElementById('formAction').value = 'update';
+    document.getElementById('productIdField').value = id;
+    document.getElementById('nameField').value = name;
+    document.getElementById('priceField').value = price;
+    document.getElementById('quantityField').value = quantity;
+    document.getElementById('unitField').value = unit;
+    document.getElementById('expiryField').value = expiryDate;
+    document.getElementById('photoField').value = photoUrl;
+    document.getElementById('categoryField').value = categoryId;
+
+    document.getElementById('formTitle').innerHTML =
+        '<i class="fa-solid fa-pen" style="color:var(--green);"></i> Edit Product';
+    document.getElementById('submitBtn').textContent = 'Update Product';
+    document.getElementById('cancelBtn').style.display = 'block';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetForm() {
+    document.getElementById('productForm').reset();
+    document.getElementById('formAction').value = 'add';
+    document.getElementById('productIdField').value = '';
+
+    document.getElementById('formTitle').innerHTML =
+        '<i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Product';
+    document.getElementById('submitBtn').textContent = 'Add Product';
+    document.getElementById('cancelBtn').style.display = 'none';
+}
+</script>
 </body>
 </html>

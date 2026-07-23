@@ -59,6 +59,43 @@ public class ProductServlet extends HttpServlet {
                 response.sendRedirect("admin/manageProducts.jsp?error=1");
             }
         }
+
+        if ("update".equals(action)) {
+
+            int productId   = Integer.parseInt(
+                              request.getParameter("id"));
+            String name     = request.getParameter("name");
+            double price    = Double.parseDouble(
+                              request.getParameter("price"));
+            int quantity    = Integer.parseInt(
+                              request.getParameter("quantity"));
+            String unit     = request.getParameter("unit");
+            String expiry   = request.getParameter("expiryDate");
+            int categoryId  = Integer.parseInt(
+                              request.getParameter("categoryId"));
+            String photoUrl = request.getParameter("photoUrl");
+
+            Date expiryDate = null;
+            if (expiry != null && !expiry.isEmpty()) {
+                try {
+                    expiryDate = new SimpleDateFormat("yyyy-MM-dd")
+                                     .parse(expiry);
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+
+            Product p = new Product(
+                productId, name, price, quantity,
+                expiryDate, unit, categoryId, photoUrl
+            );
+
+            boolean updated = productService.updateProduct(p);
+
+            if (updated) {
+                response.sendRedirect("admin/manageProducts.jsp?updated=1");
+            } else {
+                response.sendRedirect("admin/manageProducts.jsp?error=1");
+            }
+        }
     }
 
     @Override

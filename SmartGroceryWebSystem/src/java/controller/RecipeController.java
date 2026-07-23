@@ -383,6 +383,8 @@ public class RecipeController extends HttpServlet {
             String recipeName = request.getParameter("name");
             String cookingTimeParam = request.getParameter("cookingTime");
             String servingsParam = request.getParameter("servings");
+            String source = request.getParameter("source");
+            String editFormPage = "admin".equals(source) ? "/admin/manageRecipes.jsp" : "/recipes/editRecipe.jsp";
 
             java.util.List<String> errors = new java.util.ArrayList<>();
 
@@ -425,7 +427,7 @@ public class RecipeController extends HttpServlet {
                 request.setAttribute("recipe", attempted);
                 request.setAttribute("formErrors", errors);
 
-                request.getRequestDispatcher("/recipes/editRecipe.jsp")
+                request.getRequestDispatcher(editFormPage)
                         .forward(request, response);
 
                 return;
@@ -484,13 +486,17 @@ public class RecipeController extends HttpServlet {
                 java.util.List<String> saveErrors = new java.util.ArrayList<>();
                 saveErrors.add("Could not save the recipe due to a server error. Please try again.");
                 request.setAttribute("formErrors", saveErrors);
-                request.getRequestDispatcher("/recipes/editRecipe.jsp").forward(request, response);
+                request.getRequestDispatcher(editFormPage).forward(request, response);
                 return;
             }
 
 
 
-            response.sendRedirect("RecipeController");
+            if ("admin".equals(source)) {
+                response.sendRedirect("admin/manageRecipes.jsp?updated=1");
+            } else {
+                response.sendRedirect("RecipeController");
+            }
 
             return;
 

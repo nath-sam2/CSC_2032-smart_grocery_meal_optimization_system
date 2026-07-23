@@ -33,6 +33,22 @@ public class CategoryServlet extends HttpServlet {
             }
         }
 
+        if ("update".equals(action)) {
+            int id              = Integer.parseInt(request.getParameter("id"));
+            String name         = request.getParameter("name");
+            String description  = request.getParameter("description");
+
+            boolean updated = categoryService.updateCategory(
+                id, name, description
+            );
+
+            if (updated) {
+                response.sendRedirect("admin/manageCategories.jsp?updated=1");
+            } else {
+                response.sendRedirect("admin/manageCategories.jsp?error=1");
+            }
+        }
+
         if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             categoryService.deleteCategory(id);

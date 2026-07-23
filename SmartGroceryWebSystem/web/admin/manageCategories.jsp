@@ -21,6 +21,7 @@ List<Category> categories = categoryService.getAllCategories();
 String success = request.getParameter("success");
 String error = request.getParameter("error");
 String deleted = request.getParameter("deleted");
+String updated = request.getParameter("updated");
 %>
 
 <!DOCTYPE html>
@@ -113,23 +114,26 @@ tr:hover td{ background:#1e1e1e; }
 <% if ("1".equals(success)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Category added successfully.</div><% } %>
 <% if ("1".equals(error)) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> Failed to add category.</div><% } %>
 <% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Category deleted successfully.</div><% } %>
+<% if ("1".equals(updated)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Category updated successfully.</div><% } %>
 
 <div class="layout">
 
-<!-- Add Category Form -->
+<!-- Add / Edit Category Form -->
 <div class="form-panel">
-<h3><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Category</h3>
-<form action="../CategoryServlet" method="post">
-<input type="hidden" name="action" value="add">
+<h3 id="formTitle"><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Category</h3>
+<form id="categoryForm" action="../CategoryServlet" method="post">
+<input type="hidden" name="action" id="formAction" value="add">
+<input type="hidden" name="id" id="categoryIdField" value="">
 <div class="form-group">
 <label>Category Name</label>
-<input type="text" name="name" placeholder="e.g. Dairy" required>
+<input type="text" name="name" id="nameField" placeholder="e.g. Dairy" required>
 </div>
 <div class="form-group">
 <label>Description</label>
-<textarea name="description" rows="3" placeholder="Short description"></textarea>
+<textarea name="description" id="descriptionField" rows="3" placeholder="Short description"></textarea>
 </div>
-<button type="submit" class="btn-submit">Add Category</button>
+<button type="submit" class="btn-submit" id="submitBtn">Add Category</button>
+<button type="button" class="btn-submit" id="cancelBtn" style="display:none; background:#2b2b2b; margin-top:8px;" onclick="resetForm()">Cancel Edit</button>
 </form>
 </div>
 
@@ -157,7 +161,10 @@ if (categories.isEmpty()) {
 <td>#<%= c.getCategoryId() %></td>
 <td style="font-weight:600;"><%= c.getName() %></td>
 <td style="color:var(--soft);"><%= c.getDescription() %></td>
-<td>
+<td style="white-space:nowrap;">
+<button type="button" class="action-link" style="color:var(--green); margin-right:14px;"
+    onclick="editCategory('<%= c.getCategoryId() %>', '<%= c.getName().replace("'", "\\'") %>', '<%= c.getDescription() != null ? c.getDescription().replace("'", "\\'") : "" %>')">
+<i class="fa-solid fa-pen"></i> Edit</button>
 <form class="delete-form" action="../CategoryServlet" method="post" onsubmit="return confirm('Delete this category?')">
 <input type="hidden" name="action" value="delete">
 <input type="hidden" name="id" value="<%= c.getCategoryId() %>">
@@ -176,5 +183,31 @@ if (categories.isEmpty()) {
 </div>
 </div>
 
+<script>
+function editCategory(id, name, description) {
+    document.getElementById('formAction').value = 'update';
+    document.getElementById('categoryIdField').value = id;
+    document.getElementById('nameField').value = name;
+    document.getElementById('descriptionField').value = description;
+
+    document.getElementById('formTitle').innerHTML =
+        '<i class="fa-solid fa-pen" style="color:var(--green);"></i> Edit Category';
+    document.getElementById('submitBtn').textContent = 'Update Category';
+    document.getElementById('cancelBtn').style.display = 'block';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetForm() {
+    document.getElementById('categoryForm').reset();
+    document.getElementById('formAction').value = 'add';
+    document.getElementById('categoryIdField').value = '';
+
+    document.getElementById('formTitle').innerHTML =
+        '<i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Category';
+    document.getElementById('submitBtn').textContent = 'Add Category';
+    document.getElementById('cancelBtn').style.display = 'none';
+}
+</script>
 </body>
 </html>

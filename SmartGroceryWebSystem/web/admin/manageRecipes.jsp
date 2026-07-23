@@ -19,6 +19,7 @@ RecipeDAO recipeDAO = new RecipeDAO();
 List<Recipe> recipes = recipeDAO.getAllRecipes();
 
 String success = request.getParameter("success") != null ? "Recipe added successfully!" : null;
+String updated = request.getParameter("updated") != null ? "Recipe updated successfully!" : null;
 String deleted = request.getParameter("deleted");
 String deleteError = request.getParameter("deleteError");
 
@@ -117,6 +118,7 @@ tr:hover td{ background:#1e1e1e; }
 </div>
 
 <% if (success != null) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> <%= success %></div><% } %>
+<% if (updated != null) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> <%= updated %></div><% } %>
 <% if ("1".equals(deleted)) { %><div class="banner banner-ok"><i class="fa-solid fa-circle-check"></i> Recipe deleted successfully.</div><% } %>
 <% if ("true".equals(deleteError)) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> Failed to delete recipe.</div><% } %>
 <% if (duplicateNameError != null) { %><div class="banner banner-err"><i class="fa-solid fa-circle-exclamation"></i> <%= duplicateNameError %></div><% } %>
@@ -133,23 +135,24 @@ tr:hover td{ background:#1e1e1e; }
 
 <div class="layout">
 
-<!-- Add Recipe Form -->
+<!-- Add / Edit Recipe Form -->
 <div class="form-panel">
-<h3><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Recipe</h3>
-<form action="../RecipeController" method="post">
-<input type="hidden" name="action" value="insert">
+<h3 id="formTitle"><i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Recipe</h3>
+<form id="recipeForm" action="../RecipeController" method="post">
+<input type="hidden" name="action" id="formAction" value="insert">
 <input type="hidden" name="source" value="admin">
+<input type="hidden" name="recipeId" id="recipeIdField" value="">
 <div class="form-group">
 <label>Recipe Name</label>
-<input type="text" name="name" placeholder="e.g. Chicken Fried Rice" required>
+<input type="text" name="name" id="nameField" placeholder="e.g. Chicken Fried Rice" required>
 </div>
 <div class="form-group">
 <label>Description</label>
-<textarea name="description" rows="3" placeholder="Short description (optional)"></textarea>
+<textarea name="description" id="descriptionField" rows="3" placeholder="Short description (optional)"></textarea>
 </div>
 <div class="form-group">
 <label>Meal Type</label>
-<select name="mealType">
+<select name="mealType" id="mealTypeField">
 <option value="Breakfast">Breakfast</option>
 <option value="Lunch">Lunch</option>
 <option value="Dinner">Dinner</option>
@@ -157,15 +160,15 @@ tr:hover td{ background:#1e1e1e; }
 </div>
 <div class="form-group">
 <label>Cuisine</label>
-<input type="text" name="cuisine" placeholder="e.g. Sri Lankan, Chinese">
+<input type="text" name="cuisine" id="cuisineField" placeholder="e.g. Sri Lankan, Chinese">
 </div>
 <div class="form-group">
 <label>Cooking Time (minutes)</label>
-<input type="number" name="cookingTime" placeholder="30" required>
+<input type="number" name="cookingTime" id="cookingTimeField" placeholder="30" required>
 </div>
 <div class="form-group">
 <label>Difficulty</label>
-<select name="difficulty">
+<select name="difficulty" id="difficultyField">
 <option value="Easy">Easy</option>
 <option value="Medium">Medium</option>
 <option value="Hard">Hard</option>
@@ -173,13 +176,14 @@ tr:hover td{ background:#1e1e1e; }
 </div>
 <div class="form-group">
 <label>Servings</label>
-<input type="number" name="servings" placeholder="4" required>
+<input type="number" name="servings" id="servingsField" placeholder="4" required>
 </div>
 <div class="form-group">
 <label>Image URL</label>
-<input type="text" name="imageUrl" placeholder="https://... (optional)">
+<input type="text" name="imageUrl" id="imageUrlField" placeholder="https://... (optional)">
 </div>
-<button type="submit" class="btn-submit">Add Recipe</button>
+<button type="submit" class="btn-submit" id="submitBtn">Add Recipe</button>
+<button type="button" class="btn-submit" id="cancelBtn" style="display:none; background:#2b2b2b; margin-top:8px;" onclick="resetForm()">Cancel Edit</button>
 </form>
 </div>
 
@@ -225,7 +229,12 @@ if (recipes.isEmpty()) {
 <td><%= r.getCookingTime() %> min</td>
 <td><%= r.getDifficulty() != null ? r.getDifficulty() : "—" %></td>
 <td><%= r.getServings() %></td>
-<td><a href="../RecipeController?action=delete&source=admin&id=<%= r.getRecipeId() %>" class="action-link" onclick="return confirm('Delete this recipe?')"><i class="fa-solid fa-trash"></i> Delete</a></td>
+<td style="white-space:nowrap;">
+<button type="button" class="action-link" style="color:var(--green); background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif; margin-right:14px;"
+    onclick="editRecipe('<%= r.getRecipeId() %>', '<%= r.getName().replace("'", "\\'") %>', '<%= r.getDescription() != null ? r.getDescription().replace("'", "\\'").replace("\n"," ") : "" %>', '<%= r.getMealType() != null ? r.getMealType() : "" %>', '<%= r.getCuisine() != null ? r.getCuisine().replace("'", "\\'") : "" %>', '<%= r.getCookingTime() %>', '<%= r.getDifficulty() != null ? r.getDifficulty() : "" %>', '<%= r.getServings() %>', '<%= r.getImageUrl() != null ? r.getImageUrl().replace("'", "\\'") : "" %>')">
+<i class="fa-solid fa-pen"></i> Edit</button>
+<a href="../RecipeController?action=delete&source=admin&id=<%= r.getRecipeId() %>" class="action-link" onclick="return confirm('Delete this recipe?')"><i class="fa-solid fa-trash"></i> Delete</a>
+</td>
 </tr>
 <%
     }
@@ -238,5 +247,37 @@ if (recipes.isEmpty()) {
 </div>
 </div>
 
+<script>
+function editRecipe(id, name, description, mealType, cuisine, cookingTime, difficulty, servings, imageUrl) {
+    document.getElementById('formAction').value = 'update';
+    document.getElementById('recipeIdField').value = id;
+    document.getElementById('nameField').value = name;
+    document.getElementById('descriptionField').value = description;
+    document.getElementById('mealTypeField').value = mealType;
+    document.getElementById('cuisineField').value = cuisine;
+    document.getElementById('cookingTimeField').value = cookingTime;
+    document.getElementById('difficultyField').value = difficulty;
+    document.getElementById('servingsField').value = servings;
+    document.getElementById('imageUrlField').value = imageUrl;
+
+    document.getElementById('formTitle').innerHTML =
+        '<i class="fa-solid fa-pen" style="color:var(--green);"></i> Edit Recipe';
+    document.getElementById('submitBtn').textContent = 'Update Recipe';
+    document.getElementById('cancelBtn').style.display = 'block';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetForm() {
+    document.getElementById('recipeForm').reset();
+    document.getElementById('formAction').value = 'insert';
+    document.getElementById('recipeIdField').value = '';
+
+    document.getElementById('formTitle').innerHTML =
+        '<i class="fa-solid fa-plus" style="color:var(--green);"></i> Add New Recipe';
+    document.getElementById('submitBtn').textContent = 'Add Recipe';
+    document.getElementById('cancelBtn').style.display = 'none';
+}
+</script>
 </body>
 </html>
