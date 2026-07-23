@@ -225,9 +225,9 @@ nav {
   display: flex; align-items: center; justify-content: center; font-size: 14px; transition: border-color 0.15s;
 }
 .btn-hero-secondary:hover .play-icon { border-color: var(--green); }
-.hero-stats { position: absolute; bottom: 48px; left: 48px; z-index: 2; display: flex; gap: 40px; }
-.hero-stat .num { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: -1px; }
-.hero-stat .num span { color: var(--green); }
+.hero-stats { display: flex; gap: 40px; margin-top: 48px; }
+.hero-stat .num { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: -1px; display: flex; align-items: flex-start; }
+.hero-stat .num span { color: var(--green); font-size: 20px; letter-spacing: normal; margin-left: 3px; margin-top: 2px; }
 .hero-stat .lbl { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
 
 /* TAGLINE */
@@ -387,11 +387,11 @@ footer { background: var(--black2); border-top: 1px solid var(--border); padding
     <div class="hero-actions">
       <button class="btn-hero-primary" onclick="openModal()">Get Started Free</button>
     </div>
-  </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="num"><%= totalItems %><span>+</span></div><div class="lbl">Items tracked</div></div>
-    <div class="hero-stat"><div class="num"><%= wastePreventedPct %><span>%</span></div><div class="lbl">Less food wasted</div></div>
-    <div class="hero-stat"><div class="num"><%= householdNumber %><span><%= householdSuffix %></span></div><div class="lbl">Households using it</div></div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num"><%= totalItems %><span>+</span></div><div class="lbl">Items tracked</div></div>
+      <div class="hero-stat"><div class="num"><%= wastePreventedPct %><span>%</span></div><div class="lbl">Less food wasted</div></div>
+      <div class="hero-stat"><div class="num"><%= householdNumber %><span><%= householdSuffix %></span></div><div class="lbl">Households using it</div></div>
+    </div>
   </div>
 </section>
 

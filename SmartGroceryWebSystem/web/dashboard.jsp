@@ -629,6 +629,8 @@ background:none;
 border:none;
 text-align:left;
 padding:0;
+text-decoration:none;
+display:inline-block;
 }
 
 .add-empty:hover{ text-decoration:underline; }

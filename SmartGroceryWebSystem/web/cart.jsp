@@ -314,7 +314,17 @@ Food Waste
 for (CartItem item : items) {
     Product p = productDAO.getProductById(item.getProductId());
     String pName = (p != null) ? p.getName() : "Product #" + item.getProductId();
-    String pUnit = (p != null) ? p.getUnit() : "";
+    String rawCartUnit = (p != null && p.getUnit() != null) ? p.getUnit().trim().toLowerCase() : "";
+    String pUnit;
+    switch (rawCartUnit) {
+        case "g":  pUnit = "kg"; break;
+        case "ml": pUnit = "L";  break;
+        case "kg": pUnit = "kg"; break;
+        case "l":  pUnit = "L";  break;
+        case "pcs": pUnit = "pc"; break;
+        case "slices": pUnit = "loaf"; break;
+        default: pUnit = rawCartUnit.isEmpty() ? "unit" : rawCartUnit;
+    }
 %>
 <div class="cart-item">
 

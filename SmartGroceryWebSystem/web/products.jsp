@@ -185,7 +185,7 @@ if (selectedCatId != null) {
         .product-footer{ margin-top:24px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
         .product-price{ font-size:17px; font-weight:800; color:white; }
         .product-price span{ font-size:11px; color:var(--soft); font-weight:500; }
-        .add-cart-btn{ background:var(--green); border:none; color:white; width:38px; height:38px; border-radius:10px; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; }
+        .add-cart-btn{ background:var(--green); border:none; color:white; width:38px; height:38px; border-radius:10px; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; text-decoration:none; }
         .add-cart-btn:hover{ background:var(--greenDark); }
         .add-cart-btn:disabled{ background:#333; color:#666; cursor:not-allowed; }
 
@@ -344,6 +344,22 @@ Food Waste
                 // --- IMAGE: comes straight from the products.photoUrl column now ---
                 String dbPhotoUrl = p.getPhotoUrl();
                 String imageUrl = (dbPhotoUrl != null && !dbPhotoUrl.trim().isEmpty()) ? dbPhotoUrl.trim() : defaultProductImage;
+
+                // The `price` column is set per kg / per litre / per standard pack (not per
+                // gram/ml), but stock is tracked in small units (g, ml) for precision.
+                // Convert the raw stock unit into the matching "price per ___" label so the
+                // price shown never reads like "Rs. 1650.00 / g".
+                String rawUnit = (p.getUnit() != null) ? p.getUnit().trim().toLowerCase() : "";
+                String priceUnit;
+                switch (rawUnit) {
+                    case "g":  priceUnit = "kg";  break;
+                    case "ml": priceUnit = "L";   break;
+                    case "kg": priceUnit = "kg";  break;
+                    case "l":  priceUnit = "L";   break;
+                    case "pcs": priceUnit = "pc"; break;
+                    case "slices": priceUnit = "loaf"; break;
+                    default: priceUnit = rawUnit.isEmpty() ? "unit" : rawUnit;
+                }
             %>
             <div class="product-card">
                 <div class="product-img">
@@ -357,7 +373,7 @@ Food Waste
                     <div class="stock-tag <%= stockClass %>"><%= stockLabel %></div>
                     <div class="product-footer">
                         <!-- Rupees and Cents Format (.2f handles the decimals perfectly) -->
-                        <div class="product-price">Rs. <%= String.format("%.2f", p.getPrice()) %><span> / <%= p.getUnit() %></span></div>
+                        <div class="product-price">Rs. <%= String.format("%.2f", p.getPrice()) %><span> / <%= priceUnit %></span></div>
                         <% if (isOutOfStock) { %>
                             <button type="button" class="add-cart-btn" disabled><i class="fa-solid fa-plus"></i></button>
                         <% } else { %>
