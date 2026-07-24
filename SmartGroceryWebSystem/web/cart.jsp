@@ -339,7 +339,16 @@ for (CartItem item : items) {
 <a href="CartServlet?action=update&cartItemId=<%= item.getCartItemId() %>&quantity=<%= item.getQuantity() - 1 %>">
 <i class="fa-solid fa-minus"></i>
 </a>
-<span><%= item.getQuantity() %></span>
+<form action="CartServlet" method="get" style="display:flex; align-items:center;">
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="cartItemId" value="<%= item.getCartItemId() %>">
+<input type="number" name="quantity" min="1" value="<%= item.getQuantity() %>"
+       style="width:56px; text-align:center; background:#111; color:white; border:none; border-left:1px solid var(--border); border-right:1px solid var(--border); height:32px; -moz-appearance:textfield;">
+<button type="submit" title="Update quantity"
+        style="width:32px; height:32px; background:transparent; border:none; color:var(--green); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13px;">
+<i class="fa-solid fa-check"></i>
+</button>
+</form>
 <a href="CartServlet?action=update&cartItemId=<%= item.getCartItemId() %>&quantity=<%= item.getQuantity() + 1 %>">
 <i class="fa-solid fa-plus"></i>
 </a>

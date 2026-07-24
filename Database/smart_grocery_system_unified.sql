@@ -1,31 +1,25 @@
--- ================================================================
--- smart_grocery_system_final — UNIFIED DATABASE
--- Combines Member 1's latest product/schema updates (v3: LKR prices,
--- product photos, cart_items table) with Member 2's complete
--- meal-planning feature set (recipes, meal plans, nutrition facts,
--- dietary restrictions, shopping lists) that was missing from v3.
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
 --
--- NOTE: all merged user passwords were placeholder/unusable values
--- in the source dump, so they've been reset to 'password123' for
--- every non-admin-1 account. Change these before any real deployment.
---
--- Drop your old database first, then import this file to start clean.
--- ================================================================
+-- Host: 127.0.0.1
+-- Generation Time: Jul 24, 2026 at 04:33 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
--- Create a fresh database (uncomment the two lines below if importing standalone)
--- DROP DATABASE IF EXISTS `smart_grocery_system_final`;
--- CREATE DATABASE `smart_grocery_system_final` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
--- USE `smart_grocery_system_final`;
-
+--
+-- Database: `smart_grocery_system_unified`
+--
 
 -- --------------------------------------------------------
 
@@ -40,6 +34,14 @@ CREATE TABLE `cart_items` (
   `quantity` int(11) NOT NULL,
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`cartItemId`, `cartId`, `productId`, `quantity`, `price`) VALUES
+(5, 4, 1, 2, 1450),
+(9, 4, 6, 1000, 380);
 
 -- --------------------------------------------------------
 
@@ -64,7 +66,6 @@ INSERT INTO `categories` (`categoryId`, `name`, `description`) VALUES
 (4, 'Dairy & Alternatives', 'Milk, yogurt, cheese and coconut milk'),
 (5, 'Sauces, Oils & Spices', 'Condiments, sauces, oils and seasoning');
 
-
 -- --------------------------------------------------------
 
 --
@@ -86,7 +87,6 @@ INSERT INTO `dietaryrestrictions` (`restrictionId`, `restrictionName`, `descript
 (4, 'Lactose intolerance', 'Lactose intolerance is a digestive disorder caused by a deficiency of the enzyme lactase.'),
 (5, 'Gluten intolerance or sensitivity', 'Gluten is one of the main proteins in wheat, but it is also found in barley and rye.'),
 (6, 'Vegetarianism', 'Vegetarianism is a dietary pattern that relies mainly on plant-based foods and avoids meat, poultry, and fish.');
-
 
 -- --------------------------------------------------------
 
@@ -141,8 +141,10 @@ INSERT INTO `ingredients` (`ingredientId`, `productId`, `name`, `category`, `uni
 (32, 32, 'Grated Coconut', 'Groceries', 'g'),
 (33, 33, 'Chili Flakes', 'Condiments', 'g'),
 (34, 34, 'Flour Tortillas', 'Bakery', 'pcs'),
-(35, 35, 'Shredded Cheese', 'Dairy', 'g');
-
+(35, 35, 'Shredded Cheese', 'Dairy', 'g'),
+(36, 37, 'Mixed Berries', 'Fruits', 'g'),
+(37, 38, 'Sugar', 'Condiments', 'g'),
+(38, 39, 'Lemon Juice', 'Condiments', 'ml');
 
 -- --------------------------------------------------------
 
@@ -185,45 +187,10 @@ INSERT INTO `inventory` (`inventoryId`, `productId`, `quantity`, `reorderLevel`,
 (20, 20, 40, 10, '2026-07-17 12:47:20'),
 (21, 21, 30, 8, '2026-07-17 12:47:20'),
 (22, 22, 18, 6, '2026-07-17 12:47:20'),
-(23, 23, 22, 5, '2026-07-17 12:47:20');
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mealplans`
---
-
-CREATE TABLE `mealplans` (
-  `mealPlanId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `planName` varchar(100) DEFAULT NULL,
-  `startDate` date DEFAULT NULL,
-  `endDate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `mealplans`
---
-
-INSERT INTO `mealplans` (`mealPlanId`, `userId`, `planName`, `startDate`, `endDate`) VALUES
-(2, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
-(3, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
-(4, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
-(5, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
-(6, 1, 'Weekly Healthy Meal Plan', '2026-07-07', '2026-07-13'),
-(7, 1, 'Weekly Healthy Meal Plan', '2026-07-07', '2026-07-13'),
-(8, 1, 'Weekly Healthy Meal Plan', '2026-07-07', '2026-07-13'),
-(9, 6, 'My Healthy Weekly Plan', '2026-07-18', '2026-07-19'),
-(10, 6, 'Weekly Healthy Meal Plan', '2026-07-18', '2026-07-24'),
-(11, 6, 'Weekly Healthy Meal Plan', '2026-07-19', '2026-07-25'),
-(12, 6, 'Weekly Healthy Meal Plan', '2026-07-19', '2026-07-25'),
-(13, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
-(14, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
-(15, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
-(16, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
-(17, 2, 'Weekly Healthy Meal Plan', '2026-07-21', '2026-07-27');
-
+(23, 23, 22, 5, '2026-07-17 12:47:20'),
+(24, 37, 500, 100, '2026-07-23 06:12:22'),
+(25, 38, 1000, 200, '2026-07-23 06:12:22'),
+(26, 39, 200, 50, '2026-07-23 06:12:22');
 
 -- --------------------------------------------------------
 
@@ -285,7 +252,6 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (93, 10, 7, '2026-07-22', 'Breakfast'),
 (94, 10, 9, '2026-07-22', 'Lunch'),
 (95, 10, 12, '2026-07-22', 'Dinner'),
-(96, 10, 16, '2026-07-23', 'Breakfast'),
 (97, 10, 19, '2026-07-23', 'Lunch'),
 (98, 10, 20, '2026-07-23', 'Dinner'),
 (99, 10, 6, '2026-07-24', 'Breakfast'),
@@ -297,7 +263,6 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (105, 11, 7, '2026-07-20', 'Breakfast'),
 (106, 11, 9, '2026-07-20', 'Lunch'),
 (107, 11, 12, '2026-07-20', 'Dinner'),
-(108, 11, 16, '2026-07-21', 'Breakfast'),
 (109, 11, 19, '2026-07-21', 'Lunch'),
 (110, 11, 20, '2026-07-21', 'Dinner'),
 (111, 11, 6, '2026-07-22', 'Breakfast'),
@@ -306,7 +271,6 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (114, 11, 7, '2026-07-23', 'Breakfast'),
 (115, 11, 9, '2026-07-23', 'Lunch'),
 (116, 11, 12, '2026-07-23', 'Dinner'),
-(117, 11, 16, '2026-07-24', 'Breakfast'),
 (118, 11, 19, '2026-07-24', 'Lunch'),
 (119, 11, 20, '2026-07-24', 'Dinner'),
 (120, 11, 6, '2026-07-25', 'Breakfast'),
@@ -318,7 +282,6 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (126, 12, 7, '2026-07-20', 'Breakfast'),
 (127, 12, 9, '2026-07-20', 'Lunch'),
 (128, 12, 12, '2026-07-20', 'Dinner'),
-(129, 12, 16, '2026-07-21', 'Breakfast'),
 (130, 12, 19, '2026-07-21', 'Lunch'),
 (131, 12, 20, '2026-07-21', 'Dinner'),
 (132, 12, 28, '2026-07-22', 'Breakfast'),
@@ -328,7 +291,6 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (136, 12, 7, '2026-07-23', 'Lunch'),
 (137, 12, 9, '2026-07-23', 'Dinner'),
 (138, 12, 12, '2026-07-24', 'Breakfast'),
-(139, 12, 16, '2026-07-24', 'Lunch'),
 (140, 12, 19, '2026-07-24', 'Dinner'),
 (141, 12, 20, '2026-07-25', 'Breakfast'),
 (142, 12, 28, '2026-07-25', 'Lunch'),
@@ -434,8 +396,87 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (245, 17, 6, '2026-07-26', 'Lunch'),
 (246, 17, 9, '2026-07-26', 'Dinner'),
 (247, 17, 25, '2026-07-27', 'Breakfast'),
-(248, 17, 6, '2026-07-27', 'Lunch');
+(248, 17, 6, '2026-07-27', 'Lunch'),
+(250, 18, 8, '2026-07-23', 'Breakfast'),
+(251, 18, 6, '2026-07-23', 'Lunch'),
+(252, 18, 5, '2026-07-23', 'Dinner'),
+(253, 18, 8, '2026-07-24', 'Breakfast'),
+(254, 18, 6, '2026-07-24', 'Lunch'),
+(255, 18, 5, '2026-07-24', 'Dinner'),
+(256, 18, 8, '2026-07-25', 'Breakfast'),
+(257, 18, 6, '2026-07-25', 'Lunch'),
+(258, 18, 5, '2026-07-25', 'Dinner'),
+(259, 18, 8, '2026-07-26', 'Breakfast'),
+(260, 18, 6, '2026-07-26', 'Lunch'),
+(261, 18, 5, '2026-07-26', 'Dinner'),
+(262, 18, 8, '2026-07-27', 'Breakfast'),
+(263, 18, 6, '2026-07-27', 'Lunch'),
+(264, 18, 5, '2026-07-27', 'Dinner'),
+(265, 18, 8, '2026-07-28', 'Breakfast'),
+(266, 18, 6, '2026-07-28', 'Lunch'),
+(267, 18, 5, '2026-07-28', 'Dinner'),
+(268, 18, 8, '2026-07-29', 'Breakfast'),
+(269, 18, 6, '2026-07-29', 'Lunch'),
+(270, 18, 5, '2026-07-29', 'Dinner'),
+(271, 19, 17, '2026-07-23', 'Breakfast'),
+(272, 19, 6, '2026-07-23', 'Lunch'),
+(273, 19, 5, '2026-07-23', 'Dinner'),
+(274, 19, 17, '2026-07-24', 'Breakfast'),
+(275, 19, 6, '2026-07-24', 'Lunch'),
+(276, 19, 5, '2026-07-24', 'Dinner'),
+(277, 19, 17, '2026-07-25', 'Breakfast'),
+(278, 19, 6, '2026-07-25', 'Lunch'),
+(279, 19, 5, '2026-07-25', 'Dinner'),
+(280, 19, 17, '2026-07-26', 'Breakfast'),
+(281, 19, 6, '2026-07-26', 'Lunch'),
+(282, 19, 5, '2026-07-26', 'Dinner'),
+(283, 19, 17, '2026-07-27', 'Breakfast'),
+(284, 19, 6, '2026-07-27', 'Lunch'),
+(285, 19, 5, '2026-07-27', 'Dinner'),
+(286, 19, 17, '2026-07-28', 'Breakfast'),
+(287, 19, 6, '2026-07-28', 'Lunch'),
+(288, 19, 5, '2026-07-28', 'Dinner'),
+(289, 19, 17, '2026-07-29', 'Breakfast'),
+(290, 19, 6, '2026-07-29', 'Lunch'),
+(291, 19, 5, '2026-07-29', 'Dinner');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mealplans`
+--
+
+CREATE TABLE `mealplans` (
+  `mealPlanId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `planName` varchar(100) DEFAULT NULL,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mealplans`
+--
+
+INSERT INTO `mealplans` (`mealPlanId`, `userId`, `planName`, `startDate`, `endDate`) VALUES
+(2, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
+(3, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
+(4, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
+(5, 1, 'Healthy Weekly Plan', '2026-07-07', '2026-07-13'),
+(6, 1, 'Weekly Healthy Meal Plan', '2026-07-07', '2026-07-13'),
+(7, 1, 'Weekly Healthy Meal Plan', '2026-07-07', '2026-07-13'),
+(8, 1, 'Weekly Healthy Meal Plan', '2026-07-07', '2026-07-13'),
+(9, 6, 'My Healthy Weekly Plan', '2026-07-18', '2026-07-19'),
+(10, 6, 'Weekly Healthy Meal Plan', '2026-07-18', '2026-07-24'),
+(11, 6, 'Weekly Healthy Meal Plan', '2026-07-19', '2026-07-25'),
+(12, 6, 'Weekly Healthy Meal Plan', '2026-07-19', '2026-07-25'),
+(13, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
+(14, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
+(15, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
+(16, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
+(17, 2, 'Weekly Healthy Meal Plan', '2026-07-21', '2026-07-27'),
+(18, 3, 'Weekly Healthy Meal Plan', '2026-07-23', '2026-07-29'),
+(19, 4, 'Weekly Healthy Meal Plan', '2026-07-23', '2026-07-29');
 
 -- --------------------------------------------------------
 
@@ -462,7 +503,6 @@ INSERT INTO `notifications` (`notifId`, `productId`, `message`, `type`, `isRead`
 (3, 1, 'Chicken Breast has fallen below its reorder level.', 'LOW_STOCK', 1, '2026-07-17 12:48:44'),
 (4, 6, 'Whole Milk stock updated successfully.', 'LOW_STOCK', 1, '2026-07-17 12:48:44'),
 (5, 22, 'Feta Cheese requires immediate restocking.', 'LOW_STOCK', 0, '2026-07-17 12:48:44');
-
 
 -- --------------------------------------------------------
 
@@ -516,11 +556,10 @@ INSERT INTO `nutritionfacts` (`nutritionId`, `recipeId`, `servingSize`, `serving
 (19, 21, '250g', 1, 850.00, 42.00, 14.00, 1.20, 95.00, 980.00, 78.00, 6.00, 8.00, 2.00, 38.00, 40.00, 15.00, 0.50, 120.00, 5.50, 890.00),
 (20, 22, '250g', 1, 540.00, 14.00, 2.50, 0.00, 145.00, 1050.00, 76.00, 4.00, 18.00, 12.00, 26.00, 90.00, 18.00, 0.00, 80.00, 3.20, 410.00),
 (21, 23, '250g', 1, 410.00, 8.00, 1.50, 0.00, 0.00, 490.00, 68.00, 6.00, 9.00, 0.00, 12.00, 210.00, 34.00, 0.00, 70.00, 2.80, 530.00),
-(22, 16, '250g', 1, 310.00, 6.00, 1.00, 0.00, 0.00, 190.00, 52.00, 4.00, 2.00, 0.00, 7.00, 85.00, 14.00, 0.00, 40.00, 1.80, 290.00),
 (23, 24, '200g', 1, 460.00, 24.00, 19.50, 0.00, 0.00, 510.00, 54.00, 8.00, 3.00, 0.00, 9.00, 75.00, 18.00, 0.00, 50.00, 3.10, 410.00),
 (24, 25, '180g', 1, 230.00, 9.00, 1.50, 0.00, 5.00, 85.00, 29.00, 11.00, 14.00, 8.00, 6.00, 45.00, 1.00, 1.50, 220.00, 2.10, 280.00),
-(25, 26, '220g', 1, 510.00, 23.00, 11.00, 0.50, 85.00, 840.00, 38.00, 3.00, 2.00, 0.00, 34.00, 90.00, 4.00, 0.80, 310.00, 2.40, 360.00);
-
+(25, 26, '220g', 1, 510.00, 23.00, 11.00, 0.50, 85.00, 840.00, 38.00, 3.00, 2.00, 0.00, 34.00, 90.00, 4.00, 0.80, 310.00, 2.40, 360.00),
+(26, 28, '60g', 4, 70.00, 0.20, 0.00, 0.00, 0.00, 5.00, 18.00, 2.00, 14.00, 8.00, 0.50, 2.00, 15.00, 0.00, 10.00, 0.30, 80.00);
 
 -- --------------------------------------------------------
 
@@ -549,8 +588,8 @@ INSERT INTO `orders` (`orderId`, `userId`, `totalAmount`, `status`, `created_at`
 (5, 8, 24550.00, 'DELIVERED', '2026-07-17 12:52:25', '2026-07-16'),
 (6, 9, 5380.00, 'CANCELLED', '2026-07-17 12:52:25', '2026-07-17'),
 (7, 10, 3800.00, 'PENDING', '2026-07-17 12:52:25', '2026-07-17'),
-(8, 11, 810.00, 'PROCESSING', '2026-07-17 12:52:25', '2026-07-17');
-
+(8, 11, 810.00, 'PROCESSING', '2026-07-17 12:52:25', '2026-07-17'),
+(9, 3, 880.00, 'DELIVERED', '2026-07-23 06:02:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -592,8 +631,10 @@ INSERT INTO `order_items` (`orderItemId`, `orderId`, `productId`, `quantity`, `p
 (18, 7, 23, 1, 2200.00, 2200.00),
 (19, 8, 7, 10, 45.00, 450.00),
 (20, 8, 16, 2, 120.00, 240.00),
-(21, 8, 13, 6, 20.00, 120.00);
-
+(21, 8, 13, 6, 20.00, 120.00),
+(22, 9, 37, 1, 450.00, 450.00),
+(23, 9, 38, 1, 180.00, 180.00),
+(24, 9, 39, 1, 250.00, 250.00);
 
 -- --------------------------------------------------------
 
@@ -654,55 +695,10 @@ INSERT INTO `products` (`productId`, `name`, `price`, `quantity`, `expiryDate`, 
 (33, 'Chili Flakes', 350.00, 1500, NULL, 'g', 5, 'https://plus.unsplash.com/premium_photo-1671130295775-e20b130ab22f?q=80&w=694&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\r\n', '2026-07-22 08:35:07', '2026-07-22 09:44:35'),
 (34, 'Flour Tortillas', 90.00, 250, NULL, 'pcs', 2, 'https://images.unsplash.com/photo-1591266123515-46149ea0b0a9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2026-07-22 08:35:07', '2026-07-22 09:45:40'),
 (35, 'Shredded Cheese', 1250.00, 3000, NULL, 'g', 4, 'https://images.unsplash.com/photo-1657047869556-11105810779a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2026-07-22 08:35:07', '2026-07-22 09:46:27'),
-(36, 'Tomatoes', 30.00, 200, NULL, 'pcs', 3, 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2026-07-22 08:35:07', '2026-07-22 08:35:07');
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `recipes`
---
-
-CREATE TABLE `recipes` (
-  `recipeId` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` text DEFAULT NULL,
-  `mealType` varchar(50) DEFAULT NULL,
-  `cuisine` varchar(50) DEFAULT NULL,
-  `cookingTime` int(11) DEFAULT NULL,
-  `difficulty` varchar(20) DEFAULT NULL,
-  `servings` int(11) DEFAULT NULL,
-  `imageUrl` varchar(500) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `recipes`
---
-
-INSERT INTO `recipes` (`recipeId`, `name`, `description`, `mealType`, `cuisine`, `cookingTime`, `difficulty`, `servings`, `imageUrl`) VALUES
-(3, 'Chicken Curry With Sauce', 'Traditional Sri Lankan spicy chicken curry', 'Dinner', 'Sri Lankan', 45, 'Medium', 4, 'images/Chicken curry with sauce.png'),
-(4, 'Vegetable Fried Rice', 'Healthy fried rice with mixed vegetables', 'Lunch', 'Asian', 30, 'Easy', 2, 'images/Vegetable Fried Rice.png'),
-(5, 'Grilled Salmon', 'Grilled salmon with steamed vegetables', 'Dinner', 'Western', 35, 'Hard', 2, 'images/Grilled Salmon.png'),
-(6, 'Quinoa Salad', 'Fresh quinoa salad with cucumber and tomatoes', 'Lunch', 'Mediterranean', 20, 'Easy', 2, 'images/Quinoa Salad.png'),
-(7, 'Oatmeal with Fruits', 'Healthy oatmeal topped with bananas and berries', 'Breakfast', 'International', 10, 'Easy', 1, 'images/Oatmeal with Fruits.png'),
-(8, 'Egg Omelette', 'Protein-rich vegetable omelette', 'Breakfast', 'International', 15, 'Easy', 1, 'images/Egg Omelette.png'),
-(9, 'Lentil Soup', 'Nutritious red lentil soup', 'Dinner', 'Middle Eastern', 40, 'Easy', 4, 'images/Lentil Soup.png'),
-(10, 'Chicken Caesar Salad', 'Grilled chicken with fresh lettuce', 'Lunch', 'Western', 25, 'Easy', 2, 'images/Chicken Caesar Salad.png'),
-(11, 'Beef Stir Fry', 'Lean beef with broccoli and carrots', 'Dinner', 'Asian', 30, 'Medium', 3, 'images/Beef Stir Fry.png'),
-(12, 'Fruit Smoothie', 'Mixed fruit smoothie with yogurt', 'Breakfast', 'International', 10, 'Easy', 1, 'images/Fruit Smoothie.png'),
-(16, 'Test Recipe', 'Lunch', 'Dinner', 'Sri Lankan', 45, 'Easy', 7, NULL),
-(17, 'Avocado Toast with Egg', 'Crispy sourdough toast topped with mashed avocado and a poached egg', 'Breakfast', 'International', 10, 'Easy', 1, 'images/Avocado Toast with Egg.png'),
-(18, 'Pancakes with Maple Syrup', 'Fluffy buttermilk pancakes served with butter and fresh maple syrup', 'Breakfast', 'Western', 15, 'Easy', 2, 'images/pancakes with syrup.png'),
-(19, 'Dhal Curry', 'Traditional Sri Lankan red lentil curry cooked in rich coconut milk', 'Lunch', 'Sri Lankan', 20, 'Easy', 4, 'images/Dhal Curry.png'),
-(20, 'Greek Salad', 'Crisp cucumbers, tomatoes, red onions, olives, and feta cheese blocks', 'Lunch', 'Mediterranean', 15, 'Easy', 2, 'images/Greek Salad.png'),
-(21, 'Beef Burgers with Fries', 'Juicy grilled beef patties on toasted buns with a side of crispy fries', 'Dinner', 'Western', 30, 'Medium', 2, 'images/Beef Burgers with Fries.png'),
-(22, 'Shrimp Pad Thai', 'Classic Thai stir-fried rice noodles with shrimp, tofu, and bean sprouts', 'Dinner', 'Asian', 25, 'Medium', 2, 'images/Shrimp Pad Thai.png'),
-(23, 'Vegetable Pasta', 'Penne pasta tossed with mixed garden vegetables in a rich marinara sauce', 'Dinner', 'Western', 20, 'Easy', 3, 'images/Vegetable Pasta.png'),
-(24, 'Pol Sambol with Roti', 'Spicy coconut sambol served alongside warm, flaky flatbread rotis', 'Dinner', 'Sri Lankan', 25, 'Medium', 2, 'images/Pol Sambol with Roti.png'),
-(25, 'Chia Seed Pudding', 'Healthy chia seeds soaked in almond milk with vanilla and honey', 'Breakfast', 'International', 10, 'Easy', 1, 'images/Chia Seed Pudding.png'),
-(26, 'Chicken Quesadilla', 'Toasted flour tortillas filled with melted cheese and seasoned chicken', 'Lunch', 'Mexican', 15, 'Easy', 2, 'images/Chicken Quesadilla.png'),
-(28, 'Any Berry Sauce', 'Wash hands with soap and water.\r\nIn a medium saucepan, mix together sugar, cornstarch, water, and 2 cups of berries. Mash berries if desired.\r\nHeat over medium heat, stirring frequently, until sauce starts to thicken.\r\nRemove from heat and stir in remaining berries. Mash if desired.\r\nServe over pancakes, waffles, oatmeal, or yogurt.\r\nRefrigerate leftovers within 2 hours, for up to a week.', 'Breakfast', 'Western', 30, 'Easy', 9, 'images/Any Berry Sauce.png');
-
+(36, 'Tomatoes', 30.00, 200, NULL, 'pcs', 3, 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2026-07-22 08:35:07', '2026-07-22 08:35:07'),
+(37, 'Mixed Berries', 450.00, 1000, NULL, 'g', 3, 'https://images.unsplash.com/photo-1696504831684-1e8352620998?auto=format&fit=crop&w=600&q=80', '2026-07-23 05:51:59', '2026-07-23 06:00:35'),
+(38, 'Sugar', 180.00, 5000, NULL, 'g', 5, 'https://images.unsplash.com/photo-1685967836908-7d3b4921a670?auto=format&fit=crop&w=600&q=80', '2026-07-23 05:51:59', '2026-07-23 06:00:35'),
+(39, 'Lemon Juice', 250.00, 2000, NULL, 'ml', 5, 'https://images.unsplash.com/photo-1650939604035-9e259114d0ca?auto=format&fit=crop&w=600&q=80', '2026-07-23 05:51:59', '2026-07-23 06:00:35');
 
 -- --------------------------------------------------------
 
@@ -773,8 +769,6 @@ INSERT INTO `recipeingredients` (`recipeIngredientId`, `recipeId`, `ingredientId
 (48, 12, 13, 1.00, 'pcs'),
 (49, 12, 15, 150.00, 'g'),
 (50, 12, 6, 100.00, 'ml'),
-(51, 16, 2, 200.00, 'g'),
-(52, 16, 4, 100.00, 'g'),
 (53, 24, 32, 150.00, 'g'),
 (54, 24, 33, 15.00, 'g'),
 (55, 24, 18, 100.00, 'g'),
@@ -782,43 +776,55 @@ INSERT INTO `recipeingredients` (`recipeIngredientId`, `recipeId`, `ingredientId
 (57, 25, 19, 20.00, 'ml'),
 (58, 26, 34, 2.00, 'pcs'),
 (59, 26, 1, 100.00, 'g'),
-(60, 26, 35, 75.00, 'g');
-
+(60, 26, 35, 75.00, 'g'),
+(61, 28, 36, 300.00, 'g'),
+(62, 28, 37, 60.00, 'g'),
+(63, 28, 38, 15.00, 'ml');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shoppinglists`
+-- Table structure for table `recipes`
 --
 
-CREATE TABLE `shoppinglists` (
-  `shoppingListId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `createdDate` date DEFAULT NULL,
-  `status` varchar(20) DEFAULT NULL
+CREATE TABLE `recipes` (
+  `recipeId` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `mealType` varchar(50) DEFAULT NULL,
+  `cuisine` varchar(50) DEFAULT NULL,
+  `cookingTime` int(11) DEFAULT NULL,
+  `difficulty` varchar(20) DEFAULT NULL,
+  `servings` int(11) DEFAULT NULL,
+  `imageUrl` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `shoppinglists`
+-- Dumping data for table `recipes`
 --
 
-INSERT INTO `shoppinglists` (`shoppingListId`, `userId`, `createdDate`, `status`) VALUES
-(2, 1, '2026-07-06', 'Pending'),
-(3, 1, '2026-07-07', 'Pending'),
-(4, 1, '2026-07-13', 'Pending'),
-(5, 1, '2026-07-13', 'Pending'),
-(6, 1, '2026-07-13', 'Pending'),
-(7, 1, '2026-07-18', 'Pending'),
-(8, 1, '2026-07-18', 'Pending'),
-(9, 6, '2026-07-18', 'Pending'),
-(10, 6, '2026-07-20', 'Pending'),
-(11, 6, '2026-07-20', 'Pending'),
-(12, 6, '2026-07-20', 'Pending'),
-(13, 6, '2026-07-20', 'Pending'),
-(14, 6, '2026-07-20', 'Pending'),
-(15, 6, '2026-07-20', 'Pending'),
-(16, 6, '2026-07-20', 'Pending');
-
+INSERT INTO `recipes` (`recipeId`, `name`, `description`, `mealType`, `cuisine`, `cookingTime`, `difficulty`, `servings`, `imageUrl`) VALUES
+(3, 'Chicken Curry With Sauce', 'Traditional Sri Lankan spicy chicken curry', 'Dinner', 'Sri Lankan', 45, 'Medium', 4, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733198/Chicken_curry_with_sauce_qzkxma.png'),
+(4, 'Vegetable Fried Rice', 'Healthy fried rice with mixed vegetables', 'Lunch', 'Asian', 30, 'Easy', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733332/Vegetable_Fried_Rice_k4xcau.png'),
+(5, 'Grilled Salmon', 'Grilled salmon with steamed vegetables', 'Dinner', 'Western', 35, 'Hard', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733273/Grilled_Salmon_oolzfc.png'),
+(6, 'Quinoa Salad', 'Fresh quinoa salad with cucumber and tomatoes', 'Lunch', 'Mediterranean', 20, 'Easy', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733329/Quinoa_Salad_wqey18.png'),
+(7, 'Oatmeal with Fruits', 'Healthy oatmeal topped with bananas and berries', 'Breakfast', 'International', 10, 'Easy', 1, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733304/Oatmeal_with_Fruits_no0zzi.png'),
+(8, 'Egg Omelette', 'Protein-rich vegetable omelette', 'Breakfast', 'International', 15, 'Easy', 1, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733229/Egg_Omelette_sehu49.png'),
+(9, 'Lentil Soup', 'Nutritious red lentil soup', 'Dinner', 'Middle Eastern', 40, 'Easy', 4, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733288/Lentil_Soup_gzpz9h.png'),
+(10, 'Chicken Caesar Salad', 'Grilled chicken with fresh lettuce', 'Lunch', 'Western', 25, 'Easy', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733153/Chicken_Caesar_Salad_jhqbyo.png'),
+(11, 'Beef Stir Fry', 'Lean beef with broccoli and carrots', 'Dinner', 'Asian', 30, 'Medium', 3, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733125/Beef_Stir_Fry_a5adui.png'),
+(12, 'Fruit Smoothie', 'Mixed fruit smoothie with yogurt', 'Breakfast', 'International', 10, 'Easy', 1, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733242/Fruit_Smoothie_jfrhrt.png'),
+(17, 'Avocado Toast with Egg', 'Crispy sourdough toast topped with mashed avocado and a poached egg', 'Breakfast', 'International', 10, 'Easy', 1, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784732784/Avocado_Toast_with_Egg_slusc5.png'),
+(18, 'Pancakes with Maple Syrup', 'Fluffy buttermilk pancakes served with butter and fresh maple syrup', 'Breakfast', 'Western', 15, 'Easy', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733931/pancakes_with_maple_syrup_xeqxfa.png'),
+(19, 'Dhal Curry', 'Traditional Sri Lankan red lentil curry cooked in rich coconut milk', 'Lunch', 'Sri Lankan', 20, 'Easy', 4, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733219/Dhal_Curry_omaeap.png'),
+(20, 'Greek Salad', 'Crisp cucumbers, tomatoes, red onions, olives, and feta cheese blocks', 'Lunch', 'Mediterranean', 15, 'Easy', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733260/Greek_Salad_xsse8m.png'),
+(21, 'Beef Burgers with Fries', 'Juicy grilled beef patties on toasted buns with a side of crispy fries', 'Dinner', 'Western', 30, 'Medium', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733112/Beef_Burgers_with_Fries_nvmn8u.png'),
+(22, 'Shrimp Pad Thai', 'Classic Thai stir-fried rice noodles with shrimp, tofu, and bean sprouts', 'Dinner', 'Asian', 25, 'Medium', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733330/Shrimp_Pad_Thai_i3n6xi.png'),
+(23, 'Vegetable Pasta', 'Penne pasta tossed with mixed garden vegetables in a rich marinara sauce', 'Dinner', 'Western', 20, 'Easy', 3, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733331/Vegetable_Pasta_lryzdq.png'),
+(24, 'Pol Sambol with Roti', 'Spicy coconut sambol served alongside warm, flaky flatbread rotis', 'Dinner', 'Sri Lankan', 25, 'Medium', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733326/Pol_Sambol_with_Roti_dztcr5.png'),
+(25, 'Chia Seed Pudding', 'Healthy chia seeds soaked in almond milk with vanilla and honey', 'Breakfast', 'International', 10, 'Easy', 1, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733138/Chia_Seed_Pudding_budk6w.png'),
+(26, 'Chicken Quesadilla', 'Toasted flour tortillas filled with melted cheese and seasoned chicken', 'Lunch', 'Mexican', 15, 'Easy', 2, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784733207/Chicken_Quesadilla_rzoxrl.png'),
+(28, 'Any Berry Sauce', 'Any Berry Sauce is a simple and versatile sauce made by mixing together sugar, cornstarch, water, and fresh berries.', 'Breakfast', 'Western', 30, 'Easy', 9, 'https://res.cloudinary.com/h94oooy5/image/upload/v1784732693/Any_Berry_Sauce_mj6jkv.png');
 
 -- --------------------------------------------------------
 
@@ -938,6 +944,39 @@ INSERT INTO `shoppinglistitems` (`shoppingListItemId`, `shoppingListId`, `ingred
 (101, 16, 2, 100.00, 'g', 'Pending'),
 (102, 16, 3, 10.00, 'g', 'Purchased');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shoppinglists`
+--
+
+CREATE TABLE `shoppinglists` (
+  `shoppingListId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `createdDate` date DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shoppinglists`
+--
+
+INSERT INTO `shoppinglists` (`shoppingListId`, `userId`, `createdDate`, `status`) VALUES
+(2, 1, '2026-07-06', 'Pending'),
+(3, 1, '2026-07-07', 'Pending'),
+(4, 1, '2026-07-13', 'Pending'),
+(5, 1, '2026-07-13', 'Pending'),
+(6, 1, '2026-07-13', 'Pending'),
+(7, 1, '2026-07-18', 'Pending'),
+(8, 1, '2026-07-18', 'Pending'),
+(9, 6, '2026-07-18', 'Pending'),
+(10, 6, '2026-07-20', 'Pending'),
+(11, 6, '2026-07-20', 'Pending'),
+(12, 6, '2026-07-20', 'Pending'),
+(13, 6, '2026-07-20', 'Pending'),
+(14, 6, '2026-07-20', 'Pending'),
+(15, 6, '2026-07-20', 'Pending'),
+(16, 6, '2026-07-20', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -969,7 +1008,6 @@ INSERT INTO `userdietaryrestrictions` (`userId`, `restrictionId`) VALUES
 (11, 3),
 (12, 6);
 
-
 -- --------------------------------------------------------
 
 --
@@ -983,102 +1021,158 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` enum('user','admin') DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `profilePhoto` varchar(255) DEFAULT NULL
+  `profilePhoto` varchar(255) DEFAULT NULL,
+  `notifyExpiry` tinyint(1) NOT NULL DEFAULT 1,
+  `notifyLowStock` tinyint(1) NOT NULL DEFAULT 1,
+  `notifyMealPlanner` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userId`, `name`, `email`, `password`, `role`, `created_at`, `profilePhoto`) VALUES
-(1, 'Sarah Jenkins', 'sarah.j@grocery.com', 'password123', 'admin', '2026-07-16 10:53:15', NULL),
-(2, 'David Miller', 'david.m@grocery.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(3, 'Emma Watson', 'emma.w@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(4, 'James Smith', 'james.s@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(5, 'Elena Rostova', 'elena.r@grocery.com', 'password123', 'admin', '2026-07-16 10:53:15', NULL),
-(6, 'Michael Chang', 'm.chang@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(7, 'Aisha Rahman', 'aisha.r@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(8, 'Carlos Mendez', 'carlos.m@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(9, 'Chloe Bennett', 'chloe.b@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(10, 'Liam O Connor', 'liam.o@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(11, 'Sophia Patel', 'sophia.p@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL),
-(12, 'Marcus Vance', 'marcus.v@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL);
-
+INSERT INTO `users` (`userId`, `name`, `email`, `password`, `role`, `created_at`, `profilePhoto`, `notifyExpiry`, `notifyLowStock`, `notifyMealPlanner`) VALUES
+(1, 'Sarah Jenkins', 'sarah.j@grocery.com', 'password123', 'admin', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(2, 'David Miller', 'david.m@grocery.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(3, 'Emma Watson', 'emma.w@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(4, 'James Smith', 'james.s@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(5, 'Elena Rostova', 'elena.r@grocery.com', 'password123', 'admin', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(6, 'Michael Chang', 'm.chang@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(7, 'Aisha Rahman', 'aisha.r@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(8, 'Carlos Mendez', 'carlos.m@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(9, 'Chloe Bennett', 'chloe.b@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(10, 'Liam O Connor', 'liam.o@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(11, 'Sophia Patel', 'sophia.p@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(12, 'Marcus Vance', 'marcus.v@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0);
 
 --
 -- Indexes for dumped tables
 --
 
+--
+-- Indexes for table `cart_items`
+--
 ALTER TABLE `cart_items`
   ADD PRIMARY KEY (`cartItemId`),
   ADD KEY `fk_cart_items_product` (`productId`);
 
+--
+-- Indexes for table `categories`
+--
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`categoryId`),
   ADD UNIQUE KEY `name` (`name`);
 
+--
+-- Indexes for table `dietaryrestrictions`
+--
 ALTER TABLE `dietaryrestrictions`
   ADD PRIMARY KEY (`restrictionId`);
 
+--
+-- Indexes for table `ingredients`
+--
 ALTER TABLE `ingredients`
   ADD PRIMARY KEY (`ingredientId`),
   ADD KEY `fk_ingredient_product` (`productId`);
 
+--
+-- Indexes for table `inventory`
+--
 ALTER TABLE `inventory`
   ADD PRIMARY KEY (`inventoryId`),
   ADD UNIQUE KEY `unique_product` (`productId`);
 
+--
+-- Indexes for table `mealplandetails`
+--
 ALTER TABLE `mealplandetails`
   ADD PRIMARY KEY (`mealPlanDetailId`),
   ADD KEY `fk_detail_plan` (`mealPlanId`),
   ADD KEY `fk_detail_recipe` (`recipeId`);
 
+--
+-- Indexes for table `mealplans`
+--
 ALTER TABLE `mealplans`
   ADD PRIMARY KEY (`mealPlanId`),
   ADD KEY `fk_mealplan_user` (`userId`);
 
+--
+-- Indexes for table `notifications`
+--
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`notifId`),
   ADD KEY `fk_notif_product` (`productId`);
 
+--
+-- Indexes for table `nutritionfacts`
+--
 ALTER TABLE `nutritionfacts`
   ADD PRIMARY KEY (`nutritionId`),
   ADD KEY `fk_nutrition_recipe` (`recipeId`);
 
+--
+-- Indexes for table `orders`
+--
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`orderId`),
   ADD KEY `fk_order_user` (`userId`);
 
+--
+-- Indexes for table `order_items`
+--
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`orderItemId`),
   ADD KEY `fk_orderitem_order` (`orderId`),
   ADD KEY `fk_orderitem_product` (`productId`);
 
+--
+-- Indexes for table `products`
+--
 ALTER TABLE `products`
   ADD PRIMARY KEY (`productId`),
   ADD KEY `fk_product_category` (`categoryId`);
 
-ALTER TABLE `recipes`
-  ADD PRIMARY KEY (`recipeId`);
-
+--
+-- Indexes for table `recipeingredients`
+--
 ALTER TABLE `recipeingredients`
   ADD PRIMARY KEY (`recipeIngredientId`),
   ADD KEY `fk_recipeingredient_recipe` (`recipeId`),
   ADD KEY `fk_recipeingredient_ingredient` (`ingredientId`);
 
-ALTER TABLE `shoppinglists`
-  ADD PRIMARY KEY (`shoppingListId`),
-  ADD KEY `fk_shoplist_user` (`userId`);
+--
+-- Indexes for table `recipes`
+--
+ALTER TABLE `recipes`
+  ADD PRIMARY KEY (`recipeId`);
 
+--
+-- Indexes for table `shoppinglistitems`
+--
 ALTER TABLE `shoppinglistitems`
   ADD PRIMARY KEY (`shoppingListItemId`),
   ADD KEY `fk_item_list` (`shoppingListId`),
   ADD KEY `fk_item_ingredient` (`ingredientId`);
 
+--
+-- Indexes for table `shoppinglists`
+--
+ALTER TABLE `shoppinglists`
+  ADD PRIMARY KEY (`shoppingListId`),
+  ADD KEY `fk_shoplist_user` (`userId`);
+
+--
+-- Indexes for table `userdietaryrestrictions`
+--
 ALTER TABLE `userdietaryrestrictions`
   ADD PRIMARY KEY (`userId`,`restrictionId`),
   ADD KEY `restrictionId` (`restrictionId`);
 
+--
+-- Indexes for table `users`
+--
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userId`),
   ADD UNIQUE KEY `email` (`email`);
@@ -1087,54 +1181,105 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `cart_items`
+--
 ALTER TABLE `cart_items`
-  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
+--
+-- AUTO_INCREMENT for table `categories`
+--
 ALTER TABLE `categories`
   MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
+--
+-- AUTO_INCREMENT for table `dietaryrestrictions`
+--
 ALTER TABLE `dietaryrestrictions`
   MODIFY `restrictionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
+--
+-- AUTO_INCREMENT for table `ingredients`
+--
 ALTER TABLE `ingredients`
-  MODIFY `ingredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `ingredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
+--
+-- AUTO_INCREMENT for table `inventory`
+--
 ALTER TABLE `inventory`
-  MODIFY `inventoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `inventoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
+--
+-- AUTO_INCREMENT for table `mealplandetails`
+--
 ALTER TABLE `mealplandetails`
-  MODIFY `mealPlanDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
+  MODIFY `mealPlanDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=292;
 
+--
+-- AUTO_INCREMENT for table `mealplans`
+--
 ALTER TABLE `mealplans`
-  MODIFY `mealPlanId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `mealPlanId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
+--
+-- AUTO_INCREMENT for table `notifications`
+--
 ALTER TABLE `notifications`
   MODIFY `notifId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
+--
+-- AUTO_INCREMENT for table `nutritionfacts`
+--
 ALTER TABLE `nutritionfacts`
-  MODIFY `nutritionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `nutritionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
+--
+-- AUTO_INCREMENT for table `orders`
+--
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
+--
+-- AUTO_INCREMENT for table `order_items`
+--
 ALTER TABLE `order_items`
-  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
+--
+-- AUTO_INCREMENT for table `products`
+--
 ALTER TABLE `products`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
+--
+-- AUTO_INCREMENT for table `recipeingredients`
+--
+ALTER TABLE `recipeingredients`
+  MODIFY `recipeIngredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+--
+-- AUTO_INCREMENT for table `recipes`
+--
 ALTER TABLE `recipes`
   MODIFY `recipeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
-ALTER TABLE `recipeingredients`
-  MODIFY `recipeIngredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
-
-ALTER TABLE `shoppinglists`
-  MODIFY `shoppingListId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
+--
+-- AUTO_INCREMENT for table `shoppinglistitems`
+--
 ALTER TABLE `shoppinglistitems`
   MODIFY `shoppingListItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
+--
+-- AUTO_INCREMENT for table `shoppinglists`
+--
+ALTER TABLE `shoppinglists`
+  MODIFY `shoppingListId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
 ALTER TABLE `users`
   MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
@@ -1142,49 +1287,91 @@ ALTER TABLE `users`
 -- Constraints for dumped tables
 --
 
+--
+-- Constraints for table `cart_items`
+--
 ALTER TABLE `cart_items`
   ADD CONSTRAINT `fk_cart_items_product` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON UPDATE CASCADE;
 
+--
+-- Constraints for table `ingredients`
+--
 ALTER TABLE `ingredients`
   ADD CONSTRAINT `fk_ingredient_product` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`);
 
+--
+-- Constraints for table `inventory`
+--
 ALTER TABLE `inventory`
   ADD CONSTRAINT `fk_inventory_product` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`);
 
+--
+-- Constraints for table `mealplandetails`
+--
 ALTER TABLE `mealplandetails`
   ADD CONSTRAINT `fk_detail_plan` FOREIGN KEY (`mealPlanId`) REFERENCES `mealplans` (`mealPlanId`),
   ADD CONSTRAINT `fk_detail_recipe` FOREIGN KEY (`recipeId`) REFERENCES `recipes` (`recipeId`);
 
+--
+-- Constraints for table `mealplans`
+--
 ALTER TABLE `mealplans`
   ADD CONSTRAINT `fk_mealplan_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
 
+--
+-- Constraints for table `notifications`
+--
 ALTER TABLE `notifications`
   ADD CONSTRAINT `fk_notif_product` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`);
 
+--
+-- Constraints for table `nutritionfacts`
+--
 ALTER TABLE `nutritionfacts`
   ADD CONSTRAINT `fk_nutrition_recipe` FOREIGN KEY (`recipeId`) REFERENCES `recipes` (`recipeId`) ON DELETE CASCADE;
 
+--
+-- Constraints for table `orders`
+--
 ALTER TABLE `orders`
   ADD CONSTRAINT `fk_order_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
 
+--
+-- Constraints for table `order_items`
+--
 ALTER TABLE `order_items`
   ADD CONSTRAINT `fk_orderitem_order` FOREIGN KEY (`orderId`) REFERENCES `orders` (`orderId`),
   ADD CONSTRAINT `fk_orderitem_product` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`);
 
+--
+-- Constraints for table `products`
+--
 ALTER TABLE `products`
   ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`categoryId`);
 
+--
+-- Constraints for table `recipeingredients`
+--
 ALTER TABLE `recipeingredients`
   ADD CONSTRAINT `fk_recipeingredient_ingredient` FOREIGN KEY (`ingredientId`) REFERENCES `ingredients` (`ingredientId`),
   ADD CONSTRAINT `fk_recipeingredient_recipe` FOREIGN KEY (`recipeId`) REFERENCES `recipes` (`recipeId`);
 
-ALTER TABLE `shoppinglists`
-  ADD CONSTRAINT `fk_shoplist_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
-
+--
+-- Constraints for table `shoppinglistitems`
+--
 ALTER TABLE `shoppinglistitems`
   ADD CONSTRAINT `fk_item_ingredient` FOREIGN KEY (`ingredientId`) REFERENCES `ingredients` (`ingredientId`),
   ADD CONSTRAINT `fk_item_list` FOREIGN KEY (`shoppingListId`) REFERENCES `shoppinglists` (`shoppingListId`);
 
+--
+-- Constraints for table `shoppinglists`
+--
+ALTER TABLE `shoppinglists`
+  ADD CONSTRAINT `fk_shoplist_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
+
+--
+-- Constraints for table `userdietaryrestrictions`
+--
 ALTER TABLE `userdietaryrestrictions`
   ADD CONSTRAINT `userdietaryrestrictions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`),
   ADD CONSTRAINT `userdietaryrestrictions_ibfk_2` FOREIGN KEY (`restrictionId`) REFERENCES `dietaryrestrictions` (`restrictionId`);

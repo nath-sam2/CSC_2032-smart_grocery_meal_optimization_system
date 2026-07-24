@@ -56,10 +56,15 @@ public class CartServlet extends HttpServlet {
         }
 
         if ("update".equals(action)) {
-            int cartItemId = Integer.parseInt(
-                request.getParameter("cartItemId"));
-            int quantity = Integer.parseInt(
-                request.getParameter("quantity"));
+            int cartItemId;
+            int quantity;
+            try {
+                cartItemId = Integer.parseInt(request.getParameter("cartItemId"));
+                quantity = Integer.parseInt(request.getParameter("quantity"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect("cart.jsp");
+                return;
+            }
             if (quantity < 1) {
                 cartService.removeFromCart(cartItemId);
             } else {
