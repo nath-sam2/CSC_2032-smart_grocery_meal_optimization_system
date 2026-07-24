@@ -5,6 +5,7 @@ mysql-connector-*/
 # ===== Build output =====
 build/
 dist/
+target/
 
 # ===== NetBeans private/generated project files =====
 nbproject/private/
