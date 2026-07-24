@@ -21,6 +21,8 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
 
 <%
 User user=(User)session.getAttribute("user");
@@ -1187,6 +1189,34 @@ Map<String, String> slotIcons = new HashMap<>();
 slotIcons.put("Breakfast", "🌅");
 slotIcons.put("Lunch", "☀️");
 slotIcons.put("Dinner", "🌙");
+
+// ---- REAL STATS FOR SUMMARY CARDS ----
+
+// 1) Inventory Items - real count of products currently tracked in inventory
+List<Inventory> allInventory = inventoryService.getAllInventory();
+int inventoryItemCount = allInventory.size();
+
+// 2) Food Saved This Month (kg) & Money Saved This Month (Rs.)
+// There is no dedicated "food waste" history table yet, so these are calculated
+// as a live proxy: the quantity/value of stock that is currently NOT at risk of
+// expiring within the next 30 days (i.e. stock successfully "saved" from waste).
+List<Product> expiringThisMonth = inventoryService.getExpiringItems(30);
+Set<Integer> expiringProductIds = new HashSet<>();
+for (Product ep : expiringThisMonth) {
+    expiringProductIds.add(ep.getProductId());
+}
+
+double foodSavedKg = 0;
+double moneySaved = 0;
+for (Inventory inv : allInventory) {
+    if (!expiringProductIds.contains(inv.getProductId())) {
+        Product invProduct = productDAO.getProductById(inv.getProductId());
+        if (invProduct != null) {
+            foodSavedKg += inv.getQuantity();
+            moneySaved += inv.getQuantity() * invProduct.getPrice();
+        }
+    }
+}
 %>
 
 <div class="stats">
@@ -1194,7 +1224,7 @@ slotIcons.put("Dinner", "🌙");
 <a href="inventory.jsp" class="stat-card">
 <div class="icon-circle green"><i class="fa-solid fa-box"></i></div>
 <div>
-<div class="stat-number">128 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 12%</span></div>
+<div class="stat-number"><%= inventoryItemCount %></div>
 <div class="stat-title">Inventory Items</div>
 </div>
 </a>
@@ -1210,7 +1240,7 @@ slotIcons.put("Dinner", "🌙");
 <a href="notifications.jsp" class="stat-card">
 <div class="icon-circle blue"><i class="fa-solid fa-seedling"></i></div>
 <div>
-<div class="stat-number">8.4 kg <span class="trend"><i class="fa-solid fa-arrow-up"></i> 15%</span></div>
+<div class="stat-number"><%= String.format("%.1f", foodSavedKg) %> kg</div>
 <div class="stat-title">Food Saved This Month</div>
 </div>
 </a>
@@ -1218,7 +1248,7 @@ slotIcons.put("Dinner", "🌙");
 <a href="orders.jsp" class="stat-card">
 <div class="icon-circle purple"><i class="fa-solid fa-wallet"></i></div>
 <div>
-<div class="stat-number">Rs. 4,500 <span class="trend"><i class="fa-solid fa-arrow-up"></i> 10%</span></div>
+<div class="stat-number">Rs. <%= String.format("%,.2f", moneySaved) %></div>
 <div class="stat-title">Money Saved This Month</div>
 </div>
 </a>
