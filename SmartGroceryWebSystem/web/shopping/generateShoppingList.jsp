@@ -159,11 +159,7 @@ String navCtx = request.getContextPath();
 <%@ page import="dao.MealPlannerDAO" %>
 
 <%
-HttpSession genSession = request.getSession();
-Integer genUserId = (Integer) genSession.getAttribute("userId");
-if (genUserId == null) {
-    genUserId = 6;
-}
+int genUserId = util.SessionUtil.getLoggedInUserId(request.getSession());
 
 MealPlannerDAO mealPlannerDAO = new MealPlannerDAO();
 List<MealPlanner> userPlans = mealPlannerDAO.getMealPlansByUser(genUserId);

@@ -63,7 +63,7 @@ public class ShoppingListController extends HttpServlet {
     HttpSession session = request.getSession();
     Integer userId = util.SessionUtil.getLoggedInUserId(session);
 
-    List<ShoppingList> lists = shoppingListDAO.getAllShoppingLists();
+    List<ShoppingList> lists = shoppingListDAO.getShoppingListsByUser(userId);
     request.setAttribute("shoppingLists", lists);
     request.getRequestDispatcher("/shopping/shoppingList.jsp").forward(request,response);
     break;

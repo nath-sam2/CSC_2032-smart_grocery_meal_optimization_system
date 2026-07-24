@@ -187,6 +187,13 @@ for (MealPlanDetail detail : details) {
         <%= plan.getStartDate() %> to <%= plan.getEndDate() %>
     </p>
 
+    <% if ("0".equals(request.getParameter("added"))) { %>
+        <div class="alert alert-error">
+            That recipe wasn't added ? this plan already has a meal for today's slot.
+            Use "+ Add Meal" below to pick a different day or meal type.
+        </div>
+    <% } %>
+
     <a href="MealPlannerController?action=addMeal&id=<%=plan.getMealPlanId()%>" class="btn btn-primary">+ Add Meal</a>
 
     <br><br>

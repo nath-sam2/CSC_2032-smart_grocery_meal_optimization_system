@@ -150,10 +150,8 @@ String navCtx = request.getContextPath();
 <%@ page import="java.util.List" %>
 <%@ page import="model.ShoppingListItem" %>
 <%@ page import="model.Ingredient" %>
-<%@ page import="model.Inventory" %>
 <%@ page import="model.Product" %>
 <%@ page import="dao.IngredientDAO" %>
-<%@ page import="dao.InventoryDAO" %>
 <%@ page import="dao.ProductDAO" %>
 
 <%
@@ -161,7 +159,6 @@ List<ShoppingListItem> items =
 (List<ShoppingListItem>) request.getAttribute("items");
 
 IngredientDAO ingredientDAO = new IngredientDAO();
-InventoryDAO inventoryDAO = new InventoryDAO();
 ProductDAO productDAO = new ProductDAO();
 %>
 
@@ -181,7 +178,6 @@ ProductDAO productDAO = new ProductDAO();
             <tr>
                 <th>Ingredient</th>
                 <th>Quantity</th>
-                <th>Availability</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -195,24 +191,6 @@ ProductDAO productDAO = new ProductDAO();
                     String ingredientName =
                     (ingredient != null) ? ingredient.getName() : "Unknown Ingredient";
 
-                    String availability = "Not tracked";
-                    String availabilityBadgeClass = "badge-grade-c";
-
-                    if (ingredient != null) {
-                        Inventory inv = inventoryDAO.getInventoryByProduct(ingredient.getProductId());
-
-                        if (inv == null) {
-                            availability = "Out of stock";
-                            availabilityBadgeClass = "badge-warning";
-                        } else if (inv.getQuantity() <= 0) {
-                            availability = "Out of stock";
-                            availabilityBadgeClass = "badge-warning";
-                        } else {
-                            availability = "In stock (" + inv.getQuantity() + " " + item.getUnit() + ")";
-                            availabilityBadgeClass = "badge-grade-a";
-                        }
-                    }
-
                     boolean purchased = "Purchased".equals(item.getStatus());
 
                     Product product = (ingredient != null)
@@ -222,10 +200,7 @@ ProductDAO productDAO = new ProductDAO();
 
             <tr>
                 <td data-label="Ingredient"><%=ingredientName%></td>
-                <td data-label="Quantity"><%=item.getQuantity()%> <%=item.getUnit()%></td>
-                <td data-label="Availability">
-                    <span class="badge <%=availabilityBadgeClass%>"><%=availability%></span>
-                </td>
+                <td data-label="Quantity"><%=util.QuantityFormatter.format(item.getQuantity(), item.getUnit())%></td>
                 <td data-label="Status">
                     <span class="badge <%= purchased ? "badge-grade-a" : "badge-grade-c" %>"><%=item.getStatus()%></span>
                 </td>

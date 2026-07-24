@@ -267,7 +267,15 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
         targetPlan.setPlanName("My Meal Plan");
         targetPlan.setStartDate(LocalDate.now());
         targetPlan.setEndDate(LocalDate.now().plusDays(6));
-        mealPlannerDAO.insertMealPlan(targetPlan);
+
+        boolean planCreated = mealPlannerDAO.insertMealPlan(targetPlan);
+
+        if (!planCreated || targetPlan.getMealPlanId() <= 0) {
+            // Insert failed - don't attempt to attach a meal to a plan
+            // that doesn't actually exist in the database.
+            response.sendRedirect("MealPlannerController?action=list");
+            return;
+        }
     }
 
     Recipe quickAddRecipe = recipeDAO.getRecipeById(quickAddRecipeId);
@@ -280,9 +288,14 @@ List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
             quickAddRecipe != null ? quickAddRecipe.getMealType() : "Lunch"
     );
 
-    mealDetailDAO.insertMealPlanDetail(quickAddDetail);
+    boolean mealAdded = mealDetailDAO.insertMealPlanDetail(quickAddDetail);
 
-    response.sendRedirect("MealPlannerController?action=view&id=" + targetPlan.getMealPlanId());
+    String quickAddRedirect = "MealPlannerController?action=view&id=" + targetPlan.getMealPlanId();
+    if (!mealAdded) {
+        quickAddRedirect += "&added=0";
+    }
+
+    response.sendRedirect(quickAddRedirect);
 
     return;
     

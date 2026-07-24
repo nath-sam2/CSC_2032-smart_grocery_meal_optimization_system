@@ -57,7 +57,7 @@ public class ShoppingListDAO {
 
     public ShoppingList getShoppingListById(int shoppingListId) {
 
-        String sql = "SELECT * FROM ShoppingLists WHERE shoppingListId = ?";
+        String sql = "SELECT * FROM shoppinglists WHERE shoppingListId = ?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -91,7 +91,7 @@ public class ShoppingListDAO {
 
         List<ShoppingList> shoppingLists = new ArrayList<>();
 
-        String sql = "SELECT * FROM ShoppingLists";
+        String sql = "SELECT * FROM shoppinglists";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -118,9 +118,44 @@ public class ShoppingListDAO {
         return shoppingLists;
     }
 
+    public List<ShoppingList> getShoppingListsByUser(int userId) {
+
+        List<ShoppingList> shoppingLists = new ArrayList<>();
+
+        String sql = "SELECT * FROM shoppinglists WHERE userId = ?";
+
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ShoppingList shoppingList = new ShoppingList();
+
+                    shoppingList.setShoppingListId(rs.getInt("shoppingListId"));
+                    shoppingList.setUserId(rs.getInt("userId"));
+                    shoppingList.setCreatedDate(rs.getDate("createdDate").toLocalDate());
+                    shoppingList.setStatus(rs.getString("status"));
+
+                    shoppingLists.add(shoppingList);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return shoppingLists;
+    }
+
     public boolean updateShoppingList(ShoppingList shoppingList) {
 
-        String sql = "UPDATE ShoppingLists SET userId=?, createdDate=?, status=? WHERE shoppingListId=?";
+        String sql = "UPDATE shoppinglists SET userId=?, createdDate=?, status=? WHERE shoppingListId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -142,7 +177,7 @@ public class ShoppingListDAO {
     
     public boolean deleteShoppingList(int shoppingListId) {
 
-        String sql = "DELETE FROM ShoppingLists WHERE shoppingListId=?";
+        String sql = "DELETE FROM shoppinglists WHERE shoppingListId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();

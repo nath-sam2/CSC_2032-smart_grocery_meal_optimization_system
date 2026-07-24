@@ -137,7 +137,7 @@ public class MealPlannerDAO {
     public List<MealPlanner> getMealPlansByUser(int userId){
         List<MealPlanner> mealPlans = new ArrayList<>();
 
-        String sql = "SELECT * FROM MealPlans WHERE userId=?";
+        String sql = "SELECT * FROM MealPlans WHERE userId=? ORDER BY mealPlanId ASC";
 
         try (
                 Connection conn = DBConnection.getConnection();
