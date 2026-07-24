@@ -22,7 +22,7 @@ import java.util.List;
 
 public class IngredientDAO {
     public boolean insertIngredient(Ingredient ingredient){
-        String sql = "INSERT INTO Ingredients(productId, name, category, unit) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO ingredients(productId, name, category, unit) VALUES (?, ?, ?, ?)";
         
         try (
         Connection conn = DBConnection.getConnection();
@@ -46,7 +46,7 @@ public class IngredientDAO {
     }
     
     public Ingredient getIngredientById(int ingredientId){
-        String sql = "SELECT * FROM Ingredients WHERE ingredientId = ?";
+        String sql = "SELECT * FROM ingredients WHERE ingredientId = ?";
                 
         try (
         Connection conn = DBConnection.getConnection();
@@ -80,7 +80,7 @@ public class IngredientDAO {
 
     List<Ingredient> ingredients = new ArrayList<>();
 
-    String sql = "SELECT * FROM Ingredients";
+    String sql = "SELECT * FROM ingredients";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -109,7 +109,7 @@ public class IngredientDAO {
 }
     public boolean updateIngredient(Ingredient ingredient) {
 
-    String sql = "UPDATE Ingredients SET productId=?, name=?, category=?, unit=? WHERE ingredientId=?";
+    String sql = "UPDATE ingredients SET productId=?, name=?, category=?, unit=? WHERE ingredientId=?";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -133,7 +133,7 @@ public class IngredientDAO {
 }
     public boolean deleteIngredient(int ingredientId) {
 
-    String sql = "DELETE FROM Ingredients WHERE ingredientId = ?";
+    String sql = "DELETE FROM ingredients WHERE ingredientId = ?";
 
     try (
         Connection conn = DBConnection.getConnection();
