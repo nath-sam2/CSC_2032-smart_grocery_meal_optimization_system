@@ -39,9 +39,14 @@ public class DBConnection {
 
     // Aiven requires SSL. useSSL/requireSSL keep this working against a
     // plain local MySQL too (they just won't enforce a cert locally).
-    private static final String URL =
-        "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE
-        + "?useSSL=true&requireSSL=true&verifyServerCertificate=false";
+   private static final boolean IS_LOCAL =
+    HOST.equalsIgnoreCase("localhost") || HOST.equals("127.0.0.1");
+
+private static final String URL =
+    "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE
+    + (IS_LOCAL
+        ? "?useSSL=false&allowPublicKeyRetrieval=true"
+        : "?useSSL=true&requireSSL=true&verifyServerCertificate=false");
 
     private static String getEnvOrDefault(String name, String defaultValue) {
         String value = System.getenv(name);
