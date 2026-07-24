@@ -21,11 +21,11 @@ public class UserDietaryRestrictionDAO {
 
 
         String checkSQL =
-        "SELECT * FROM UserDietaryRestrictions WHERE userId=? AND restrictionId=?";
+        "SELECT * FROM userdietaryrestrictions WHERE userId=? AND restrictionId=?";
 
 
         String insertSQL =
-        "INSERT INTO UserDietaryRestrictions(userId, restrictionId) VALUES (?, ?)";
+        "INSERT INTO userdietaryrestrictions(userId, restrictionId) VALUES (?, ?)";
 
 
         try(Connection conn = DBConnection.getConnection()){
@@ -80,7 +80,7 @@ public class UserDietaryRestrictionDAO {
 
 
         String sql =
-        "DELETE FROM UserDietaryRestrictions WHERE userId=? AND restrictionId=?";
+        "DELETE FROM userdietaryrestrictions WHERE userId=? AND restrictionId=?";
 
 
         try(
@@ -120,8 +120,8 @@ public class UserDietaryRestrictionDAO {
 
         String sql =
         "SELECT dr.* " +
-        "FROM DietaryRestrictions dr " +
-        "JOIN UserDietaryRestrictions udr " +
+        "FROM dietaryrestrictions dr " +
+        "JOIN userdietaryrestrictions udr " +
         "ON dr.restrictionId = udr.restrictionId " +
         "WHERE udr.userId=?";
 
@@ -196,7 +196,7 @@ public class UserDietaryRestrictionDAO {
 
 
         String sql =
-        "SELECT * FROM UserDietaryRestrictions " +
+        "SELECT * FROM userdietaryrestrictions " +
         "WHERE userId=? AND restrictionId=?";
 
 
@@ -274,7 +274,7 @@ public class UserDietaryRestrictionDAO {
 
 
         String sql =
-        "SELECT * FROM UserDietaryRestrictions";
+        "SELECT * FROM userdietaryrestrictions";
 
 
 
@@ -346,8 +346,8 @@ public class UserDietaryRestrictionDAO {
         "udr.restrictionId, " +
         "dr.restrictionName, " +
         "dr.description " +
-        "FROM UserDietaryRestrictions udr " +
-        "JOIN DietaryRestrictions dr " +
+        "FROM userdietaryrestrictions udr " +
+        "JOIN dietaryrestrictions dr " +
         "ON udr.restrictionId = dr.restrictionId " +
         "WHERE udr.userId=?";
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DietaryRestrictionDAO {
     public boolean insertRestriction(DietaryRestriction restriction){
-        String sql = "INSERT INTO DietaryRestrictions (restrictionName, description) VALUES (?, ?)";
+        String sql = "INSERT INTO dietaryrestrictions (restrictionName, description) VALUES (?, ?)";
         
         try(
             Connection conn = DBConnection.getConnection();
@@ -35,7 +35,7 @@ public class DietaryRestrictionDAO {
         }
     }
     public DietaryRestriction getRestrictionById(int restrictionId) {
-         String sql = "SELECT * FROM DietaryRestrictions WHERE restrictionId = ?";
+         String sql = "SELECT * FROM dietaryrestrictions WHERE restrictionId = ?";
                 
         try (
         Connection conn = DBConnection.getConnection();
@@ -67,7 +67,7 @@ public class DietaryRestrictionDAO {
     public List<DietaryRestriction> getAllRestrictions() {
         List<DietaryRestriction> restrictions = new ArrayList<>();
 
-    String sql = "SELECT * FROM DietaryRestrictions";
+    String sql = "SELECT * FROM dietaryrestrictions";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -94,7 +94,7 @@ public class DietaryRestrictionDAO {
     }
     public boolean updateRestriction(DietaryRestriction restriction) {
 
-    String sql = "UPDATE DietaryRestrictions SET restrictionName=?, description=? WHERE restrictionId=?";
+    String sql = "UPDATE dietaryrestrictions SET restrictionName=?, description=? WHERE restrictionId=?";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -116,18 +116,42 @@ public class DietaryRestrictionDAO {
    } 
 
     public boolean deleteRestriction(int restrictionId) {
-        String sql = "DELETE FROM DietaryRestrictions WHERE restrictionId = ?";
 
-    try (
-        Connection conn = DBConnection.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)
-    ) {
+    String deleteUserLinks = "DELETE FROM userdietaryrestrictions WHERE restrictionId = ?";
+    String deleteRestrictionSql = "DELETE FROM dietaryrestrictions WHERE restrictionId = ?";
 
-        stmt.setInt(1, restrictionId);
+    try (Connection conn = DBConnection.getConnection()) {
 
-        int rowsAffected = stmt.executeUpdate();
+        if (conn == null) {
+            return false;
+        }
 
-        return rowsAffected > 0;
+        conn.setAutoCommit(false);
+
+        try {
+
+            try (PreparedStatement stmt1 = conn.prepareStatement(deleteUserLinks)) {
+                stmt1.setInt(1, restrictionId);
+                stmt1.executeUpdate();
+            }
+
+            int rowsAffected;
+
+            try (PreparedStatement stmt2 = conn.prepareStatement(deleteRestrictionSql)) {
+                stmt2.setInt(1, restrictionId);
+                rowsAffected = stmt2.executeUpdate();
+            }
+
+            conn.commit();
+
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+        }
 
     } catch (Exception e) {
         e.printStackTrace();

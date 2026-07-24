@@ -6,9 +6,9 @@
 #
 #   1. In NetBeans: right-click the project -> Clean and Build
 #      (produces dist/SmartGroceryWebSystem.war)
-#   2. Copy that file to: deploy/SmartGroceryWebSystem.war
-#      (this "deploy" folder is NOT covered by .gitignore, unlike dist/)
-#   3. git add deploy/SmartGroceryWebSystem.war, commit, push
+#   2. Copy that file to: Deploy/SmartGroceryWebSystem.war
+#      (this "Deploy" folder is NOT covered by .gitignore, unlike dist/)
+#   3. git add Deploy/SmartGroceryWebSystem.war, commit, push
 #
 # Render then builds this Dockerfile from your repo and it just picks up
 # the WAR you already built and tested locally.
@@ -20,7 +20,9 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Deploy your app as the ROOT context, so it's served at "/"
 # instead of "/SmartGroceryWebSystem" — simpler URLs on Render.
-COPY deploy/SmartGroceryWebSystem.war /usr/local/tomcat/webapps/ROOT.war
+# NOTE: folder name is "Deploy" (capital D) to match the repo exactly —
+# Render builds on Linux, which is case-sensitive.
+COPY Deploy/SmartGroceryWebSystem.war /usr/local/tomcat/webapps/ROOT.war
 
 # Render sets $PORT and expects the app to listen on it.
 # Tomcat's default HTTP connector listens on 8080 — set that as the

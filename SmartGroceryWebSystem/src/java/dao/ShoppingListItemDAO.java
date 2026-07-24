@@ -18,7 +18,7 @@ import java.util.List;
 public class ShoppingListItemDAO {
     public boolean insertShoppingListItem(ShoppingListItem item) {
 
-        String sql = "INSERT INTO ShoppingListItems (shoppingListId, ingredientId, quantity, unit, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO shoppinglistitems (shoppingListId, ingredientId, quantity, unit, status) VALUES (?, ?, ?, ?, ?)";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -41,7 +41,7 @@ public class ShoppingListItemDAO {
 
     public ShoppingListItem getShoppingListItemById(int shoppingListItemId) {
 
-        String sql = "SELECT * FROM ShoppingListItems WHERE shoppingListItemId = ?";
+        String sql = "SELECT * FROM shoppinglistitems WHERE shoppingListItemId = ?";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -77,7 +77,7 @@ public class ShoppingListItemDAO {
 
         List<ShoppingListItem> items = new ArrayList<>();
 
-        String sql = "SELECT * FROM ShoppingListItems";
+        String sql = "SELECT * FROM shoppinglistitems";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -108,7 +108,7 @@ public class ShoppingListItemDAO {
 
     public boolean updateShoppingListItem(ShoppingListItem item) {
 
-        String sql = "UPDATE ShoppingListItems SET shoppingListId=?, ingredientId=?, quantity=?, unit=?, status=? WHERE shoppingListItemId=?";
+        String sql = "UPDATE shoppinglistitems SET shoppingListId=?, ingredientId=?, quantity=?, unit=?, status=? WHERE shoppingListItemId=?";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -132,7 +132,7 @@ public class ShoppingListItemDAO {
     
     public boolean deleteShoppingListItem(int shoppingListItemId) {
 
-        String sql = "DELETE FROM ShoppingListItems WHERE shoppingListItemId=?";
+        String sql = "DELETE FROM shoppinglistitems WHERE shoppingListItemId=?";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -152,7 +152,7 @@ public class ShoppingListItemDAO {
 
     List<ShoppingListItem> items = new ArrayList<>();
 
-    String sql = "SELECT * FROM ShoppingListItems WHERE shoppingListId=?";
+    String sql = "SELECT * FROM shoppinglistitems WHERE shoppingListId=?";
 
     try (
         Connection conn = DBConnection.getConnection();

@@ -19,7 +19,7 @@ import java.util.List;
 public class MealPlanDetailDAO {
     public boolean insertMealPlanDetail(MealPlanDetail detail) {
 
-        String sql = "INSERT INTO MealPlanDetails (mealPlanId, recipeId, mealType, mealDate) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO mealplandetails (mealPlanId, recipeId, mealType, mealDate) VALUES (?, ?, ?, ?)";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -59,7 +59,7 @@ public class MealPlanDetailDAO {
 
     public boolean updateMealPlanDetail(MealPlanDetail detail) {
 
-        String sql = "UPDATE MealPlanDetails SET mealPlanId=?, recipeId=?, mealDate=?, mealType=? WHERE mealPlanDetailId=?";
+        String sql = "UPDATE mealplandetails SET mealPlanId=?, recipeId=?, mealDate=?, mealType=? WHERE mealPlanDetailId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -89,7 +89,7 @@ public class MealPlanDetailDAO {
 
     public boolean deleteMealPlanDetail(int mealPlanDetailId) {
 
-        String sql = "DELETE FROM MealPlanDetails WHERE mealPlanDetailId=?";
+        String sql = "DELETE FROM mealplandetails WHERE mealPlanDetailId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -116,7 +116,7 @@ public class MealPlanDetailDAO {
 
     public MealPlanDetail getMealPlanDetailById(int mealPlanDetailId) {
 
-        String sql = "SELECT * FROM MealPlanDetails WHERE mealPlanDetailId=?";
+        String sql = "SELECT * FROM mealplandetails WHERE mealPlanDetailId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -152,7 +152,7 @@ public class MealPlanDetailDAO {
 
         List<MealPlanDetail> details = new ArrayList<>();
 
-        String sql = "SELECT * FROM MealPlanDetails WHERE mealPlanId=?";
+        String sql = "SELECT * FROM mealplandetails WHERE mealPlanId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -186,7 +186,7 @@ public class MealPlanDetailDAO {
     public boolean mealExists(int mealPlanId, String mealType, LocalDate mealDate){
 
     String sql =
-    "SELECT * FROM MealPlanDetails WHERE mealPlanId=? AND mealType=? AND mealDate=?";
+    "SELECT * FROM mealplandetails WHERE mealPlanId=? AND mealType=? AND mealDate=?";
 
 
     try(

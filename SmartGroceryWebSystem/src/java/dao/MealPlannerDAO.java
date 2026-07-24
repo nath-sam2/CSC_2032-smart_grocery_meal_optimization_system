@@ -54,7 +54,7 @@ public class MealPlannerDAO {
 }
     
     public boolean updateMealPlan(MealPlanner mealPlan){
-        String sql = "UPDATE MealPlans SET userId=?, planName=?, startDate=?, endDate=? WHERE mealPlanId = ?";
+        String sql = "UPDATE mealplans SET userId=?, planName=?, startDate=?, endDate=? WHERE mealPlanId = ?";
         
         try (
                 Connection conn = DBConnection.getConnection();
@@ -81,7 +81,7 @@ public class MealPlannerDAO {
     }
 
     public boolean deleteMealPlan(int mealPlanId){
-        String sql = "DELETE FROM MealPlans WHERE mealPlanId=?";
+        String sql = "DELETE FROM mealplans WHERE mealPlanId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -103,7 +103,7 @@ public class MealPlannerDAO {
     }
 
     public MealPlanner getMealPlansById(int mealPlanId){
-        String sql = "SELECT * FROM MealPlans WHERE mealPlanId = ?";
+        String sql = "SELECT * FROM mealplans WHERE mealPlanId = ?";
         
         try (
         Connection conn = DBConnection.getConnection();
@@ -137,7 +137,7 @@ public class MealPlannerDAO {
     public List<MealPlanner> getMealPlansByUser(int userId){
         List<MealPlanner> mealPlans = new ArrayList<>();
 
-        String sql = "SELECT * FROM MealPlans WHERE userId=? ORDER BY mealPlanId ASC";
+        String sql = "SELECT * FROM mealplans WHERE userId=? ORDER BY mealPlanId ASC";
 
         try (
                 Connection conn = DBConnection.getConnection();

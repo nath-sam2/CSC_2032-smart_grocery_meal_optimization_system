@@ -19,7 +19,7 @@ import java.util.List;
 public class NutritionFactsDAO {
     public boolean insertNutritionFacts(NutritionFacts nutrition) {
 
-    String sql = "INSERT INTO NutritionFacts (recipeId, servingSize, servingsPerContainer, calories, totalFat, saturatedFat, transFat, cholesterol, sodium, totalCarbohydrates, dietaryFiber, totalSugar, addedSugar, protein, vitaminA, vitaminC, vitaminD, calcium, iron, potassium) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO nutritionfacts (recipeId, servingSize, servingsPerContainer, calories, totalFat, saturatedFat, transFat, cholesterol, sodium, totalCarbohydrates, dietaryFiber, totalSugar, addedSugar, protein, vitaminA, vitaminC, vitaminD, calcium, iron, potassium) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (
         Connection conn = DBConnection.getConnection();
@@ -56,7 +56,7 @@ public class NutritionFactsDAO {
 }
     public NutritionFacts getNutritionFactsById(int nutritionId) {
 
-        String sql = "SELECT * FROM NutritionFacts WHERE nutritionId = ?";
+        String sql = "SELECT * FROM nutritionfacts WHERE nutritionId = ?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -107,7 +107,7 @@ public class NutritionFactsDAO {
 
         List<NutritionFacts> nutritionList = new ArrayList<>();
 
-        String sql = "SELECT * FROM NutritionFacts";
+        String sql = "SELECT * FROM nutritionfacts";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -153,7 +153,7 @@ public class NutritionFactsDAO {
 
     public boolean updateNutritionFacts(NutritionFacts nutrition) {
 
-        String sql = "UPDATE NutritionFacts SET recipeId=?, servingSize=?, servingsPerContainer=?, calories=?, totalFat=?, saturatedFat=?, transFat=?, cholesterol=?, sodium=?, totalCarbohydrates=?, dietaryFiber=?, totalSugar=?, addedSugar=?, protein=?, vitaminA=?, vitaminC=?, vitaminD=?, calcium=?, iron=?, potassium=? WHERE nutritionId=?";
+        String sql = "UPDATE nutritionfacts SET recipeId=?, servingSize=?, servingsPerContainer=?, calories=?, totalFat=?, saturatedFat=?, transFat=?, cholesterol=?, sodium=?, totalCarbohydrates=?, dietaryFiber=?, totalSugar=?, addedSugar=?, protein=?, vitaminA=?, vitaminC=?, vitaminD=?, calcium=?, iron=?, potassium=? WHERE nutritionId=?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -192,7 +192,7 @@ public class NutritionFactsDAO {
     
     public boolean deleteNutritionFacts(int nutritionId) {
 
-        String sql = "DELETE FROM NutritionFacts WHERE nutritionId = ?";
+        String sql = "DELETE FROM nutritionfacts WHERE nutritionId = ?";
 
         try (
                 Connection conn = DBConnection.getConnection();
@@ -211,7 +211,7 @@ public class NutritionFactsDAO {
     
     public NutritionFacts getNutritionFactsByRecipeId(int recipeId) {
 
-    String sql = "SELECT * FROM NutritionFacts WHERE recipeId = ?";
+    String sql = "SELECT * FROM nutritionfacts WHERE recipeId = ?";
 
     try (
         Connection conn = DBConnection.getConnection();
