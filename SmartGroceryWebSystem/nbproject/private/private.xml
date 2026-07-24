@@ -123,6 +123,7 @@
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/test/RecommendationEngineTest.java</file>
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/test/TestUserRestrictionDAO.java</file>
             <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/nbproject/project.properties</file>
+            <file>file:/C:/xampp/htdocs/CSC_2032-smart_grocery_meal_optimization_system/SmartGroceryWebSystem/src/java/util/DBConnection.java</file>
         </group>
     </open-files>
 </project-private>
