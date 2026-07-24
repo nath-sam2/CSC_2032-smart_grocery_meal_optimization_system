@@ -30,8 +30,20 @@ public class CartServlet extends HttpServlet {
                 request.getParameter("productId"));
             double price  = Double.parseDouble(
                 request.getParameter("price"));
+
+            
+            int quantity = 1;
+            String quantityParam = request.getParameter("quantity");
+            if (quantityParam != null) {
+                try {
+                    quantity = Math.max(1, Integer.parseInt(quantityParam));
+                } catch (NumberFormatException ignored) {
+                    quantity = 1;
+                }
+            }
+
             cartService.addToCart(
-                user.getUserId(), productId, 1, price
+                user.getUserId(), productId, quantity, price
             );
             response.sendRedirect("cart.jsp");
         }

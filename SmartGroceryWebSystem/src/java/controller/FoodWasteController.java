@@ -20,17 +20,13 @@ import java.util.List;
 @WebServlet("/FoodWasteController")
 public class FoodWasteController extends HttpServlet {
 
-    private RecommendationEngine recommendationEngine;
-
-    @Override
-    public void init() throws ServletException {
-        recommendationEngine = new RecommendationEngine();
-    }
-
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws ServletException, IOException {
+
+       
+        RecommendationEngine recommendationEngine = new RecommendationEngine();
 
         HttpSession session = request.getSession(false);
 

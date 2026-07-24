@@ -24,7 +24,6 @@ import java.util.List;
 @WebServlet("/MealDashboardController")
 public class MealDashboardController extends HttpServlet {
 
-    RecommendationEngine recommendationEngine = new RecommendationEngine();
     InventoryDAO inventoryDAO = new InventoryDAO();
     ShoppingListDAO shoppingListDAO = new ShoppingListDAO();
     MealPlannerDAO mealPlannerDAO = new MealPlannerDAO();
@@ -32,26 +31,25 @@ public class MealDashboardController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        
+        RecommendationEngine recommendationEngine = new RecommendationEngine();
+
         HttpSession session = request.getSession();
 
         Integer userId = util.SessionUtil.getLoggedInUserId(session);
 
-        // Today's top recommendations (first 3 from the scored list)
         List<Recipe> allRecommendations = recommendationEngine.recommendRecipes(userId);
         List<Recipe> topRecommendations = allRecommendations.size() > 3
                 ? allRecommendations.subList(0, 3)
                 : allRecommendations;
 
-        // Ingredients expiring soon
         List<Product> expiringItems = inventoryDAO.getExpiringItems(3);
 
-        // Shopping list summary (most recent list)
         List<ShoppingList> shoppingLists = shoppingListDAO.getAllShoppingLists();
         ShoppingList latestList = shoppingLists.isEmpty()
                 ? null
                 : shoppingLists.get(shoppingLists.size() - 1);
 
-        // Meal plan summary (most recent plan)
         List<MealPlanner> mealPlans = mealPlannerDAO.getMealPlansByUser(userId);
         MealPlanner latestMealPlan = mealPlans.isEmpty()
                 ? null

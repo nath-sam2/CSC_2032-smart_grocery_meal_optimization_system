@@ -32,15 +32,14 @@ public class ShoppingListController extends HttpServlet {
             new ShoppingListItemDAO();
 
 
-    RecommendationEngine recommendationEngine =
-            new RecommendationEngine();
-
-
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws ServletException, IOException {
 
+
+        RecommendationEngine recommendationEngine =
+                new RecommendationEngine();
 
 
         String action =
@@ -60,7 +59,6 @@ public class ShoppingListController extends HttpServlet {
 
 
 
-            // View shopping lists
             case "list":
     HttpSession session = request.getSession();
     Integer userId = util.SessionUtil.getLoggedInUserId(session);
@@ -72,8 +70,6 @@ public class ShoppingListController extends HttpServlet {
 
 
 
-
-            // Generate from meal plan
 
             case "generate":
 
@@ -106,11 +102,6 @@ public class ShoppingListController extends HttpServlet {
 
                 break;
 
-
-
-
-
-            // View items
 
             case "view":
 
@@ -148,10 +139,6 @@ public class ShoppingListController extends HttpServlet {
 
                 break;
 
-
-
-
-            // Mark purchased
 
             case "purchase":
 

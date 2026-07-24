@@ -5,8 +5,9 @@
 --%>
 <%@ page import="model.User" %>
 <%@ page import="model.CartItem" %>
+<%@ page import="model.NotificationService" %>
 <%@ page import="service.CartService" %>
-<%@ page import="service.InventoryService" %>
+<%@ page import="dao.NotificationDAO" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -22,7 +23,8 @@ if (navUser != null) {
     } catch (Exception e) { /* best-effort only */ }
 
     try {
-        notifCount = navUser.isNotifyExpiry() ? new InventoryService().getExpiringItems(7).size() : 0;
+        List<NotificationService> navUnread = new NotificationDAO().getUnreadNotifications();
+        notifCount = navUnread.size();
     } catch (Exception e) { /* best-effort only */ }
 }
 
@@ -58,12 +60,10 @@ String navCtx = request.getContextPath();
         </a></li>
         <li><a href="<%=navCtx%>/inventory.jsp"><i class="fa-solid fa-warehouse"></i> My Inventory
         </a></li>
-        <li><a href="<%=navCtx%>/MealDashboardController"><i class="fa-solid fa-utensils"></i> Meal Planner
+        <li><a href="<%=navCtx%>/MealPlannerController?action=list"><i class="fa-solid fa-utensils"></i> Meal Planner
         </a></li>
         <li><a href="<%=navCtx%>/cart.jsp"><i class="fa-solid fa-list-check"></i> Shopping List
             <% if (cartCount > 0) { %><span class="menu-count"><%= cartCount %></span><% } %>
-        </a></li>
-        <li><a href="<%=navCtx%>/orders.jsp"><i class="fa-solid fa-receipt"></i> My Orders
         </a></li>
         <li><a href="<%=navCtx%>/RecipeController"><i class="fa-solid fa-book-open"></i> Recipes
         </a></li>
@@ -90,12 +90,6 @@ String navCtx = request.getContextPath();
         <li><a href="<%=navCtx%>/settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
         <li><a href="<%=navCtx%>/LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
     </ul>
-
-    <a href="tel:+94112345678" class="help-card">
-        <i class="fa-solid fa-phone"></i>
-        <b>Need Help?</b>
-        <span>Emergency Call</span>
-    </a>
 
 </div>
 
@@ -124,7 +118,7 @@ String navCtx = request.getContextPath();
                 <a href="<%=navCtx%>/profile.jsp" class="profile-chip">
                     <div class="avatar">
                         <% if (navUser.hasProfilePhoto()) { %>
-                            <img src="<%=navCtx%>/<%= navUser.getProfilePhoto() %>" alt="Profile photo">
+                            <img src="<%= navUser.getProfilePhoto() %>" alt="Profile photo">
                         <% } else { %>
                             <%= navUser.getName().substring(0,1).toUpperCase() %>
                         <% } %>
@@ -157,8 +151,10 @@ String navCtx = request.getContextPath();
 <%@ page import="model.ShoppingListItem" %>
 <%@ page import="model.Ingredient" %>
 <%@ page import="model.Inventory" %>
+<%@ page import="model.Product" %>
 <%@ page import="dao.IngredientDAO" %>
 <%@ page import="dao.InventoryDAO" %>
+<%@ page import="dao.ProductDAO" %>
 
 <%
 List<ShoppingListItem> items =
@@ -166,6 +162,7 @@ List<ShoppingListItem> items =
 
 IngredientDAO ingredientDAO = new IngredientDAO();
 InventoryDAO inventoryDAO = new InventoryDAO();
+ProductDAO productDAO = new ProductDAO();
 %>
 
 <div class="page-container">
@@ -217,6 +214,10 @@ InventoryDAO inventoryDAO = new InventoryDAO();
                     }
 
                     boolean purchased = "Purchased".equals(item.getStatus());
+
+                    Product product = (ingredient != null)
+                            ? productDAO.getProductById(ingredient.getProductId())
+                            : null;
             %>
 
             <tr>
@@ -231,6 +232,9 @@ InventoryDAO inventoryDAO = new InventoryDAO();
                 <td data-label="Action">
                     <% if (!purchased) { %>
                         <a href="ShoppingListController?action=purchase&id=<%=item.getShoppingListItemId()%>" class="btn btn-secondary">Mark Purchased</a>
+                        <% if (product != null) { %>
+                            <a href="<%=navCtx%>/CartServlet?action=add&productId=<%=product.getProductId()%>&price=<%=product.getPrice()%>&quantity=<%=util.PackagingRounder.roundToPurchaseQuantity(item.getQuantity(), product.getUnit())%>" class="btn btn-primary">Add to Cart</a>
+                        <% } %>
                     <% } else { %>
                         &#10003; Done
                     <% } %>
