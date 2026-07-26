@@ -2,13 +2,13 @@
 
 **CSC 2032 – Object Oriented Programming | Project Documentation**
 
-A web-based application that combines online grocery shopping, household inventory tracking, and intelligent, nutrition-aware meal planning into a single, cohesive platform.
+A web based application that combines online grocery shopping, household inventory tracking, and intelligent, nutrition-aware meal planning into a single, cohesive platform.
 
 ---
 
 ## Overview
 
-The Smart Grocery Management and Meal Optimization System simplifies grocery shopping while promoting efficient household food management and healthier eating habits. Users can purchase groceries online, maintain an up-to-date inventory, and monitor stock and expiry dates in real time, with automatic low-stock and expiry notifications that help reduce food waste.
+The Smart Grocery Management and Meal Optimization System simplifies grocery shopping while promoting efficient household food management and healthier eating habits. Users can purchase groceries online, maintain an up-to-date inventory, and monitor stock and expiry dates in real time, with automatic low stock and expiry notifications that help reduce food waste.
 
 Beyond traditional grocery management, the system includes an intelligent meal optimization engine. Using real-time inventory data, ingredient expiry proximity, recipe nutrition facts, and each user's declared dietary restrictions or allergies, the system recommends recipes that make effective use of ingredients already on hand while excluding anything unsafe for that user.
 
@@ -77,7 +77,7 @@ Both modules share a single database connection utility (`DBConnection`) and the
 ## Features
 
 ### Grocery Management
-- User registration, login, and session-based authentication
+- User registration, login, and session based authentication
 - Product browsing, search, and category filtering
 - Shopping cart with quantity adjustment and running totals
 - Order placement, order history, and status tracking
@@ -86,10 +86,10 @@ Both modules share a single database connection utility (`DBConnection`) and the
 - Admin dashboard for managing products, categories, orders, users, and recipes
 
 ### Meal Optimization
-- Recipe catalogue with full nutrition facts and NutriScore-style grading (A–E)
+- Recipe catalogue with full nutrition facts and NutriScore style grading (A–E)
 - Dietary restriction and allergy management, with hard exclusion of unsafe recipes
 - Recommendation engine scoring recipes on nutrition, inventory match, and expiry proximity
-- One-click automatic weekly meal plan generation, plus manual meal planning
+- One click automatic weekly meal plan generation, plus manual meal planning
 - Automatic shopping list generation from a meal plan, based on real inventory shortfall
 - Dedicated "Reduce Food Waste" view prioritizing recipes that use soon-to-expire ingredients
 
