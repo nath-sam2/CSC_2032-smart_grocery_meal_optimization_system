@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2026 at 04:33 AM
+-- Generation Time: Jul 26, 2026 at 10:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -165,29 +165,29 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`inventoryId`, `productId`, `quantity`, `reorderLevel`, `updated_at`) VALUES
-(1, 1, 50, 10, '2026-07-17 12:47:20'),
-(2, 2, 100, 20, '2026-07-17 12:47:20'),
-(3, 3, 40, 15, '2026-07-17 12:47:20'),
-(4, 4, 60, 15, '2026-07-17 12:47:20'),
+(1, 1, 48, 10, '2026-07-24 07:36:18'),
+(2, 2, 99, 20, '2026-07-24 03:37:40'),
+(3, 3, 36, 15, '2026-07-24 05:52:29'),
+(4, 4, 59, 15, '2026-07-24 04:45:54'),
 (5, 5, 30, 5, '2026-07-17 12:47:20'),
-(6, 6, 45, 12, '2026-07-17 12:47:20'),
+(6, 6, 41, 12, '2026-07-24 05:52:29'),
 (7, 7, 55, 15, '2026-07-17 12:47:20'),
 (8, 8, 20, 5, '2026-07-17 12:47:20'),
-(9, 9, 200, 8, '2026-07-18 04:00:31'),
+(9, 9, 198, 8, '2026-07-24 05:52:29'),
 (10, 10, 70, 20, '2026-07-17 12:47:20'),
-(11, 11, 80, 25, '2026-07-17 12:47:20'),
+(11, 11, 53, 25, '2026-07-24 05:52:29'),
 (12, 12, 50, 10, '2026-07-17 12:47:20'),
 (13, 13, 120, 30, '2026-07-17 12:47:20'),
-(14, 14, 65, 15, '2026-07-17 12:47:20'),
-(15, 15, 25, 8, '2026-07-17 12:47:20'),
-(16, 16, 15, 5, '2026-07-17 12:47:20'),
+(14, 14, 64, 15, '2026-07-24 04:45:54'),
+(15, 15, 24, 8, '2026-07-24 05:52:29'),
+(16, 16, 14, 5, '2026-07-24 05:52:29'),
 (17, 17, 40, 12, '2026-07-17 12:47:20'),
 (18, 18, 85, 15, '2026-07-17 12:47:20'),
-(19, 19, 20, 5, '2026-07-17 12:47:20'),
+(19, 19, 18, 5, '2026-07-24 05:52:29'),
 (20, 20, 40, 10, '2026-07-17 12:47:20'),
 (21, 21, 30, 8, '2026-07-17 12:47:20'),
 (22, 22, 18, 6, '2026-07-17 12:47:20'),
-(23, 23, 22, 5, '2026-07-17 12:47:20'),
+(23, 23, 21, 5, '2026-07-24 05:52:29'),
 (24, 37, 500, 100, '2026-07-23 06:12:22'),
 (25, 38, 1000, 200, '2026-07-23 06:12:22'),
 (26, 39, 200, 50, '2026-07-23 06:12:22');
@@ -438,7 +438,71 @@ INSERT INTO `mealplandetails` (`mealPlanDetailId`, `mealPlanId`, `recipeId`, `me
 (288, 19, 5, '2026-07-28', 'Dinner'),
 (289, 19, 17, '2026-07-29', 'Breakfast'),
 (290, 19, 6, '2026-07-29', 'Lunch'),
-(291, 19, 5, '2026-07-29', 'Dinner');
+(291, 19, 5, '2026-07-29', 'Dinner'),
+(293, 21, 8, '2026-07-24', 'Breakfast'),
+(294, 21, 6, '2026-07-24', 'Lunch'),
+(295, 21, 5, '2026-07-24', 'Dinner'),
+(296, 21, 8, '2026-07-25', 'Breakfast'),
+(297, 21, 6, '2026-07-25', 'Lunch'),
+(298, 21, 5, '2026-07-25', 'Dinner'),
+(299, 21, 8, '2026-07-26', 'Breakfast'),
+(300, 21, 6, '2026-07-26', 'Lunch'),
+(301, 21, 5, '2026-07-26', 'Dinner'),
+(302, 21, 8, '2026-07-27', 'Breakfast'),
+(303, 21, 6, '2026-07-27', 'Lunch'),
+(304, 21, 5, '2026-07-27', 'Dinner'),
+(305, 21, 8, '2026-07-28', 'Breakfast'),
+(306, 21, 6, '2026-07-28', 'Lunch'),
+(307, 21, 5, '2026-07-28', 'Dinner'),
+(308, 21, 8, '2026-07-29', 'Breakfast'),
+(309, 21, 6, '2026-07-29', 'Lunch'),
+(310, 21, 5, '2026-07-29', 'Dinner'),
+(311, 21, 8, '2026-07-30', 'Breakfast'),
+(312, 21, 6, '2026-07-30', 'Lunch'),
+(313, 21, 5, '2026-07-30', 'Dinner'),
+(314, 22, 8, '2026-07-24', 'Breakfast'),
+(317, 22, 8, '2026-07-25', 'Breakfast'),
+(318, 22, 6, '2026-07-25', 'Lunch'),
+(319, 22, 5, '2026-07-25', 'Dinner'),
+(323, 22, 8, '2026-07-27', 'Breakfast'),
+(324, 22, 6, '2026-07-27', 'Lunch'),
+(325, 22, 5, '2026-07-27', 'Dinner'),
+(326, 22, 8, '2026-07-28', 'Breakfast'),
+(327, 22, 6, '2026-07-28', 'Lunch'),
+(328, 22, 5, '2026-07-28', 'Dinner'),
+(329, 22, 8, '2026-07-29', 'Breakfast'),
+(330, 22, 6, '2026-07-29', 'Lunch'),
+(331, 22, 5, '2026-07-29', 'Dinner'),
+(332, 22, 8, '2026-07-30', 'Breakfast'),
+(333, 22, 6, '2026-07-30', 'Lunch'),
+(334, 22, 5, '2026-07-30', 'Dinner'),
+(335, 16, 28, '2026-07-23', 'Snack'),
+(336, 22, 28, '2026-07-24', 'Snack'),
+(337, 22, 3, '2026-07-24', 'Dinner'),
+(338, 22, 12, '2026-07-26', 'Breakfast'),
+(339, 22, 11, '2026-07-26', 'Dinner'),
+(340, 22, 20, '2026-07-26', 'Lunch'),
+(341, 23, 8, '2026-07-24', 'Breakfast'),
+(342, 23, 6, '2026-07-24', 'Lunch'),
+(343, 23, 5, '2026-07-24', 'Dinner'),
+(344, 23, 8, '2026-07-25', 'Breakfast'),
+(345, 23, 6, '2026-07-25', 'Lunch'),
+(346, 23, 5, '2026-07-25', 'Dinner'),
+(347, 23, 8, '2026-07-26', 'Breakfast'),
+(348, 23, 6, '2026-07-26', 'Lunch'),
+(349, 23, 5, '2026-07-26', 'Dinner'),
+(350, 23, 8, '2026-07-27', 'Breakfast'),
+(351, 23, 6, '2026-07-27', 'Lunch'),
+(352, 23, 5, '2026-07-27', 'Dinner'),
+(353, 23, 8, '2026-07-28', 'Breakfast'),
+(354, 23, 6, '2026-07-28', 'Lunch'),
+(355, 23, 5, '2026-07-28', 'Dinner'),
+(356, 23, 8, '2026-07-29', 'Breakfast'),
+(357, 23, 6, '2026-07-29', 'Lunch'),
+(358, 23, 5, '2026-07-29', 'Dinner'),
+(359, 23, 8, '2026-07-30', 'Breakfast'),
+(360, 23, 6, '2026-07-30', 'Lunch'),
+(361, 23, 5, '2026-07-30', 'Dinner');
 
 -- --------------------------------------------------------
 
@@ -476,7 +540,11 @@ INSERT INTO `mealplans` (`mealPlanId`, `userId`, `planName`, `startDate`, `endDa
 (16, 6, 'Weekly Healthy Meal Plan', '2026-07-20', '2026-07-26'),
 (17, 2, 'Weekly Healthy Meal Plan', '2026-07-21', '2026-07-27'),
 (18, 3, 'Weekly Healthy Meal Plan', '2026-07-23', '2026-07-29'),
-(19, 4, 'Weekly Healthy Meal Plan', '2026-07-23', '2026-07-29');
+(19, 4, 'Weekly Healthy Meal Plan', '2026-07-23', '2026-07-29'),
+(20, 13, 'My Meal Plan', '2026-07-24', '2026-07-30'),
+(21, 13, 'Weekly Healthy Meal Plan', '2026-07-24', '2026-07-30'),
+(22, 14, 'Weekly Healthy Meal Plan', '2026-07-24', '2026-07-30'),
+(23, 15, 'Weekly Healthy Meal Plan', '2026-07-24', '2026-07-30');
 
 -- --------------------------------------------------------
 
@@ -589,7 +657,11 @@ INSERT INTO `orders` (`orderId`, `userId`, `totalAmount`, `status`, `created_at`
 (6, 9, 5380.00, 'CANCELLED', '2026-07-17 12:52:25', '2026-07-17'),
 (7, 10, 3800.00, 'PENDING', '2026-07-17 12:52:25', '2026-07-17'),
 (8, 11, 810.00, 'PROCESSING', '2026-07-17 12:52:25', '2026-07-17'),
-(9, 3, 880.00, 'DELIVERED', '2026-07-23 06:02:40', NULL);
+(9, 3, 880.00, 'DELIVERED', '2026-07-23 06:02:40', NULL),
+(10, 13, 2680.00, 'PENDING', '2026-07-24 03:37:40', NULL),
+(11, 13, 5330.00, 'DELIVERED', '2026-07-24 04:45:54', NULL),
+(12, 14, 11230.00, 'PENDING', '2026-07-24 05:52:29', NULL),
+(13, 15, 1450.00, 'PENDING', '2026-07-24 07:36:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -634,7 +706,26 @@ INSERT INTO `order_items` (`orderItemId`, `orderId`, `productId`, `quantity`, `p
 (21, 8, 13, 6, 20.00, 120.00),
 (22, 9, 37, 1, 450.00, 450.00),
 (23, 9, 38, 1, 180.00, 180.00),
-(24, 9, 39, 1, 250.00, 250.00);
+(24, 9, 39, 1, 250.00, 250.00),
+(25, 10, 1, 1, 1450.00, 1450.00),
+(26, 10, 3, 1, 950.00, 950.00),
+(27, 10, 2, 1, 280.00, 280.00),
+(28, 11, 4, 1, 320.00, 320.00),
+(29, 11, 19, 1, 1950.00, 1950.00),
+(30, 11, 14, 1, 650.00, 650.00),
+(31, 11, 6, 2, 380.00, 760.00),
+(32, 11, 9, 1, 1650.00, 1650.00),
+(33, 12, 6, 1, 380.00, 380.00),
+(34, 12, 15, 1, 890.00, 890.00),
+(35, 12, 16, 1, 120.00, 120.00),
+(36, 12, 19, 1, 1950.00, 1950.00),
+(37, 12, 3, 2, 950.00, 1900.00),
+(38, 12, 9, 1, 1650.00, 1650.00),
+(39, 12, 6, 1, 380.00, 380.00),
+(40, 12, 23, 1, 2200.00, 2200.00),
+(41, 12, 3, 1, 950.00, 950.00),
+(42, 12, 11, 27, 30.00, 810.00),
+(43, 13, 1, 1, 1450.00, 1450.00);
 
 -- --------------------------------------------------------
 
@@ -942,7 +1033,35 @@ INSERT INTO `shoppinglistitems` (`shoppingListItemId`, `shoppingListId`, `ingred
 (99, 15, 3, 10.00, 'g', 'Pending'),
 (100, 16, 6, 155.00, 'ml', 'Pending'),
 (101, 16, 2, 100.00, 'g', 'Pending'),
-(102, 16, 3, 10.00, 'g', 'Purchased');
+(102, 16, 3, 10.00, 'g', 'Purchased'),
+(103, 17, 9, 850.00, 'g', 'Purchased'),
+(104, 17, 6, 1355.00, 'ml', 'Purchased'),
+(105, 17, 19, 120.00, 'ml', 'Purchased'),
+(106, 17, 4, 540.00, 'g', 'Purchased'),
+(107, 17, 14, 835.00, 'g', 'Purchased'),
+(108, 18, 9, 851.00, 'g', 'Pending'),
+(109, 18, 6, 1357.00, 'ml', 'Pending'),
+(110, 18, 19, 121.00, 'ml', 'Pending'),
+(111, 18, 4, 541.00, 'g', 'Pending'),
+(112, 18, 14, 836.00, 'g', 'Pending'),
+(113, 19, 8, 1730.00, 'g', 'Purchased'),
+(114, 19, 9, 851.00, 'g', 'Purchased'),
+(115, 19, 6, 167.00, 'ml', 'Purchased'),
+(116, 19, 23, 83.00, 'ml', 'Purchased'),
+(117, 19, 3, 661.00, 'g', 'Purchased'),
+(118, 19, 11, 270.00, 'g', 'Purchased'),
+(119, 20, 8, 1730.00, 'g', 'Pending'),
+(120, 20, 9, 852.00, 'g', 'Pending'),
+(121, 20, 6, 169.00, 'ml', 'Pending'),
+(122, 20, 23, 84.00, 'ml', 'Pending'),
+(123, 20, 3, 664.00, 'g', 'Pending'),
+(124, 20, 11, 297.00, 'g', 'Pending'),
+(125, 21, 8, 1730.00, 'g', 'Pending'),
+(126, 21, 9, 852.00, 'g', 'Pending'),
+(127, 21, 6, 169.00, 'ml', 'Pending'),
+(128, 21, 23, 84.00, 'ml', 'Pending'),
+(129, 21, 3, 664.00, 'g', 'Pending'),
+(130, 21, 11, 297.00, 'g', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -976,7 +1095,12 @@ INSERT INTO `shoppinglists` (`shoppingListId`, `userId`, `createdDate`, `status`
 (13, 6, '2026-07-20', 'Pending'),
 (14, 6, '2026-07-20', 'Pending'),
 (15, 6, '2026-07-20', 'Pending'),
-(16, 6, '2026-07-20', 'Pending');
+(16, 6, '2026-07-20', 'Pending'),
+(17, 6, '2026-07-24', 'Pending'),
+(18, 6, '2026-07-24', 'Pending'),
+(19, 14, '2026-07-24', 'Pending'),
+(20, 15, '2026-07-24', 'Pending'),
+(21, 3, '2026-07-25', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -1006,7 +1130,9 @@ INSERT INTO `userdietaryrestrictions` (`userId`, `restrictionId`) VALUES
 (9, 6),
 (10, 5),
 (11, 3),
-(12, 6);
+(12, 6),
+(14, 6),
+(15, 6);
 
 -- --------------------------------------------------------
 
@@ -1043,7 +1169,10 @@ INSERT INTO `users` (`userId`, `name`, `email`, `password`, `role`, `created_at`
 (9, 'Chloe Bennett', 'chloe.b@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
 (10, 'Liam O Connor', 'liam.o@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
 (11, 'Sophia Patel', 'sophia.p@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
-(12, 'Marcus Vance', 'marcus.v@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0);
+(12, 'Marcus Vance', 'marcus.v@example.com', 'password123', 'user', '2026-07-16 10:53:15', NULL, 1, 1, 0),
+(13, 'Skylar walker', 'skyla.w@example.com', 'password123', 'user', '2026-07-24 03:35:31', NULL, 1, 1, 0),
+(14, 'jaden smith', 'j.smith@example.com', 'password123', 'user', '2026-07-24 05:24:12', NULL, 1, 1, 0),
+(15, 'kenneth bethy', 'k.beth@example.com', 'password123', 'user', '2026-07-24 07:33:11', NULL, 1, 1, 0);
 
 --
 -- Indexes for dumped tables
@@ -1185,7 +1314,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1215,13 +1344,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `mealplandetails`
 --
 ALTER TABLE `mealplandetails`
-  MODIFY `mealPlanDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=292;
+  MODIFY `mealPlanDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=362;
 
 --
 -- AUTO_INCREMENT for table `mealplans`
 --
 ALTER TABLE `mealplans`
-  MODIFY `mealPlanId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `mealPlanId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -1239,13 +1368,13 @@ ALTER TABLE `nutritionfacts`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -1269,19 +1398,19 @@ ALTER TABLE `recipes`
 -- AUTO_INCREMENT for table `shoppinglistitems`
 --
 ALTER TABLE `shoppinglistitems`
-  MODIFY `shoppingListItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `shoppingListItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 
 --
 -- AUTO_INCREMENT for table `shoppinglists`
 --
 ALTER TABLE `shoppinglists`
-  MODIFY `shoppingListId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `shoppingListId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
