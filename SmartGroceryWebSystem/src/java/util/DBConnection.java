@@ -8,47 +8,51 @@ package util;
  *
  * @author perer
  */
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    // Database URL
-    private static final String URL = "jdbc:mysql://localhost:3306/smart_grocery_system_unified";
 
-    // Database username
-    private static final String USER = "root";
+    private static final String HOST     = getEnvOrDefault("DB_HOST", "localhost");
+    private static final String PORT     = getEnvOrDefault("DB_PORT", "3306");
+    private static final String DATABASE = getEnvOrDefault("DB_NAME", "smart_grocery_system_unified");
+    private static final String USER     = getEnvOrDefault("DB_USER", "root");
+    private static final String PASSWORD = getEnvOrDefault("DB_PASSWORD", "");
 
-    // Database password
-    private static final String PASSWORD = "";
+    // Aiven requires SSL. useSSL/requireSSL keep this working against a
+    // plain local MySQL too (they just won't enforce a cert locally).
+    private static final boolean IS_LOCAL =
+        HOST.equalsIgnoreCase("localhost") || HOST.equals("127.0.0.1");
+
+    private static final String URL =
+        "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE
+        + (IS_LOCAL
+            ? "?useSSL=false&allowPublicKeyRetrieval=true"
+            : "?useSSL=true&requireSSL=true&verifyServerCertificate=false");
+
+    private static String getEnvOrDefault(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return (value == null || value.isEmpty()) ? defaultValue : value;
+    }
 
     // Method to establish connection
     public static Connection getConnection() {
-
-    Connection connection = null;
-
-    try {
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        connection = DriverManager.getConnection(
-            URL,
-            USER,
-            PASSWORD
-        );
-
-        //System.out.println("Database connected successfully!");//
-
-    } catch(Exception e) {
-
-        System.out.println("Connection failed!");
-        e.printStackTrace();
-
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(
+                URL,
+                USER,
+                PASSWORD
+            );
+            //System.out.println("Database connected successfully!");//
+        } catch (Exception e) {
+            System.out.println("Connection failed!");
+            e.printStackTrace();
+        }
+        return connection;
     }
-
-    return connection;
-}
 
     // Method to close connection
     public static void closeConnection(Connection connection) {
