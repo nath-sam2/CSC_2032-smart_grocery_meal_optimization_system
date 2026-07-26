@@ -23,8 +23,8 @@ public class RecipeIngredientDAO {
 
         String sql =
         "SELECT i.ingredientId, i.name, ri.quantity, ri.unit " +
-        "FROM ingredients i " +
-        "JOIN recipeingredients ri " +
+        "FROM Ingredients i " +
+        "JOIN RecipeIngredients ri " +
         "ON i.ingredientId = ri.ingredientId " +
         "WHERE ri.recipeId = ?";
 

@@ -1,0 +1,304 @@
+<mxfile host="app.diagrams.net" agent="claude">
+  <diagram name="Recommendation Sequence" id="seqDiagram1">
+    <mxGraphModel dx="1212" dy="661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="1800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="actor_user_head" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f5f5f5;strokeColor=#666666;" value="User (browser)" vertex="1">
+          <mxGeometry height="50" width="30" x="115" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_user_head2" parent="1" style="shape=umlActor;verticalLabelPosition=top;verticalAlign=bottom;html=1;outlineConnect=0;fillColor=#f5f5f5;strokeColor=#666666;" value="User (browser)" vertex="1">
+          <mxGeometry height="50" width="30" x="115" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_user_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="110" as="sourcePoint" />
+            <mxPoint x="130" y="1720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ctrl_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="RecommendationController" vertex="1">
+          <mxGeometry height="40" width="180" x="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ctrl_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="RecommendationController" vertex="1">
+          <mxGeometry height="40" width="180" x="300" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="ctrl_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="80" as="sourcePoint" />
+            <mxPoint x="390" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sessionutil_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="SessionUtil" vertex="1">
+          <mxGeometry height="40" width="180" x="560" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sessionutil_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="SessionUtil" vertex="1">
+          <mxGeometry height="40" width="180" x="560" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="sessionutil_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="80" as="sourcePoint" />
+            <mxPoint x="650" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="engine_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="RecommendationEngine" vertex="1">
+          <mxGeometry height="40" width="180" x="820" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="engine_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="RecommendationEngine" vertex="1">
+          <mxGeometry height="40" width="180" x="820" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="engine_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="80" as="sourcePoint" />
+            <mxPoint x="910" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="recipedao_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="RecipeDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1080" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="recipedao_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="RecipeDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1080" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="recipedao_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1170" y="80" as="sourcePoint" />
+            <mxPoint x="1170" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="userdietdao_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="UserDietaryRestrictionDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1340" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="userdietdao_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="UserDietaryRestrictionDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1340" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="userdietdao_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1430" y="80" as="sourcePoint" />
+            <mxPoint x="1430" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ingdao_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="IngredientDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1600" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ingdao_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="IngredientDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1600" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="ingdao_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1690" y="80" as="sourcePoint" />
+            <mxPoint x="1690" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nutridao_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="NutritionFactsDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1860" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nutridao_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="NutritionFactsDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="1860" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="nutridao_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1950" y="80" as="sourcePoint" />
+            <mxPoint x="1950" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="invdao_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="InventoryDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="2120" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="invdao_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="InventoryDAO" vertex="1">
+          <mxGeometry height="40" width="180" x="2120" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="invdao_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2210" y="80" as="sourcePoint" />
+            <mxPoint x="2210" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nutriscore_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="NutriScoreService" vertex="1">
+          <mxGeometry height="40" width="180" x="2380" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nutriscore_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="NutriScoreService" vertex="1">
+          <mxGeometry height="40" width="180" x="2380" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="nutriscore_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2470" y="80" as="sourcePoint" />
+            <mxPoint x="2470" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jsp_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="recommendation.jsp" vertex="1">
+          <mxGeometry height="40" width="180" x="2640" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="jsp_head2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" value="recommendation.jsp" vertex="1">
+          <mxGeometry height="40" width="180" x="2640" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="jsp_life" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2730" y="80" as="sourcePoint" />
+            <mxPoint x="2730" y="1730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2001" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="RecommendationController">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="140" as="sourcePoint" />
+            <mxPoint x="390" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2002" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getLoggedInUserId(session)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="180" as="sourcePoint" />
+            <mxPoint x="650" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2003" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="userId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="210" as="sourcePoint" />
+            <mxPoint x="390" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2004" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="recommendRecipes(userId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="250" as="sourcePoint" />
+            <mxPoint x="910" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2005" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getAllRecipes()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="290" as="sourcePoint" />
+            <mxPoint x="1170" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2006" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="List&lt;Recipe&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1170" y="320" as="sourcePoint" />
+            <mxPoint x="910" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2007" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getRestrictionsByUserId(userId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="360" as="sourcePoint" />
+            <mxPoint x="1430" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2008" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="List&lt;DietaryRestriction&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1430" y="390" as="sourcePoint" />
+            <mxPoint x="910" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="loop2009" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#0033cc;dashed=1;verticalAlign=top;align=left;" value="" vertex="1">
+          <mxGeometry height="170" width="900" x="880" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="loop2009tag" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#f0f5ff;strokeColor=#0033cc;fontSize=10;align=left;spacingLeft=4;size=10;" value="loop  [filterByDietaryRestrictions: for each recipe]" vertex="1">
+          <mxGeometry height="24" width="320" x="880" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="m2010" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getIngredientsByRecipe(recipeId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="460" as="sourcePoint" />
+            <mxPoint x="1690" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2011" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="List&lt;RecipeIngredient&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1690" y="495" as="sourcePoint" />
+            <mxPoint x="910" y="495" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2012" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getIngredientById(ingredientId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="530" as="sourcePoint" />
+            <mxPoint x="1690" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2013" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="Ingredient">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1690" y="565" as="sourcePoint" />
+            <mxPoint x="910" y="565" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note2014" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;size=14;align=center;verticalAlign=middle;" value="recipes with a restricted ingredient are excluded" vertex="1">
+          <mxGeometry height="44" width="260" x="810" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="m2015" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getExpiringItems(3)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="690" as="sourcePoint" />
+            <mxPoint x="2210" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2016" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="List&lt;Product&gt; (cached once)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2210" y="725" as="sourcePoint" />
+            <mxPoint x="910" y="725" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="loop2017" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#0033cc;dashed=1;verticalAlign=top;align=left;" value="" vertex="1">
+          <mxGeometry height="250" width="1420" x="880" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="loop2017tag" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#f0f5ff;strokeColor=#0033cc;fontSize=10;align=left;spacingLeft=4;size=10;" value="loop  [calculateRecipeScore: for each remaining recipe]" vertex="1">
+          <mxGeometry height="24" width="320" x="880" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="m2018" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getNutritionFactsByRecipeId(recipeId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="800" as="sourcePoint" />
+            <mxPoint x="1950" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2019" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="NutritionFacts">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1950" y="835" as="sourcePoint" />
+            <mxPoint x="910" y="835" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2020" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="calculateNutriScore(nutrition, false)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="870" as="sourcePoint" />
+            <mxPoint x="2470" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2021" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="grade (A-E)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2470" y="905" as="sourcePoint" />
+            <mxPoint x="910" y="905" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2022" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getIngredientById(ingredientId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="940" as="sourcePoint" />
+            <mxPoint x="1690" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2023" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="getInventoryByProduct(productId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="970" as="sourcePoint" />
+            <mxPoint x="2210" y="970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2024" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="Inventory">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2210" y="990" as="sourcePoint" />
+            <mxPoint x="910" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note2025" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;size=14;align=center;verticalAlign=middle;" value="score = nutrition + inventory match + expiry bonus - missing penalty" vertex="1">
+          <mxGeometry height="50" width="320" x="780" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="m2026" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="sorted List&lt;Recipe&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="1120" as="sourcePoint" />
+            <mxPoint x="390" y="1120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2027" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#000000;fontSize=10;" value="forward(request, response)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="390" y="1160" as="sourcePoint" />
+            <mxPoint x="2730" y="1160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2028" edge="1" parent="1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;fontSize=10;" value="rendered recommendations page">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2730" y="1200" as="sourcePoint" />
+            <mxPoint x="130" y="1200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
