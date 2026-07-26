@@ -137,6 +137,13 @@ Every relationship linking the two modules is enforced with foreign keys — mos
 
 ---
 
+## Demo Video
+
+
+📹 **[Watch Demo Video](https://drive.google.com/file/d/1kE9wCC64mUWn5anXzHpK2IN6GuatTxJx/view?usp=sharing)**
+
+---
+
 ## Team Members & Contributions
 
 | Member | ID | Module | Contributions |
